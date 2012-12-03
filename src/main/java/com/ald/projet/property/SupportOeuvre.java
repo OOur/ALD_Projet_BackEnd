@@ -1,6 +1,9 @@
-package com.ald.projet.entities;
+package com.ald.projet.property;
 
-public enum Support {
+import javax.persistence.Embeddable;
+
+@Embeddable
+public enum SupportOeuvre {
 
 
 	LIN("Toile de lin"), COTON("Toile de coton"), PAPIER("Papier") ,
@@ -9,7 +12,7 @@ public enum Support {
 	ALUMINIUM("aluminium") ;	
 	
 	private final String stringValue;
-	private Support(final String s) { stringValue = s; }
+	private SupportOeuvre(final String s) { stringValue = s; }
 	public String toString() { return stringValue; }
 
 }

@@ -1,29 +1,32 @@
 package com.ald.projet.entities;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
-import com.ald.projet.property.Support;
+import com.ald.projet.property.SupportOeuvre;
 
 
 @Entity
 public class Photographie extends Oeuvre {
-	private Support support;
+	
+	@Embedded
+	private SupportOeuvre support;
 
 	public Photographie(){
 		
 	}
 	
 	
-	public Photographie(Support support) {
+	public Photographie(SupportOeuvre support) {
 		super();
 		this.support = support;
 	}
 
-	public Support getSupport() {
+	public SupportOeuvre getSupport() {
 		return support;
 	}
 
-	public void setSupport(Support support) {
+	public void setSupport(SupportOeuvre support) {
 		this.support = support;
 	}
 	

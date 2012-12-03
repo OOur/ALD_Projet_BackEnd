@@ -1,14 +1,17 @@
 package com.ald.projet.entities;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 import com.ald.projet.property.Realisation;
-import com.ald.projet.property.Support;
+import com.ald.projet.property.SupportOeuvre;
 
 
 @Entity
 public class Peinture extends Oeuvre{
-	private Support support;
+	@Embedded
+	private SupportOeuvre support;
+	@Embedded
 	private Realisation realisation;
 
 	public Peinture(){
@@ -16,17 +19,17 @@ public class Peinture extends Oeuvre{
 	}
 	
 	
-	public Peinture(Support support, Realisation realisation) {
+	public Peinture(SupportOeuvre support, Realisation realisation) {
 		super();
 		this.support = support;
 		this.realisation = realisation;
 	}
 
-	public Support getSupport() {
+	public SupportOeuvre getSupport() {
 		return support;
 	}
 
-	public void setSupport(Support support) {
+	public void setSupport(SupportOeuvre support) {
 		this.support = support;
 	}
 

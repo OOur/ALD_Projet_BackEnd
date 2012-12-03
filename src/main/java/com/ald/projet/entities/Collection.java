@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import com.ald.projet.property.EtatCollection;
 
@@ -20,7 +22,8 @@ public class Collection {
 	private int id;
 	@Embedded
 	private EtatCollection etat;
-	@Transient
+	
+	@ManyToMany
 	private List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 	
 	

@@ -1,5 +1,6 @@
 package com.ald.projet.entities;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 import com.ald.projet.property.Materiaux;
@@ -8,6 +9,7 @@ import com.ald.projet.property.Materiaux;
 @Entity
 public class Sculpture extends Oeuvre{
 
+	@Embedded
 	private Materiaux materiaux;
 
 	public Sculpture(){

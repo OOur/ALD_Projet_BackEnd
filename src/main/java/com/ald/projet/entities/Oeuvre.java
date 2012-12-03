@@ -18,8 +18,7 @@ public abstract class Oeuvre {
 	private int id;
 	@Embedded
 	private Dimension dimension;
-	
-	/***** A réfléchir ******/
+	//@Type(type="yes_no")
 	private boolean hasBeenReproduced;
 	
 	
@@ -59,10 +58,6 @@ public abstract class Oeuvre {
 		this.hasBeenReproduced = hasBeenReproduced;
 	}
 	
-	//To do
-	public Oeuvre clone(){
-		return null;
-	}
 	
 	
 }

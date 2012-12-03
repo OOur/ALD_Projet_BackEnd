@@ -14,3 +14,19 @@ d'abord les information dans la classe mère puis dans la classe fille ) et les 
 
 
 
+CARDINALITES
+
+Oeuvre et reproduction :
+==> OneToOne unidirectionnel
+Une reproduction connait l'oeuvre qu'elle reproduit, tandis qu'une oeuvre n'est pas consciente de ses reproductions.
+Une oeuvre peut avoir plusieurs reproductions, une reproduction ne reproduit qu'une oeuvre.
+
+
+Collection et oeuvre :
+==> n:m ManyToMany unidirectionnel
+Une oeuvre ne sait pas qu'elle est dans une collection, une collection connait toutes les oeuvres qu'elle contient.
+Une collection possède une ou plusieurs oeuvres, une oeuvre peut appartenir à plusieurs collections.
+
+
+
+

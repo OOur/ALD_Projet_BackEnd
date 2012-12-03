@@ -1,5 +1,8 @@
 package com.ald.projet.property;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public enum Realisation {
 
 
