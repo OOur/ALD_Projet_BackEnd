@@ -1,0 +1,16 @@
+Choix de la statégie de Mapping Objet relationnel:
+
+Nous avons choisi de prendre la stratégie SINGLE TABLE du fait que les insertions et requêtes de selection ne sont pas couteuses. Quelques attributs 
+des classes filles (Photographie, peinture, ..) sont rajoutés dans la classe mère (ils sont peu nombreux), quelques attributs sont spécifiques à une classe fille ce qui
+implique qu'ils ne seront pas renseignés pour certaines classes concrètes.
+
+Nous n'avons pas choisi la méthode TABLE_PER_CLASS car cela impliquerait de devoir dupliquer les informations de la classe mère dans chacune de ses classes concrètes.
+Au niveau des requètes de sélection sur la classe mère cela les alourdit en créant des jointures pour accéder aux classes concrètes (ex : le conservateur veut connaitre
+toutes les oeuvres d'une collection ==> Comme on a persisté que les classes concrètes, on est obligé de faire une jointure entre toutes les classes concrètes).
+
+Nous n'avons pas également choisi la méthode JOINED bien qu'elle proche du modèle objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
+d'abord les information dans la classe mère puis dans la classe fille ) et les requètes.
+
+
+
+
