@@ -2,6 +2,8 @@ package com.ald.projet.entities;
 
 import javax.persistence.Entity;
 
+import com.ald.projet.property.Support;
+
 
 @Entity
 public class Photographie extends Oeuvre {

@@ -8,20 +8,25 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.ald.projet.property.Dimension;
+
 
 @Entity @Inheritance(strategy=InheritanceType.SINGLE_TABLE) 
 public abstract class Oeuvre {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	@Embedded
 	private Dimension dimension;
+	
+	/***** A réfléchir ******/
 	private boolean hasBeenReproduced;
 	
 	
 	public Oeuvre(){
 		
 	}
+
 
 	public Oeuvre(int id, Dimension dimension) {
 		super();
@@ -44,6 +49,14 @@ public abstract class Oeuvre {
 
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
+	}
+	
+	public boolean hasBeenReproduced() {
+		return hasBeenReproduced;
+	}
+
+	public void setHasBeenReproduced(boolean hasBeenReproduced) {
+		this.hasBeenReproduced = hasBeenReproduced;
 	}
 	
 	//To do

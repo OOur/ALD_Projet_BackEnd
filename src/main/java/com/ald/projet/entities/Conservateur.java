@@ -7,20 +7,19 @@ import javax.persistence.Id;
 
 
 @Entity
-public class Conservateur {
+public class Conservateur extends AgentMusee{
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
 	
 	
 	public Conservateur(){
 		
 	}
-
-	public Conservateur(int id) {
-		super();
-		this.id = id;
+	
+	public Conservateur(int id, String nom, String prenom, String login,
+			String password) {
+		super(id, nom, prenom, login, password);
 	}
+
 
 	public Oeuvre takePhoto(Oeuvre oeuvre){
 		return null;
