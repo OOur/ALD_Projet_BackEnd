@@ -2,12 +2,14 @@ package com.ald.projet.property;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 
 
 @Embeddable
 public class Dimension implements Serializable{
+	@Column(nullable = true)
 	int hauteur;
 	int largeur;
 	int longueur;
