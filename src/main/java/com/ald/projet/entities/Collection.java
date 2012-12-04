@@ -26,6 +26,10 @@ public class Collection {
 	@ManyToMany
 	private List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 	
+	private String libele;
+	private String commentaire;
+	private String tag;
+	
 	
 	
 	public Collection(){
@@ -80,6 +84,31 @@ public class Collection {
 	public void setOeuvres(List<Oeuvre> oeuvres) {
 		this.oeuvres = oeuvres;
 	}
+
+	public String getLibele() {
+		return libele;
+	}
+
+	public void setLibele(String libele) {
+		this.libele = libele;
+	}
+
+	public String getCommentaire() {
+		return commentaire;
+	}
+
+	public void setCommentaire(String commentaire) {
+		this.commentaire = commentaire;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
 	
 	
 	

@@ -1,5 +1,7 @@
 Choix de la statégie de Mapping Objet relationnel:
 
+Oeuvre -> Peinture / Sculpture / Photographie
+
 Nous avons choisi de prendre la stratégie SINGLE TABLE du fait que les insertions et requêtes de selection ne sont pas couteuses. Quelques attributs 
 des classes filles (Photographie, peinture, ..) sont rajoutés dans la classe mère (ils sont peu nombreux), quelques attributs sont spécifiques à une classe fille ce qui
 implique qu'ils ne seront pas renseignés pour certaines classes concrètes.
@@ -11,6 +13,12 @@ toutes les oeuvres d'une collection ==> Comme on a persisté que les classes con
 Nous n'avons pas également choisi la méthode JOINED bien qu'elle proche du modèle objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
 d'abord les information dans la classe mère puis dans la classe fille ) et les requètes.
 
+
+
+Personne -> Libraire / Conservateur / artiste
+
+Nous avons choisi la statégie TABLE PER CLASS afin de rentrer en base les classes concretes. En effet nous n'aurons pas besoin d'effectuer de requètes (jointures) pour récolter des informations sur un ensemble de 
+personnes.
 
 
 
@@ -27,6 +35,16 @@ Collection et oeuvre :
 Une oeuvre ne sait pas qu'elle est dans une collection, une collection connait toutes les oeuvres qu'elle contient.
 Une collection possède une ou plusieurs oeuvres, une oeuvre peut appartenir à plusieurs collections.
 
+
+Oeuvre et artiste :
+=> 1:n unidirectionnel
+Une oeuvre sait par quel artiste elle a été faite, tandis qu'un artiste n'est pas conscient de ses oeuvres.
+Une oeuvre est faite par un artiste, un artiste peut faire plusieurs oeuvres.
+
+
+
+DEPOT HIBERNATE :
+http://mvnrepository.com/artifact/org.hibernate/hibernate-core/4.1.7.Final
 
 
 

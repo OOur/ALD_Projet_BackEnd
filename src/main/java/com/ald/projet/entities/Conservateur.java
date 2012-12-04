@@ -28,8 +28,8 @@ public class Conservateur extends AgentMusee{
 	public void addCaracteristiqueOeuvre(Oeuvre oeuvre, String carac){
 	}
 	
-	public void addInfoOeuvre(Oeuvre oeuvre, String info){
-	}
+//	public void addInfoOeuvre(Oeuvre oeuvre, String info){
+//	}
 	
 	public void addAbstractOeuvre(Oeuvre oeuvre, String abstrac){
 	}
