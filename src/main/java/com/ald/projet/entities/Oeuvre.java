@@ -12,7 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import com.ald.projet.property.Dimension;
-import com.sun.istack.NotNull;
 
 
 @Entity @Inheritance(strategy=InheritanceType.SINGLE_TABLE) 
@@ -23,7 +22,6 @@ public abstract class Oeuvre {
 	@Embedded
 	private Dimension dimension;
 	//@Type(type="true_false")
-	@NotNull
 	private boolean hasBeenReproduced;
 	
 //	@OneToMany

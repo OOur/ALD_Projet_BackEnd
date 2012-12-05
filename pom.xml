@@ -16,15 +16,6 @@
 			<url>http://download.java.net/maven/2/</url>
 		</repository>
 
-		<repository>
-			<id>org.jboss.resteasy</id>
-			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-
-		<!-- <repository> -->
-		<!-- <id>EclipseLink</id> -->
-		<!-- <url>http://download.eclipse.org/rt/eclipselink/maven.repo</url> -->
-		<!-- </repository> -->
 
 		<!-- <repository> -->
 		<!-- <id>Hibernate</id> -->
@@ -41,16 +32,22 @@
 			<version>4.8.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.1.7.Final</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.hibernate</groupId> -->
+<!-- 			<artifactId>hibernate-core</artifactId> -->
+<!-- 			<version>4.1.7.Final</version> -->
+<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>3.3.2.GA</version>
 		</dependency>
 
 		<dependency>
@@ -60,34 +57,12 @@
 		</dependency>
 
 
-		<!-- <dependency> -->
-		<!-- <groupId>org.eclipse.persistence</groupId> -->
-		<!-- <artifactId>javax.persistence</artifactId> -->
-		<!-- <version>2.0.0</version> -->
-		<!-- </dependency> -->
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.eclipse.persistence</groupId> -->
-		<!-- <artifactId>org.eclipse.persistence.jpa</artifactId> -->
-		<!-- <version>2.4.0</version> -->
-		<!-- </dependency> -->
-
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
 			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.3.4.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxb-provider</artifactId>
-			<version>2.3.4.Final</version>
 		</dependency>
 
 		<dependency>
@@ -127,12 +102,8 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
 		</dependency>
-		<dependency>
-			<groupId>hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.4.0.GA</version>
-			<type>pom</type>
-		</dependency>
+		
+            
 	</dependencies>
 
 
