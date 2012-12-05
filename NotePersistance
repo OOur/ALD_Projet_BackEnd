@@ -17,10 +17,10 @@ d'abord les information dans la classe mère puis dans la classe fille ) et les 
 
 Personne -> Libraire / Conservateur / artiste
 
-Nous avons choisi la statégie TABLE PER CLASS afin de rentrer en base les classes concretes. En effet nous n'aurons pas besoin d'effectuer de requètes (jointures) pour récolter des informations sur un ensemble de 
-personnes.
+Nous avons choisi la statégie TABLE PER CLASS afin de rentrer en base les classes concretes. En effet nous n'aurons pas besoin d'effectuer de requètes (jointures)
+ pour récolter des informations sur un ensemble de personnes.
 
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 CARDINALITES
 
@@ -42,9 +42,25 @@ Une oeuvre sait par quel artiste elle a été faite, tandis qu'un artiste n'est 
 Une oeuvre est faite par un artiste, un artiste peut faire plusieurs oeuvres.
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 DEPOT HIBERNATE :
 http://mvnrepository.com/artifact/org.hibernate/hibernate-core/4.1.7.Final
 
+ ! : trouver des tuto à jour (Hibernate 4) car les précédents n'utilisent pas d'annotations mais plutôt des fichiers de mapping.
+ 
+ Pour configurer Hibernate il est possible de le faire via le fichier hibernate.cfg.xml ou persistence.xml => nous avons choisi hibernate.cfg.xml
+ 
+ Pour persister les données, on peut soit utiliser les EntityManager (avec persist()), soit utiliser une session (qui est spécifique à hibernate) et faire un save().
+ Il peut être judicieux d'utiliser l'API JPA (standard JEE ==> augmente la portabilité du projet. ex : si on change de framework de persistence, on n'a pas de changement
+ à faire) plutôt que celle d'hibernate (A nous de choisir).
+ 
+---------
+ Citation de Stackoverflow :
+ The EntityManager invokes the hibernate session under the hood. And if you need some specific features that are not available in the EntityManager,
+  you can obtain the session by calling:Session session = entityManager.unwrap(Session.class);
+---------
+
+au lieu de creer une classe HibernateUtil nous avons crée la classe JPAUtil
 
 
