@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.entities.Artiste;
-import com.ald.projet.entities.Dimension;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
 import com.ald.projet.entities.Photographie;
+import com.ald.projet.property.Dimension;
 import com.ald.projet.property.Realisation;
 
 

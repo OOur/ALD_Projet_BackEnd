@@ -7,9 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 
 import com.ald.projet.property.Dimension;
 
@@ -61,8 +58,8 @@ public abstract class Oeuvre {
 		return dimension;
 	}
 
-	public void setDimension(Dimension dimension) {
-		this.dimension = dimension;
+	public void setDimension(Dimension dimension1) {
+		this.dimension = dimension1;
 	}
 	
 	public boolean hasBeenReproduced() {

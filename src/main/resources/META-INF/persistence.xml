@@ -6,21 +6,26 @@
 	<persistence-unit name="Musee"  transaction-type="RESOURCE_LOCAL"> 
 	<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
+		<class>com.ald.projet.entities.Peinture </class>
 		<class>com.ald.projet.entities.Oeuvre </class>
-		<class>com.ald.projet.entities.Collection </class>
-		<class>com.ald.projet.entities.Artiste </class>
-		<class>com.ald.projet.entities.Conservateur </class>
-		<class>com.ald.projet.entities.Libraire </class>
+<!-- 		<class>com.ald.projet.entities.Collection </class> -->
+<!-- 		<class>com.ald.projet.entities.Artiste </class> -->
+<!-- 		<class>com.ald.projet.entities.Conservateur </class> -->
+<!-- 		<class>com.ald.projet.entities.Libraire </class> -->
 		
 		<properties>
-			<!-- <property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml"/> 
-				<property name="hibernate.hbm2ddl.auto" value="create"/> -->
-			<property name="hibernate.archive.autodetection" value="class, hbm" />
+		    
+		    <!-- Affiche les logs SQL -->
+			<property name="hibernate.format_sql" value="true" />
+	        <property name="use_sql_comments" value="true" />
 			<property name="hibernate.show_sql" value="true" />
 
+			<!-- Cree les tables si elles existent pas, sinon les met a jour -->
+			<property name="hibernate.hbm2ddl.auto"  value="update" />
+			
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 
-			<property name="hibernate.connection.username" value="sa" />
+			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="" />
 
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/musee" />
