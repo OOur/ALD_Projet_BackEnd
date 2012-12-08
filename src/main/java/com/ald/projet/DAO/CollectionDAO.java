@@ -6,11 +6,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
+import com.ald.projet.entities.Oeuvre;
 
 public class CollectionDAO extends GenericDAO {
-	
+
 	public void createCollection(Collection artiste) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -48,12 +48,21 @@ public class CollectionDAO extends GenericDAO {
 
 
 	public List<Collection> findAll() {
-		List<Collection> artistes = new ArrayList<Collection>();
+		List<Collection> collections = new ArrayList<Collection>();
 		EntityManager em = createEntityManager();
 
-		artistes = em.createQuery("SELECT p FROM Collection p").getResultList();
-		return artistes;
+		collections = em.createQuery("SELECT p FROM Collection p").getResultList();
+		return collections;
 	}
+
+	public List<Oeuvre> findAllOeuvreOfCollection(Collection collection) {
+		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
+		EntityManager em = createEntityManager();
+		//marche pas
+		//oeuvres = em.createQuery("SELECT o FROM Oeuvre o LEFT JOIN o.Collection_oeuvre c WHERE c.collection_id =: id").setParameter("id", collection.getId()).getResultList();
+		return oeuvres;
+	}
+
 
 	public Collection findById(int id){
 		EntityManager em = createEntityManager();

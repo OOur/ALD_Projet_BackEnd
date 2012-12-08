@@ -7,12 +7,11 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.DAO.ArtisteDAO;
-import com.ald.projet.DAO.CollectionDAO;
-import com.ald.projet.DAO.PeintureDAO;
-import com.ald.projet.DAO.SculptureDAO;
+import com.ald.projet.DAO.OeuvreDAO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Conservateur;
+import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
 import com.ald.projet.entities.Sculpture;
 import com.ald.projet.property.Dimension;
@@ -22,9 +21,8 @@ import com.ald.projet.property.SupportOeuvre;
 
 public class DAOTest {
 	
-	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DAOTest.class);
-	private static PeintureDAO peintureDAO = new PeintureDAO();
-	private static SculptureDAO sculptureDAO = new SculptureDAO();
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DAOTest.class);	
+	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
 
 
@@ -44,11 +42,11 @@ public class DAOTest {
 			peinture.setArtiste(artiste);
 			peinture.setRealisation(Realisation.ACRYLIQUE);
 			peinture.setSupport(SupportOeuvre.PAPIER);
-			peintureDAO.createPeinture(peinture);
+			oeuvreDAO.createOeuvre(peinture);
 			
 			/* Met a jour l'entree dans la base */
 			peinture.setAnnee(2010);
-			peintureDAO.updatePeinture(peinture);
+			oeuvreDAO.updateOeuvre(peinture);
 			
 			
 			Sculpture sculpture = new Sculpture();
@@ -57,13 +55,13 @@ public class DAOTest {
 			sculpture.setArtiste(artiste);
 			sculpture.setHasBeenReproduced(false);
 			sculpture.setMateriaux(Materiaux.ARGILE);
-			sculptureDAO.createSculpture(sculpture);
+			oeuvreDAO.createOeuvre(sculpture);
 			
 			
 			/* Ne doit pas marcher car objet non persite en base */
 			Peinture oeuvre = new Peinture();
 			oeuvre.setCommentaire("hehe");
-			peintureDAO.updatePeinture(oeuvre);
+			oeuvreDAO.updateOeuvre(oeuvre);
 			
 			/** Le conservateur cree une nouvelle collection et y ajoute des oeuvres 
 			 * Cree une collection vide en base et remplit la table intermediaire collection_oeuvre pour faire la liaison entre 
@@ -73,6 +71,8 @@ public class DAOTest {
 			conservateur.addOeuvre(peinture, collection);
 			conservateur.addOeuvre(sculpture, collection);
 			
+			
+			//LOG.debug(conservateur.displayCollection(collection));
 			
 			
 			
@@ -90,10 +90,10 @@ public class DAOTest {
 			insertPeinture();
 			
 			LOG.debug("Test findAll");
-			List<Peinture> peintures = peintureDAO.findAll();
+			List<Oeuvre> oeuvres = oeuvreDAO.findAll();
 			
-			//LOG.debug("Result Size = "+ peintures.size());
-			Assert.assertTrue("test", peintures.size()>0);
+			LOG.debug("Result Size = "+ oeuvres.size());
+			Assert.assertTrue("test", oeuvres.size()>0);
 		}catch(RuntimeException re){
 			LOG.error("Find all failed", re);
 			throw re;

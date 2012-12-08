@@ -1,18 +1,24 @@
 package com.ald.projet.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.List;
 
-import com.ald.projet.DAO.ArtisteDAO;
+import javax.persistence.Entity;
+
 import com.ald.projet.DAO.CollectionDAO;
+import com.ald.projet.DAO.OeuvreDAO;
+
+/**
+ * 
+ * La persitence des données se fait directement dans cette classe grâce au DAO.
+ * 
+ */
 
 
 @Entity
 public class Conservateur extends AgentMusee{
 	
 	private static CollectionDAO collectionDAO = new CollectionDAO();
+	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
 	
 	public Conservateur(){
 		
@@ -29,19 +35,24 @@ public class Conservateur extends AgentMusee{
 	}
 	
 	public void addCaracteristiqueOeuvre(Oeuvre oeuvre, String carac){
+		oeuvre.setCaracteristique(carac);
+		oeuvreDAO.updateOeuvre(oeuvre);
 		
 	}
 	
-//	public void addInfoOeuvre(Oeuvre oeuvre, String info){
-//	}
-	
 	public void addAbstractOeuvre(Oeuvre oeuvre, String abstrac){
+		oeuvre.setCaracteristique(abstrac);
+		oeuvreDAO.updateOeuvre(oeuvre);
 	}
 	
 	public void addCommentOeuvre(Oeuvre oeuvre, String comment){
+		oeuvre.setCaracteristique(comment);
+		oeuvreDAO.updateOeuvre(oeuvre);
 	}
 	
 	public void addTagOeuvre(Oeuvre oeuvre, String tag){
+		oeuvre.setCaracteristique(tag);
+		oeuvreDAO.updateOeuvre(oeuvre);
 	}
 	
 	public Collection createCollection(){
@@ -57,14 +68,32 @@ public class Conservateur extends AgentMusee{
 	}
 	
 	public void removeOeuvre(Oeuvre oeuvre, Collection collection){
+		collection.removeOeuvre(oeuvre);
+		collectionDAO.updateCollection(collection);
 	}
 	
-	public void addCommentCollection(Oeuvre oeuvre, String comment){
+	public void addCommentCollection(Collection collection, String comment){
+		collection.addComment(comment);
+		collectionDAO.updateCollection(collection);
 	}
 	
-	public void displayCollection(Collection collection){
+	
+	/* NE MARCHE PAS, A CORRIGER */
+	public String displayCollection(Collection collection){
+		
+		List<Oeuvre> oeuvres = collectionDAO.findAllOeuvreOfCollection(collection);
+		String affiche ="";
+		int i = 0;
+		
+		for(Oeuvre o : oeuvres){
+			affiche += "Oeuvre "+i+" de type "+ o.getClass().getName();
+		}
+		
+		return affiche;
 	}
 	
 	public void addTagCollection(Collection collection, String tag){
+		collection.addTag(tag);
+		collectionDAO.updateCollection(collection);
 	}
 }

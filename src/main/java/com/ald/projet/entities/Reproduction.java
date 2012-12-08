@@ -1,20 +1,23 @@
 package com.ald.projet.entities;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.ald.projet.property.SupportReproduction;
 
+@Entity
 public class Reproduction {
 
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	@OneToOne
-	@JoinColumn(name="oeuvre_reproduced", nullable=false)
+	@JoinColumn(name="oeuvre_id", nullable=false)
 	private Oeuvre oeuvre;
 	private int prix;
 	@Enumerated(EnumType.STRING)
