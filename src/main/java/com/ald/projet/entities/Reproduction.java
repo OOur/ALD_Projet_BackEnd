@@ -1,5 +1,7 @@
 package com.ald.projet.entities;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +17,7 @@ public class Reproduction {
 	@JoinColumn(name="oeuvre_reproduced", nullable=false)
 	private Oeuvre oeuvre;
 	private int prix;
+	@Enumerated(EnumType.STRING)
 	private SupportReproduction support;
 	
 

@@ -15,8 +15,8 @@ public abstract class AgentMusee extends Personne {
 	}
 	
 	
-	public AgentMusee(int id, String nom, String prenom, String login, String password) {
-		super(id, nom, prenom);
+	public AgentMusee(String nom, String prenom, String login, String password) {
+		super(nom, prenom);
 		this.login = login;
 		this.password = password;
 	}

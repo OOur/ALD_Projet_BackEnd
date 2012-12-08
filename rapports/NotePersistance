@@ -1,24 +1,24 @@
-Choix de la statégie de Mapping Objet relationnel:
+Choix de la stategie de Mapping Objet relationnel:
 
 Oeuvre -> Peinture / Sculpture / Photographie
 
 Nous avons choisi de prendre la stratégie SINGLE TABLE du fait que les insertions et requêtes de selection ne sont pas couteuses. Quelques attributs 
-des classes filles (Photographie, peinture, ..) sont rajoutés dans la classe mère (ils sont peu nombreux), quelques attributs sont spécifiques à une classe fille ce qui
-implique qu'ils ne seront pas renseignés pour certaines classes concrètes.
+des classes filles (Photographie, peinture, ..) sont rajoutés dans la classe mère (ils sont peu nombreux), quelques attributs sont specifiques à une classe fille ce qui
+implique qu'ils ne seront pas renseignes pour certaines classes concrètes.
 
-Nous n'avons pas choisi la méthode TABLE_PER_CLASS car cela impliquerait de devoir dupliquer les informations de la classe mère dans chacune de ses classes concrètes.
-Au niveau des requètes de sélection sur la classe mère cela les alourdit en créant des jointures pour accéder aux classes concrètes (ex : le conservateur veut connaitre
-toutes les oeuvres d'une collection ==> Comme on a persisté que les classes concrètes, on est obligé de faire une jointure entre toutes les classes concrètes).
+Nous n'avons pas choisi la methode TABLE_PER_CLASS car cela impliquerait de devoir dupliquer les informations de la classe mere dans chacune de ses classes concrètes.
+Au niveau des requètes de selection sur la classe mère cela les alourdit en creant des jointures pour acceder aux classes concrètes (ex : le conservateur veut connaitre
+toutes les oeuvres d'une collection ==> Comme on a persiste que les classes concretes, on est obligé de faire une jointure entre toutes les classes concrètes).
 
-Nous n'avons pas également choisi la méthode JOINED bien qu'elle proche du modèle objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
+Nous n'avons pas egalement choisi la methode JOINED bien qu'elle proche du modèle objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
 d'abord les information dans la classe mère puis dans la classe fille ) et les requètes.
 
 
 
 Personne -> Libraire / Conservateur / artiste
 
-Nous avons choisi la statégie TABLE PER CLASS afin de rentrer en base les classes concretes. En effet nous n'aurons pas besoin d'effectuer de requètes (jointures)
- pour récolter des informations sur un ensemble de personnes.
+Nous avons choisi la stategie TABLE PER CLASS afin de rentrer en base les classes concretes. En effet nous n'aurons pas besoin d'effectuer de requètes (jointures)
+ pour recolter des informations sur un ensemble de personnes.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -33,27 +33,29 @@ Une oeuvre peut avoir plusieurs reproductions, une reproduction ne reproduit qu'
 Collection et oeuvre :
 ==> n:m ManyToMany unidirectionnel
 Une oeuvre ne sait pas qu'elle est dans une collection, une collection connait toutes les oeuvres qu'elle contient.
-Une collection possède une ou plusieurs oeuvres, une oeuvre peut appartenir à plusieurs collections.
+Une collection possede une ou plusieurs oeuvres, une oeuvre peut appartenir a plusieurs collections.
 
 
 Oeuvre et artiste :
-=> 1:n unidirectionnel
-Une oeuvre sait par quel artiste elle a été faite, tandis qu'un artiste n'est pas conscient de ses oeuvres.
+=> 1:1 unidirectionnel
+Une oeuvre sait par quel artiste elle a ete faite, tandis qu'un artiste n'est pas conscient de ses oeuvres.
+Une oeuvre possede une cle etrangere sur Artiste (JoinColumn)
 Une oeuvre est faite par un artiste, un artiste peut faire plusieurs oeuvres.
-
+! : Il faut d'abord persister un Artiste dans la base avant de persister une oeuvre, sinon l'oeuvre reference une entite non presente en base.
+? : utiliser cascade.PERSIST ? n'a pas encore marche
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 DEPOT HIBERNATE :
 http://mvnrepository.com/artifact/org.hibernate/hibernate-core/4.1.7.Final
 
- ! : trouver des tuto à jour (Hibernate 4) car les précédents n'utilisent pas d'annotations mais plutôt des fichiers de mapping.
+ ! : trouver des tuto a jour (Hibernate 4) car les precedents n'utilisent pas d'annotations mais plutot des fichiers de mapping.
  
 
  
- Pour persister les données, on peut soit utiliser les EntityManager (avec persist()), soit utiliser une session (qui est spécifique à hibernate) et faire un save().
- Il peut être judicieux d'utiliser l'API JPA (standard JEE ==> augmente la portabilité du projet. ex : si on change de framework de persistence, on n'a pas de changement
- à faire) plutôt que celle d'hibernate (A nous de choisir).
+ Pour persister les donnees, on peut soit utiliser les EntityManager (avec persist()), soit utiliser une session (qui est specifique à hibernate) et faire un save().
+ Il peut etre judicieux d'utiliser l'API JPA (standard JEE ==> augmente la portabilite du projet. ex : si on change de framework de persistence, on n'a pas de changement
+ à faire) plutot que celle d'hibernate (A nous de choisir).
  
 ---------
  Citation de Stackoverflow :
@@ -65,5 +67,23 @@ au lieu de creer une classe HibernateUtil nous avons cree la classe JPAUtil
 
 Pour configurer Hibernate il est possible de le faire via le fichier hibernate.cfg.xml ou persistence.xml => nous avons choisi persistence.xml
 etant donn� que nous utilisons l'API de JPA
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilisation d'Enums pour Support / Realisation / Etat / Materiaux
+=> Faire constructeur avec param et par defaut, ajouter l'annotation @Enumerated(EnumType.STRING) au dessus des champs dans les classes 
+les utilisant
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------- 
+
+Tests DAO
+
+!: Attention, il faut set tous les attribut d'un objet pour qu'il soit persiste dans la base (sauf s'ils ont l'annotation @Column(nullable=true)).
+Passer par les setter ou le constructeur avec parametre.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
 

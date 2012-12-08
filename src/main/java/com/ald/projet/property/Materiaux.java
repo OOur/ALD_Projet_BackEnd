@@ -2,9 +2,7 @@ package com.ald.projet.property;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
 public enum Materiaux {
-
 	
 	PLATRE("platre et stuc"),
 	CARTON("Carton pate"),
@@ -18,5 +16,6 @@ public enum Materiaux {
 
 	private final String stringValue;
 	private Materiaux(final String s) { stringValue = s; }
+	private Materiaux(){ stringValue = ""; }
 	public String toString() { return stringValue; }
 }

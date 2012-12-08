@@ -2,7 +2,7 @@ package com.ald.projet.property;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
+
 public enum SupportReproduction {
 
 	CARTE("Carte postale"),
@@ -11,6 +11,7 @@ public enum SupportReproduction {
 
 	private final String stringValue;
 	private SupportReproduction(final String s) { stringValue = s; }
+	private SupportReproduction() { stringValue = ""; }
 	public String toString() { return stringValue; }
 
 }

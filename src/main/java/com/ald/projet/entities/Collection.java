@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +22,7 @@ public class Collection {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	@Embedded
+	@Enumerated(EnumType.STRING)
 	private EtatCollection etat;
 	
 	@ManyToMany
@@ -41,20 +43,20 @@ public class Collection {
 		this.oeuvres = oeuvres;
 	}
 
-	public void addOeuvre(){
-		
+	public void addOeuvre(Oeuvre oeuvre){
+		oeuvres.add(oeuvre);
 	}
 	
-	public void removeOeuvre(){
-		
+	public void removeOeuvre(Oeuvre oeuvre){
+		oeuvres.remove(oeuvre);
 	}
 	
-	public void addComment(){
-		
+	public void addComment(String comment){
+		this.commentaire = comment;
 	}
 	
-	public void addTag(){
-		
+	public void addTag(String tag){
+		this.tag = tag;
 	}
 	
 	public String toString(){

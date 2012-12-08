@@ -6,12 +6,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.slf4j.LoggerFactory;
+
+import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Peinture;
 
 public class PeintureDAO extends GenericDAO {
 
-
-
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(PeintureDAO.class);
+	
 	public void createPeinture(Peinture peinture) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -23,11 +26,30 @@ public class PeintureDAO extends GenericDAO {
 
 
 		} catch (Exception re) {
+			if (tx != null){
+				System.err.println("Something went wrong");
+				LOG.error("create failed", re);
+			}
+			tx.rollback();
+		}
+
+	}
+	
+	public void updatePeinture(Peinture peinture){
+		EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.merge(peinture);
+			tx.commit();
+
+
+		} catch (Exception re) {
 			if (tx != null)
 				System.err.println("Something went wrong");
 			tx.rollback();
 		}
-
 	}
 
 

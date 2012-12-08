@@ -21,9 +21,8 @@ public abstract class Personne {
 		
 	}
 	
-	public Personne(int id, String nom, String prenom) {
+	public Personne(String nom, String prenom) {
 		super();
-		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 	}

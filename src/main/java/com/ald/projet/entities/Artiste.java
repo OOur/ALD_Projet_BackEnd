@@ -11,8 +11,8 @@ public class Artiste extends Personne {
 		
 	}
 	
-	public Artiste(int id, String nom, String prenom, String bibliographie) {
-		super(id, nom, prenom);
+	public Artiste( String nom, String prenom, String bibliographie) {
+		super(nom, prenom);
 		this.bibliographie = bibliographie;
 	}
 

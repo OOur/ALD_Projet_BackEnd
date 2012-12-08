@@ -2,11 +2,19 @@ package com.ald.projet.property;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
-public class EtatCollection {
-	private boolean isExposed;
-	private boolean isInReserve;
-	private boolean isInRestoration;
+
+public enum EtatCollection {
+	
+	EXPOSED("Expose"),
+	RESERVE("En reserve"),
+	RESTORATION("En restoration");
+	
+
+	private final String stringValue;
+	private EtatCollection(final String s) { stringValue = s; }
+	private EtatCollection(){ stringValue = ""; }
+	public String toString() { return stringValue; }
+	
 	
 	
 }

@@ -5,19 +5,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.ald.projet.DAO.ArtisteDAO;
+import com.ald.projet.DAO.CollectionDAO;
+
 
 @Entity
 public class Conservateur extends AgentMusee{
 	
-	
+	private static CollectionDAO collectionDAO = new CollectionDAO();
 	
 	public Conservateur(){
 		
 	}
 	
-	public Conservateur(int id, String nom, String prenom, String login,
+	public Conservateur(String nom, String prenom, String login,
 			String password) {
-		super(id, nom, prenom, login, password);
+		super(nom, prenom, login, password);
 	}
 
 
@@ -26,6 +29,7 @@ public class Conservateur extends AgentMusee{
 	}
 	
 	public void addCaracteristiqueOeuvre(Oeuvre oeuvre, String carac){
+		
 	}
 	
 //	public void addInfoOeuvre(Oeuvre oeuvre, String info){
@@ -40,11 +44,16 @@ public class Conservateur extends AgentMusee{
 	public void addTagOeuvre(Oeuvre oeuvre, String tag){
 	}
 	
-	public void createCollection(){
+	public Collection createCollection(){
+		Collection collection = new Collection();
+		collectionDAO.createCollection(collection);
+		return collection;
 		
 	}
 	
 	public void addOeuvre(Oeuvre oeuvre, Collection collection){
+		collection.addOeuvre(oeuvre);
+		collectionDAO.updateCollection(collection);
 	}
 	
 	public void removeOeuvre(Oeuvre oeuvre, Collection collection){

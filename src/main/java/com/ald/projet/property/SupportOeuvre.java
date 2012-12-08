@@ -2,7 +2,7 @@ package com.ald.projet.property;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
+
 public enum SupportOeuvre {
 
 
@@ -13,6 +13,7 @@ public enum SupportOeuvre {
 	
 	private final String stringValue;
 	private SupportOeuvre(final String s) { stringValue = s; }
+	private SupportOeuvre() {stringValue = ""; }
 	public String toString() { return stringValue; }
 
 }

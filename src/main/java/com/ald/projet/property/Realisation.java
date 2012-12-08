@@ -2,7 +2,7 @@ package com.ald.projet.property;
 
 import javax.persistence.Embeddable;
 
-@Embeddable
+
 public enum Realisation {
 
 
@@ -13,5 +13,6 @@ public enum Realisation {
 
 	private final String stringValue;
 	private Realisation(final String s) { stringValue = s; }
+	private Realisation() {stringValue = ""; }
 	public String toString() { return stringValue; }
 }
