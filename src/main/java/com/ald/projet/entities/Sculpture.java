@@ -20,8 +20,13 @@ public class Sculpture extends Oeuvre{
 	}
 	
 	
-	public Sculpture(int id, Dimension dimension, Artiste artiste, Materiaux materiaux) {
-		super(id, dimension, artiste);
+	
+	
+	public Sculpture(Dimension dimension, boolean hasBeenReproduced,
+			Artiste artiste, Integer annee, String caracteristique,
+			String titre, String resume, String commentaire, String tag, Materiaux materiaux) {
+		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
+				resume, commentaire, tag);
 		this.materiaux = materiaux;
 	}
 

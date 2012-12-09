@@ -6,11 +6,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.slf4j.LoggerFactory;
+
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Oeuvre;
 
 public class CollectionDAO extends GenericDAO {
 
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(CollectionDAO.class);
+	
 	public void createCollection(Collection artiste) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -23,7 +27,7 @@ public class CollectionDAO extends GenericDAO {
 
 		} catch (Exception re) {
 			if (tx != null)
-				System.err.println("Something went wrong");
+				LOG.error("remove oeuvre failed", re);
 			tx.rollback();
 		}
 
@@ -41,7 +45,7 @@ public class CollectionDAO extends GenericDAO {
 
 		} catch (Exception re) {
 			if (tx != null)
-				System.err.println("Something went wrong");
+				LOG.error("remove oeuvre failed", re);
 			tx.rollback();
 		}
 	}
