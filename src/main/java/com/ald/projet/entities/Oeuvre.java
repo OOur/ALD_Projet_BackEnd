@@ -11,30 +11,36 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.ald.projet.property.Dimension;
 
 
-@Entity @Inheritance(strategy=InheritanceType.SINGLE_TABLE) 
+
+@Entity @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@XmlRootElement(name = "oeuvre")
 public abstract class Oeuvre {
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private int id;
-	@Embedded
+	@Embedded 
 	private Dimension dimension;
+	
+	@XmlElement(defaultValue = "true")
 	private boolean hasBeenReproduced;
 	
 	@OneToOne 
 	@JoinColumn(name="artiste_id", nullable=false)
 	private Artiste artiste;
 	
-	@Column(nullable=true)
+	@Column(nullable=true) 
 	private Integer annee;
-	@Column(nullable=true)
+	@Column(nullable=true) 
 	private String caracteristique;
-	@Column(nullable=true)
+	@Column(nullable=true) 
 	private String titre;
-	@Column(nullable=true)
+	@Column(nullable=true) 
 	private String resume;
 	@Column(nullable=true)
 	private String commentaire;
@@ -66,6 +72,7 @@ public abstract class Oeuvre {
 	}
 
 
+	@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -74,6 +81,7 @@ public abstract class Oeuvre {
 		this.id = id;
 	}
 
+	@XmlElement
 	public Dimension getDimension() {
 		return dimension;
 	}
@@ -81,6 +89,7 @@ public abstract class Oeuvre {
 	public void setDimension(Dimension dimension1) {
 		this.dimension = dimension1;
 	}
+	
 	
 	public boolean hasBeenReproduced() {
 		return hasBeenReproduced;
@@ -90,6 +99,7 @@ public abstract class Oeuvre {
 		this.hasBeenReproduced = hasBeenReproduced;
 	}
 
+	@XmlElement
 	public Artiste getArtiste() {
 		return artiste;
 	}
@@ -98,6 +108,7 @@ public abstract class Oeuvre {
 		this.artiste = artiste;
 	}
 
+	@XmlElement
 	public Integer getAnnee() {
 		return annee;
 	}
@@ -106,6 +117,7 @@ public abstract class Oeuvre {
 		this.annee = annee;
 	}
 
+	@XmlElement
 	public String getCaracteristique() {
 		return caracteristique;
 	}
@@ -114,6 +126,7 @@ public abstract class Oeuvre {
 		this.caracteristique = caracteristique;
 	}
 
+	@XmlElement
 	public String getTitre() {
 		return titre;
 	}
@@ -122,6 +135,7 @@ public abstract class Oeuvre {
 		this.titre = titre;
 	}
 
+	@XmlElement
 	public String getResume() {
 		return resume;
 	}
@@ -130,6 +144,7 @@ public abstract class Oeuvre {
 		this.resume = resume;
 	}
 
+	@XmlElement
 	public String getCommentaire() {
 		return commentaire;
 	}
@@ -138,6 +153,7 @@ public abstract class Oeuvre {
 		this.commentaire = commentaire;
 	}
 
+	@XmlElement
 	public String getTag() {
 		return tag;
 	}

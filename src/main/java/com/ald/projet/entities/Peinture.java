@@ -3,6 +3,7 @@ package com.ald.projet.entities;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.ald.projet.property.Dimension;
 import com.ald.projet.property.Realisation;
@@ -10,10 +11,11 @@ import com.ald.projet.property.SupportOeuvre;
 
 
 @Entity
+@XmlRootElement(name = "peinture")
 public class Peinture extends Oeuvre{
 	@Enumerated(EnumType.STRING)
 	private SupportOeuvre support;
-	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING) 
 	private Realisation realisation;
 
 	
@@ -21,6 +23,7 @@ public class Peinture extends Oeuvre{
 		
 	}
 	
+
 
 	
 	public Peinture(Dimension dimension, boolean hasBeenReproduced,
@@ -31,6 +34,8 @@ public class Peinture extends Oeuvre{
 		this.support = support;
 		this.realisation = realisation;
 	}
+
+	
 
 
 	public SupportOeuvre getSupport() {

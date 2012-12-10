@@ -59,7 +59,7 @@ public class CollectionDAO extends GenericDAO {
 		return collections;
 	}
 
-	public List<Oeuvre> findAllOeuvreOfCollection(Collection collection) {
+	public List<Oeuvre> findAllOeuvreOfCollection(int collectionId) {
 		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 		EntityManager em = createEntityManager();
 		//marche pas

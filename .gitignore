@@ -2,3 +2,5 @@ bin/
 .project
 .settings/
 .target/
+target/*
+target
