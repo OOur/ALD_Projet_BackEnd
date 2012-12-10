@@ -26,5 +26,4 @@ public class Artiste extends Personne {
 	
 	
 	
-	
 }
