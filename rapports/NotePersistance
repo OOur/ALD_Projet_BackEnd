@@ -55,7 +55,7 @@ http://mvnrepository.com/artifact/org.hibernate/hibernate-core/4.1.7.Final
  
  Pour persister les donnees, on peut soit utiliser les EntityManager (avec persist()), soit utiliser une session (qui est specifique Ã  hibernate) et faire un save().
  Il peut etre judicieux d'utiliser l'API JPA (standard JEE ==> augmente la portabilite du projet. ex : si on change de framework de persistence, on n'a pas de changement
- Ã  faire) plutot que celle d'hibernate (A nous de choisir).
+ a  faire) plutot que celle d'hibernate (A nous de choisir).
  
 ---------
  Citation de Stackoverflow :
@@ -68,6 +68,11 @@ au lieu de creer une classe HibernateUtil nous avons cree la classe JPAUtil
 Pour configurer Hibernate il est possible de le faire via le fichier hibernate.cfg.xml ou persistence.xml => nous avons choisi persistence.xml
 etant donné que nous utilisons l'API de JPA
 
+
+ ! : a la version de dependance hibernate-entitymanager, celle qu'on avait : Hibernate EntityManager 3.3.0.GA n'est pas une implementation de
+ JPA 2.0  (alors que dans notre persistence.xml on a :  http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0") et ne supporte 
+ donc pas javax.persistence.*
+ Nous avons donc pris la version : 3.5.1-Final et ca marche (plus d'erreur : the user must supply a jdbc connection).
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,6 +87,22 @@ Tests DAO
 
 !: Attention, il faut set tous les attribut d'un objet pour qu'il soit persiste dans la base (sauf s'ils ont l'annotation @Column(nullable=true)).
 Passer par les setter ou le constructeur avec parametre.
+
+Il etait prevu d'utiliser une base de donnees embarquee type h2db comme en TD mais en la mettant en place nous avons eu quelques problemes.
+Alors que les donnees sont correctement persistees en base avec MySQL, un grand nombre d'erreurs apparaissent avec H2DB. Il a donc ete
+decide d'utiliser MySQL pour les tests => Une base de donnees de test a ete cree pour l'occasion "museeTest", en plus de la base "musee".
+Pour cela un fichier persitence.xml existe dans src/main/resources et src/test/resources afin de configurer les 2 bases (elles sont similaires,
+seul le nom change).
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------- 
+LOGGERS
+
+dans le fichier log4j.properties, le niveau des log d'hibernate a ete reduit a ERROR pour ne pas polluer l'affichage :
+log4j.logger.org.hibernate = ERROR
+
+Nos LOGs faits dans nos classes ont le niveau ALL afin de ne rien rater.
+
+Ainsi lorsque l'on lance mvn clean install, on a les erreurs d'hibernate / nos logs / les requetes SQL grace à <property name="hibernate.show_sql" value="true" />
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------- 

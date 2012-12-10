@@ -1,5 +1,6 @@
 package com.ald.projet.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public abstract class Oeuvre {
 	private Dimension dimension;
 	private boolean hasBeenReproduced;
 	
-	@OneToOne /*(cascade=CascadeType.PERSIST)*/
+	@OneToOne 
 	@JoinColumn(name="artiste_id", nullable=false)
 	private Artiste artiste;
 	
@@ -46,13 +47,24 @@ public abstract class Oeuvre {
 		
 	}
 
-	public Oeuvre(int id, Dimension dimension, Artiste artiste) {
+	
+	
+	
+	public Oeuvre(Dimension dimension, boolean hasBeenReproduced,
+			Artiste artiste, Integer annee, String caracteristique,
+			String titre, String resume, String commentaire, String tag) {
 		super();
-		this.id = id;
 		this.dimension = dimension;
-		this.hasBeenReproduced = false;
+		this.hasBeenReproduced = hasBeenReproduced;
 		this.artiste = artiste;
+		this.annee = annee;
+		this.caracteristique = caracteristique;
+		this.titre = titre;
+		this.resume = resume;
+		this.commentaire = commentaire;
+		this.tag = tag;
 	}
+
 
 	public int getId() {
 		return id;

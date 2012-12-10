@@ -21,10 +21,13 @@ public class Peinture extends Oeuvre{
 		
 	}
 	
+
 	
-	
-	public Peinture(int id, Dimension dimension, Artiste artiste,SupportOeuvre support, Realisation realisation) {
-		super(id, dimension, artiste);
+	public Peinture(Dimension dimension, boolean hasBeenReproduced,
+			Artiste artiste, Integer annee, String caracteristique,
+			String titre, String resume, String commentaire, String tag, SupportOeuvre support, Realisation realisation) {
+		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
+				resume, commentaire, tag);
 		this.support = support;
 		this.realisation = realisation;
 	}

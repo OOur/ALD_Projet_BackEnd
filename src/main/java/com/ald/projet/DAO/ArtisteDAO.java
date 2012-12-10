@@ -6,11 +6,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.slf4j.LoggerFactory;
+
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Peinture;
 
 public class ArtisteDAO extends GenericDAO {
 	
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ArtisteDAO.class);
 	
 	public void createArtiste(Artiste artiste) {
 		EntityManager em = createEntityManager();
@@ -24,7 +27,7 @@ public class ArtisteDAO extends GenericDAO {
 
 		} catch (Exception re) {
 			if (tx != null)
-				System.err.println("Something went wrong");
+				LOG.error("remove oeuvre failed", re);
 			tx.rollback();
 		}
 
@@ -42,7 +45,7 @@ public class ArtisteDAO extends GenericDAO {
 
 		} catch (Exception re) {
 			if (tx != null)
-				System.err.println("Something went wrong");
+				LOG.error("remove oeuvre failed", re);
 			tx.rollback();
 		}
 	}

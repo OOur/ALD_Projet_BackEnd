@@ -79,17 +79,21 @@ public class Conservateur extends AgentMusee{
 	
 	
 	/* NE MARCHE PAS, A CORRIGER */
-	public String displayCollection(Collection collection){
+	public List<Oeuvre> displayCollection(Collection collection){
 		
-		List<Oeuvre> oeuvres = collectionDAO.findAllOeuvreOfCollection(collection);
-		String affiche ="";
-		int i = 0;
 		
-		for(Oeuvre o : oeuvres){
-			affiche += "Oeuvre "+i+" de type "+ o.getClass().getName();
-		}
 		
-		return affiche;
+	List<Oeuvre> oeuvres = collectionDAO.findAllOeuvreOfCollection(collection);
+//		String affiche ="";
+//		int i = 0;
+//		
+//		for(Oeuvre o : oeuvres){
+//			affiche += "Oeuvre "+i+" de type "+ o.getClass().getName();
+//		}
+//		
+//		return affiche;
+	
+	return oeuvres;
 	}
 	
 	public void addTagCollection(Collection collection, String tag){

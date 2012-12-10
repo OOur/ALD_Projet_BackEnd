@@ -58,11 +58,7 @@ public class DAOTest {
 			oeuvreDAO.createOeuvre(sculpture);
 			
 			
-			/* Ne doit pas marcher car objet non persite en base */
-			Peinture oeuvre = new Peinture();
-			oeuvre.setCommentaire("hehe");
-			oeuvreDAO.updateOeuvre(oeuvre);
-			
+		
 			/** Le conservateur cree une nouvelle collection et y ajoute des oeuvres 
 			 * Cree une collection vide en base et remplit la table intermediaire collection_oeuvre pour faire la liaison entre 
 			 * les oeuvres et leur collection
