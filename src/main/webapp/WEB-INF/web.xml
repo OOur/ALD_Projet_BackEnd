@@ -7,11 +7,15 @@ instance"
 ns/javaee http://java.sun.com/xml/ns/javaee/web-
 app_2_5.xsd">
 	<display-name>resteasy</display-name>
+	
+	<!-- initialise les composants de RESTeasy et scanne les classes annotées -->
 	<listener>
 		<listener-class>
 			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
 		</listener-class>
 	</listener>
+	
+	
 	<servlet>
 		<servlet-name>Resteasy</servlet-name>
 		<servlet-class>
@@ -19,6 +23,7 @@ app_2_5.xsd">
 		</servlet-class>
 	</servlet>
 
+	<!-- find and register our REST service automatically -->
 	<context-param>
 		<param-name>resteasy.scan</param-name>
 		<param-value>true</param-value>
@@ -30,6 +35,7 @@ app_2_5.xsd">
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- A rajouter comme l'url pattern de Resteasy servlet-mapping n'est pas /* -->
 	<context-param>
 		<param-name>resteasy.servlet.mapping.prefix</param-name>
 		<param-value>/rest</param-value>

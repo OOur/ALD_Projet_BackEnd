@@ -14,10 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.ald.projet.property.EtatCollection;
 
 @Entity
+@XmlRootElement(name = "collection")
 public class Collection {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,6 +66,7 @@ public class Collection {
 		return null;
 	}
 
+	@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -71,6 +75,7 @@ public class Collection {
 		this.id = id;
 	}
 
+	@XmlElement
 	public EtatCollection getEtat() {
 		return etat;
 	}
@@ -79,6 +84,7 @@ public class Collection {
 		this.etat = etat;
 	}
 
+	@XmlElement
 	public List<Oeuvre> getOeuvres() {
 		return oeuvres;
 	}
@@ -87,6 +93,7 @@ public class Collection {
 		this.oeuvres = oeuvres;
 	}
 
+	@XmlElement
 	public String getLibele() {
 		return libele;
 	}
@@ -95,6 +102,7 @@ public class Collection {
 		this.libele = libele;
 	}
 
+	@XmlElement
 	public String getCommentaire() {
 		return commentaire;
 	}
@@ -103,6 +111,7 @@ public class Collection {
 		this.commentaire = commentaire;
 	}
 
+	@XmlElement
 	public String getTag() {
 		return tag;
 	}

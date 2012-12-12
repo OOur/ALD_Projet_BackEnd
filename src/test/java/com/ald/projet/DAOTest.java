@@ -31,7 +31,7 @@ public class DAOTest {
 			
 			
 			Dimension dimension1 = new Dimension(10, 20, 40);
-			Artiste artiste = new Artiste("puma", "guerin", "Really good painter");
+			Artiste artiste = new Artiste("puma", "guerin", "really good art");
 			Conservateur conservateur = new Conservateur();
 			artisteDAO.createArtiste(artiste);
 			
@@ -68,7 +68,7 @@ public class DAOTest {
 			conservateur.addOeuvre(sculpture, collection);
 			
 			
-			//LOG.debug(conservateur.displayCollection(collection));
+			//LOG.debug(" " +conservateur.displayCollection(collection.getId()));
 			
 			
 			

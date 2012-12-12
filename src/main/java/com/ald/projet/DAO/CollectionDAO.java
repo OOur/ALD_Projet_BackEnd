@@ -62,8 +62,8 @@ public class CollectionDAO extends GenericDAO {
 	public List<Oeuvre> findAllOeuvreOfCollection(int collectionId) {
 		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 		EntityManager em = createEntityManager();
-		//marche pas
-		//oeuvres = em.createQuery("SELECT o FROM Oeuvre o LEFT JOIN o.Collection_oeuvre c WHERE c.collection_id =: id").setParameter("id", collection.getId()).getResultList();
+
+		oeuvres = em.createQuery("Select o from Oeuvre o inner join o.Collection_oeuvre c where c.collection_id =: id").setParameter("id", collectionId).getResultList();
 		return oeuvres;
 	}
 

@@ -14,7 +14,7 @@
 <!-- 	Pas besoin de les declarer, une option permet de les trouver automatiquement -->
 		<class>com.ald.projet.entities.Peinture </class>
 		<class>com.ald.projet.entities.Sculpture </class>
-		<class>com.ald.projet.entities.Collection </class>
+		<class>com.ald.projet.entities.Collection</class>
 		<class>com.ald.projet.entities.Artiste </class>
 		<class>com.ald.projet.entities.Conservateur </class>
 		<class>com.ald.projet.entities.Libraire </class>

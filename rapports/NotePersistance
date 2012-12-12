@@ -107,4 +107,8 @@ Ainsi lorsque l'on lance mvn clean install, on a les erreurs d'hibernate / nos l
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
+JAX RS : http://docs.jboss.org/resteasy/docs/1.0.2.GA/userguide/html_single/index.html
+Fournit une API Java pour les web services REST, en utilisant le protocole HTTP. Resteasy est une implémentation de JAX-RS portable, qui peut 
+tourner dans n'importe quel conteneur de servlet. 
 
+Resteasy permet de (de)serialiser les classes annotées avec JAXB
