@@ -30,7 +30,7 @@ public abstract class Oeuvre {
 	@XmlElement(defaultValue = "true")
 	private boolean hasBeenReproduced;
 	
-	@OneToOne 
+	@OneToOne /*(cascade={CascadeType.PERSIST, CascadeType.REMOVE})*/
 	@JoinColumn(name="artiste_id", nullable=false)
 	private Artiste artiste;
 	
@@ -162,8 +162,12 @@ public abstract class Oeuvre {
 		this.tag = tag;
 	}
 
+	public String toString(){
+		String s = "L'oeuvre "+ this.id+ " est de type "+this.getClass().getName()+" , elle a ete faite en "+ this.getAnnee()+" par l'artiste "+
+		this.getArtiste().getNom();	
+		return s;
 		
-	
+	}
 	
 	
 }

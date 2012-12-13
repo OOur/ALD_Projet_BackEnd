@@ -19,29 +19,30 @@ public class MainClass {
 	private static CollectionDAO collectionDAO = new CollectionDAO();
 	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
-	
+
 	public static void main(String[] args) {
-		
+
 		Dimension dimension1 = new Dimension(10, 20, 40);
-			
-			Artiste artiste = new Artiste("puma", "guerin", "prodTest");
-			artisteDAO.createArtiste(artiste);
 
-			Peinture peinture = new Peinture();
-			peinture.setTitre("PRODTEST");
-			peinture.setHasBeenReproduced(false);
-			peinture.setDimension(dimension1);
-			peinture.setArtiste(artiste);
-			peinture.setRealisation(Realisation.ACRYLIQUE);
-			peinture.setSupport(SupportOeuvre.PAPIER);
-			oeuvreDAO.createOeuvre(peinture);
-			
-			Conservateur conser = new Conservateur();
-			Collection c = conser.createCollection();
-			Collection c2 = conser.createCollection();
+		Artiste artiste = new Artiste("puma", "guerin", "prodTest");
+		artisteDAO.createArtiste(artiste);
 
-		}
+		Peinture peinture = new Peinture();
+		peinture.setTitre("PRODTEST");
+		peinture.setHasBeenReproduced(false);
+		peinture.setDimension(dimension1);
+		peinture.setArtiste(artiste);
+		peinture.setRealisation(Realisation.ACRYLIQUE);
+		peinture.setSupport(SupportOeuvre.PAPIER);
+		oeuvreDAO.createOeuvre(peinture);
+
+		Conservateur conser = new Conservateur();
+		Collection c = conser.createCollection();
+		conser.addOeuvre(peinture, c);
+		Collection c2 = conser.createCollection();
 
 	}
+
+}
 
 

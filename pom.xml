@@ -106,11 +106,11 @@
 
 		<!-- c3p0 -->
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>3.6.3.Final</version>
 		</dependency>
-
+		
 
 	</dependencies>
 

@@ -59,11 +59,13 @@ public class CollectionDAO extends GenericDAO {
 		return collections;
 	}
 
-	public List<Oeuvre> findAllOeuvreOfCollection(int collectionId) {
+	
+	public List<Oeuvre> getOeuvresOfCollection(int collectionId) {
 		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 		EntityManager em = createEntityManager();
-
-		oeuvres = em.createQuery("Select o from Oeuvre o inner join o.Collection_oeuvre c where c.collection_id =: id").setParameter("id", collectionId).getResultList();
+		Collection c = em.getReference(Collection.class,collectionId);
+		oeuvres = c.getOeuvres();
+		
 		return oeuvres;
 	}
 

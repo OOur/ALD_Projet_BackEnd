@@ -112,3 +112,20 @@ Fournit une API Java pour les web services REST, en utilisant le protocole HTTP.
 tourner dans n'importe quel conteneur de servlet. 
 
 Resteasy permet de (de)serialiser les classes annotées avec JAXB
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+C3p0
+
+Connection pool is good for performance, as it prevents Java application create a connection each time when interact with database 
+and minimizes the cost of opening and closing connections.
+
+Hibernate comes with internal connection pool, but not suitable for production use. In this tutorial, we show you how to integrate 
+third party connection pool – C3P0, with Hibernate.
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-c3p0</artifactId>
+		<version>3.6.3.Final</version>
+	</dependency>
+

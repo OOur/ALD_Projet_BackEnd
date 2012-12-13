@@ -106,12 +106,11 @@ public class Conservateur extends AgentMusee{
 		collectionDAO.updateCollection(collection);
 	}
 
-//	Ne marche pas encore car requete non operationnelle
 	@GET
 	@Path("/contentOfCollection/{id}")
 	@Produces("application/xml")
 	public List<Oeuvre> displayCollection(@PathParam("id") int CollectionId){
-		List<Oeuvre> oeuvres = collectionDAO.findAllOeuvreOfCollection(CollectionId);
+		List<Oeuvre> oeuvres = collectionDAO.getOeuvresOfCollection(CollectionId);
 		return oeuvres;
 	}
 
@@ -125,11 +124,11 @@ public class Conservateur extends AgentMusee{
 
 
 	@GET
-	@Path("/getCollection/{id}")
+	@Path("/getOeuvre/{id}")
 	@Produces("application/xml")
 	public Oeuvre getCollection(@PathParam("id")int id){
-		Oeuvre collection = oeuvreDAO.findById(id);
-		return collection;
+		Oeuvre oeuvre = oeuvreDAO.findById(id);
+		return oeuvre;
 
 
 	}
