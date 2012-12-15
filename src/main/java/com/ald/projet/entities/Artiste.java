@@ -1,11 +1,18 @@
 package com.ald.projet.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Artiste extends Personne {
 	
 	private String bibliographie;
+	
+	@OneToMany(mappedBy="artiste")
+	private List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 	
 	public Artiste(){
 		
@@ -23,6 +30,17 @@ public class Artiste extends Personne {
 	public void setBibliographie(String bibliographie) {
 		this.bibliographie = bibliographie;
 	}
+
+	public List<Oeuvre> getOeuvres() {
+		return oeuvres;
+	}
+
+
+	public void setOeuvres(List<Oeuvre> oeuvres) {
+		this.oeuvres = oeuvres;
+	}
+	
+	
 	
 	
 	

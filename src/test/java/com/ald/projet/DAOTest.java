@@ -3,7 +3,7 @@ package com.ald.projet;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -28,18 +28,13 @@ public class DAOTest {
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
 	private static CollectionDAO collectionDAO = new CollectionDAO();
 
-	private Dimension d;
-	private Artiste artiste;
-	private Conservateur conservateur;
+	private static Dimension d;
+	private static Conservateur conservateur;
 
 
-	@Before
-	public void setUp() throws Exception {
-
+	@BeforeClass
+	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
-		artiste = new Artiste("puma", "guerin", "really good art");
-		artisteDAO.createArtiste(artiste);
-		//en attendant de le faire en cascade
 		conservateur = new Conservateur();
 	}
 
@@ -47,7 +42,10 @@ public class DAOTest {
 
 	@Test
 	public final void insertOeuvre(){
+
 		try{
+
+			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
 			Peinture p = new Peinture(d, false, artiste, 2010, "", "La joconde", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 			oeuvreDAO.createOeuvre(p);
 			Assert.assertNotSame(oeuvreDAO.findById(p.getId()),null);
@@ -61,12 +59,13 @@ public class DAOTest {
 	@Test
 	public final void updateOeuvre(){
 		try{
-
-			Peinture p2 = new Peinture(d, false, artiste, 2012, "", "Nuit d'été", "bla", "", "", SupportOeuvre.CARTON, Realisation.ACRYLIQUE);
-			oeuvreDAO.createOeuvre(p2);
-			p2.setAnnee(2010);
-			oeuvreDAO.updateOeuvre(p2);
-			Assert.assertTrue(oeuvreDAO.findById(p2.getId()).getAnnee()== 2010);
+			Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
+			
+			Peinture p = new Peinture(d, false, artiste, 2010, "", "sourire", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			oeuvreDAO.createOeuvre(p);
+			p.setAnnee(2010);
+			oeuvreDAO.updateOeuvre(p);
+			Assert.assertTrue(oeuvreDAO.findById(p.getId()).getAnnee()== 2010);
 
 		}catch(RuntimeException re){
 			LOG.error("update failed", re);
@@ -77,10 +76,12 @@ public class DAOTest {
 	@Test
 	public final void createCollection(){
 		try{
-
+			Artiste artiste = new Artiste("vincent", "guerin", "bon sculpteur");
+			
 			Sculpture sculpture = new Sculpture();
 			sculpture.setAnnee(2015);
 			sculpture.setDimension(d);
+			sculpture.setTitre("le penseur");
 			sculpture.setArtiste(artiste);
 			sculpture.setHasBeenReproduced(false);
 			sculpture.setMateriaux(Materiaux.ARGILE);

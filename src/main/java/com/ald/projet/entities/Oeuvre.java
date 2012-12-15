@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,8 +30,8 @@ public abstract class Oeuvre {
 	@XmlElement(defaultValue = "true")
 	private boolean hasBeenReproduced;
 	
-	@OneToOne /*(cascade={CascadeType.PERSIST, CascadeType.REMOVE})*/
-	@JoinColumn(name="artiste_id", nullable=false)
+	@ManyToOne (cascade=CascadeType.PERSIST)
+	@JoinColumn(name="artiste_id")
 	private Artiste artiste;
 	
 	@Column(nullable=true) 

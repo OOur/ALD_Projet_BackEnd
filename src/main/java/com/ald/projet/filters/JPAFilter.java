@@ -20,6 +20,9 @@ public class JPAFilter implements Filter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(JPAFilter.class);
 	private static EntityManagerFactory emf = null;
+
+
+
 	public void doFilter(ServletRequest request,
 			ServletResponse response, FilterChain chain)
 					throws IOException, ServletException {
@@ -41,20 +44,15 @@ public class JPAFilter implements Filter {
 	}
 
 
-
-
-
 	public void destroy() {
-		destroy();
-		emf = Persistence.createEntityManagerFactory("Musee");
-				
-
+		if (emf != null)
+			emf.close();	
 	}
 
 
 	public void init(FilterConfig arg0) throws ServletException {
-		if (emf != null)
-			emf.close();
+		destroy();
+		emf = Persistence.createEntityManagerFactory("Musee");
 
 	}
 

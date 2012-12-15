@@ -121,11 +121,95 @@ C3p0
 Connection pool is good for performance, as it prevents Java application create a connection each time when interact with database 
 and minimizes the cost of opening and closing connections.
 
-Hibernate comes with internal connection pool, but not suitable for production use. In this tutorial, we show you how to integrate 
+Hibernate comes with internal connection pool, but not suitable for production use. Here is how to integrate 
 third party connection pool – C3P0, with Hibernate.
 	<dependency>
 		<groupId>org.hibernate</groupId>
 		<artifactId>hibernate-c3p0</artifactId>
 		<version>3.6.3.Final</version>
 	</dependency>
+	
+
+Quand l'application est deployee, l'entityManagerFactory est cree (un seul pour l'application entiere), et ferme quand l'application est "detruite".
+Chaque thread qui appelle JPAUtil pour avoir un nouvel entityManager en a un nouveau qui dure le temps de la requete HTTP :
+Un entityManager par requete HTTP. Quand la requete est terminee, l'entityManager est ferme autimatiquement. 
+
+C'est la qu'intervient JNDI, une datasource.
+Autoriser les pool de connexion permet de reutiliser les connexions à notre base de données plutôt que d'avoir à en recréer une a chaque fois.
+Efficace en terme d'allocation memoire et pour la vitesse d'execution des requetes sur la base (a chaque fois qu'on a besoin de faire une operation
+sur un objet en base : create/update/delete, on a besoin d'un entity manager).
+Nous utilisons c3p0 pour le pool de connexion et JNDI pour l'annuaire de ressources.
+==> Lorsque l'entityManager appelle close(), il est retourné au pool pour être réutilisé.
+
+
+Datasource JNDI (package javax.sql) :
+voir http://java.developpez.com/faq/jdbc/?page=dataSources#poolconnexion
+
+voir dans web.xml :
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/MySQL</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>				
+		<res-sharing-scope>Shareable</res-sharing-scope>
+	</resource-ref>
+
+Il s'agit d'une interface représentant une source de données. C'est une simple fabrique de connexion vers une base de données physique.
+Une datasource est appelée via JNDI.
+Dans Jetty-xml on informe Jetty qu'on va utiliser un annuaire JNDI :
+	<New class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<Set name="driverClass">com.mysql.jdbc.Driver</Set>
+		<Set name="User">root</Set>
+		<Set name="Password"></Set>
+		<Set name="jdbcUrl">jdbc:mysql://localhost:3306/musee</Set>
+	</New>
+==> on lui spécifie l'adresse de notre base de donnée et l'utilisateur + driver MySQL
+
+
+
+FILTER (JPAFilter):
+Chaque requete HTTP est interceptée. C'est comme ça qu'on voit créer un entityManager pour chaque requete HTTP. C'est dans la fonction
+"init" de JPAFilter qu'un entityManagerFactory est cree pour l'unite de persistence "Musee" (comme defini dans le persistence.xml).
+
+Ensuite la methode doFilter retourne des entityManagers.
+
+
+==>Probleme :
+Alors qu'avant (quand on appelait notre DAO.createObject qui lui meme faisait appel a createEntityManager) un entityManagerFactory + un entityManager
+etaient crees a chaque operation sur nos objets, on n'avait pas de probleme (meme si ce n'etait pas du tout propre de faire comme ça) avec notre
+base de prod et base de test.
+Maintenant c'est dans la classe JPAFilter qu'on distribue des entityManagers pour traiter une requete HTTP => Tout va bien pour notre base de prod,
+avec un client on peut envoyer une requete HTPP POST/GET et elle est interceptee.
+
+Pour la base de test, on n'utilise pas de client et du coup on ne passe pas dans la classe JPAFilter et aucun entityManager n'est cree.
+Quand on appelle dans les tests DAO.createObjet, l'entityManager en vide et une exception en resulte.
+Il faudrait 2 traitements a differencier dans GenericDAO : pour la base de prod on a besoin de JPAUtil, pour la base de tests on a juste besoin
+d'un EntityManagerFactory et quelques entityManagers ==> On n'aura pas plusieurs utilisateurs sur la base de tests.
+
+
+JPAUtil : ThreadLocal :
+Stocke des donnees dans le thread courant afin de les recuperer plus tard dans une autre fonction par exemple.
+ex :
+		public void doFilter(ServletRequest request,
+			ServletResponse response, FilterChain chain)
+					throws IOException, ServletException {
+	
+			..
+			JPAUtil.ENTITY_MANAGERS.set(em);
+			..
+			JPAUtil.ENTITY_MANAGERS.remove();
+			..
+
+
+
+
+	
+
+
+
+
+
+
+
+
 
