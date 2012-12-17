@@ -16,6 +16,28 @@ public class ArtisteDAO extends GenericDAO {
 	
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ArtisteDAO.class);
 	
+	public void testT(Artiste artiste) {
+		EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			Artiste a =  em.find(Artiste.class,artiste.getId());
+			LOG.info("info : "+ a.getOeuvres().get(0).getTitre());
+			tx.commit();
+
+
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("test artiste failed", re);
+			tx.rollback();
+			
+		}
+
+	}
+
+	
+	
 	public void createArtiste(Artiste artiste) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -68,8 +90,22 @@ public class ArtisteDAO extends GenericDAO {
 		return artiste;
 	}
 
+
 	public void deleteArtiste(Artiste persistentInstance){
 		EntityManager em = createEntityManager();
-		em.remove(persistentInstance);
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			 em.remove(em.merge(persistentInstance));
+			tx.commit();
+
+
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("delete artiste failed", re);
+			tx.rollback();
+		}
+		
 	}
 }

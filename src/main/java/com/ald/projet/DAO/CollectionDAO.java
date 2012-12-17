@@ -27,7 +27,7 @@ public class CollectionDAO extends GenericDAO {
 
 		} catch (Exception re) {
 			if (tx != null)
-				LOG.error("remove oeuvre failed", re);
+				LOG.error("create collection failed", re);
 			tx.rollback();
 		}
 
@@ -45,7 +45,7 @@ public class CollectionDAO extends GenericDAO {
 
 		} catch (Exception re) {
 			if (tx != null)
-				LOG.error("remove oeuvre failed", re);
+				LOG.error("update collection failed", re);
 			tx.rollback();
 		}
 	}
@@ -63,7 +63,9 @@ public class CollectionDAO extends GenericDAO {
 	public List<Oeuvre> getOeuvresOfCollection(int collectionId) {
 		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 		EntityManager em = createEntityManager();
+		//different de find, ne consulte pas la base de donnees => retourne un proxy.
 		Collection c = em.getReference(Collection.class,collectionId);
+		//comme on tente d'acceder aux oeuvres de la collection => interroge la base de donnes
 		oeuvres = c.getOeuvres();
 		
 		return oeuvres;
@@ -78,6 +80,18 @@ public class CollectionDAO extends GenericDAO {
 
 	public void deleteCollection(Collection persistentInstance){
 		EntityManager em = createEntityManager();
-		em.remove(persistentInstance);
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.remove(persistentInstance);
+			tx.commit();
+
+
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("delete collection failed", re);
+			tx.rollback();
+		}
 	}
 }

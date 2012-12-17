@@ -8,13 +8,39 @@ import javax.persistence.EntityTransaction;
 
 import org.slf4j.LoggerFactory;
 
+import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Oeuvre;
 
 public class OeuvreDAO extends GenericDAO {
 
+
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OeuvreDAO.class);
+
 	
-private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OeuvreDAO.class);
+	
+	
+	public void testT(Oeuvre o) {
+		EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			Oeuvre oeuvre =  em.find(Oeuvre.class,o.getId());
+			LOG.info("info : "+ oeuvre.getArtiste().getNom());
+			LOG.info("info : "+ oeuvre.getArtiste().getPrenom());
+			tx.commit();
+
+
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("test artiste failed", re);
+			tx.rollback();
+			
+		}
+
+	}
+	
 	
 	public void createOeuvre(Oeuvre oeuvre) {
 		EntityManager em = createEntityManager();
@@ -34,7 +60,7 @@ private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OeuvreDAO.cl
 		}
 
 	}
-	
+
 	public void updateOeuvre(Oeuvre oeuvre){
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -51,7 +77,7 @@ private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OeuvreDAO.cl
 			tx.rollback();
 		}
 	}
-	
+
 	public void removeOeuvre(Oeuvre oeuvre){
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -88,6 +114,18 @@ private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OeuvreDAO.cl
 
 	public void deleteOeuvre(Oeuvre persistentInstance){
 		EntityManager em = createEntityManager();
-		em.remove(persistentInstance);
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.remove(persistentInstance);
+			tx.commit();
+
+
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("delete oeuvre failed", re);
+			tx.rollback();
+		}
 	}
 }

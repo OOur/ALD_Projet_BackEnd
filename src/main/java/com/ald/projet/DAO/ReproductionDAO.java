@@ -12,9 +12,9 @@ import com.ald.projet.entities.Reproduction;
 
 public class ReproductionDAO extends GenericDAO {
 
-	
-private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ReproductionDAO.class);
-	
+
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ReproductionDAO.class);
+
 	public void createReproduction(Reproduction reproduction) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -33,7 +33,7 @@ private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Reproduction
 		}
 
 	}
-	
+
 	public void updateReproduction(Reproduction reproduction){
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -50,7 +50,7 @@ private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Reproduction
 			tx.rollback();
 		}
 	}
-	
+
 	public void removeReproduction(Reproduction reproduction){
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -87,6 +87,18 @@ private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Reproduction
 
 	public void deleteReproduction(Reproduction persistentInstance){
 		EntityManager em = createEntityManager();
-		em.remove(persistentInstance);
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.remove(persistentInstance);
+			tx.commit();
+
+
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("delete reproduction failed", re);
+			tx.rollback();
+		}
 	}
 }

@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public abstract class Oeuvre {
 	@XmlElement(defaultValue = "true")
 	private boolean hasBeenReproduced;
 	
-	@ManyToOne (cascade=CascadeType.PERSIST)
+	@ManyToOne (cascade=CascadeType.PERSIST, fetch=FetchType.LAZY)
 	@JoinColumn(name="artiste_id")
 	private Artiste artiste;
 	
@@ -63,6 +64,7 @@ public abstract class Oeuvre {
 		this.dimension = dimension;
 		this.hasBeenReproduced = hasBeenReproduced;
 		this.artiste = artiste;
+		this.artiste.addOeuvre(this);
 		this.annee = annee;
 		this.caracteristique = caracteristique;
 		this.titre = titre;
@@ -106,6 +108,7 @@ public abstract class Oeuvre {
 
 	public void setArtiste(Artiste artiste) {
 		this.artiste = artiste;
+		artiste.addOeuvre(this);
 	}
 
 	@XmlElement

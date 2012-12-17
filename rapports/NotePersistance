@@ -10,8 +10,8 @@ Nous n'avons pas choisi la methode TABLE_PER_CLASS car cela impliquerait de devo
 Au niveau des requètes de selection sur la classe mère cela les alourdit en creant des jointures pour acceder aux classes concrètes (ex : le conservateur veut connaitre
 toutes les oeuvres d'une collection ==> Comme on a persiste que les classes concretes, on est obligé de faire une jointure entre toutes les classes concrètes).
 
-Nous n'avons pas egalement choisi la methode JOINED bien qu'elle proche du modèle objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
-d'abord les information dans la classe mère puis dans la classe fille ) et les requètes.
+Nous n'avons pas egalement choisi la methode JOINED bien qu'elle proche du modele objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
+d'abord les information dans la classe mere puis dans la classe fille ) et les requètes.
 
 
 
@@ -37,12 +37,24 @@ Une collection possede une ou plusieurs oeuvres, une oeuvre peut appartenir a pl
 
 
 Oeuvre et artiste :
-=> 1:1 unidirectionnel
-Une oeuvre sait par quel artiste elle a ete faite, tandis qu'un artiste n'est pas conscient de ses oeuvres.
+=> 1:n bidirectionnel
+Une oeuvre sait par quel artiste elle a ete faite, un artiste a conscience de ses oeuvre (liste d'oeuvres).
 Une oeuvre possede une cle etrangere sur Artiste (JoinColumn)
 Une oeuvre est faite par un artiste, un artiste peut faire plusieurs oeuvres.
-! : Il faut d'abord persister un Artiste dans la base avant de persister une oeuvre, sinon l'oeuvre reference une entite non presente en base.
-? : utiliser cascade.PERSIST ? n'a pas encore marche
+
+
+L'ajout d'une oeuvre ajoute en cascade l'artiste qui l'a cree.
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Methode de r�cup�ration des entites :
+
+
+
+
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 

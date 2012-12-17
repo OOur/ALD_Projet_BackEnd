@@ -1,5 +1,17 @@
 package com.ald.projet.main;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.DAO.ArtisteDAO;
@@ -22,24 +34,32 @@ public class MainClass {
 
 	public static void main(String[] args) {
 
-		Dimension dimension1 = new Dimension(10, 20, 40);
 
-		Artiste artiste = new Artiste("puma", "guerin", "prodTest");
-		artisteDAO.createArtiste(artiste);
 
-		Peinture peinture = new Peinture();
-		peinture.setTitre("PRODTEST");
-		peinture.setHasBeenReproduced(false);
-		peinture.setDimension(dimension1);
-		peinture.setArtiste(artiste);
-		peinture.setRealisation(Realisation.ACRYLIQUE);
-		peinture.setSupport(SupportOeuvre.PAPIER);
-		oeuvreDAO.createOeuvre(peinture);
+		Dimension dimension = new Dimension(10, 20, 40);
 
-		Conservateur conser = new Conservateur();
-		Collection c = conser.createCollection();
-		conser.addOeuvre(peinture, c);
-		Collection c2 = conser.createCollection();
+		Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
+		Peinture p = new Peinture(dimension, false, artiste, 2010, "", "LOL", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+//		artiste.addOeuvre(p);
+//		artisteDAO.createArtiste(artiste);
+		
+		oeuvreDAO.createOeuvre(p);
+		oeuvreDAO.testT(p);
+
+		//artisteDAO.testT(artiste);
+		
+//		Artiste artiste2 = new Artiste("mame birame", "sene", "bon peintre");
+//		Peinture p2 = new Peinture(dimension, false, artiste2, 2010, "", "La joconde", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+//		oeuvreDAO.createOeuvre(p2);
+//		oeuvreDAO.testT(p2);
+
+//		Conservateur conser = new Conservateur();
+//		Collection c = conser.createCollection();
+//		conser.addOeuvre(p, c);
+//		Collection c2 = conser.createCollection();
+		
+			
+		
 
 	}
 
