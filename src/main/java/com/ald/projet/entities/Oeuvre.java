@@ -1,7 +1,11 @@
 package com.ald.projet.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.ald.projet.property.Dimension;
 
@@ -25,41 +30,47 @@ public abstract class Oeuvre {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	private int id;
+
 	@Embedded 
 	private Dimension dimension;
-	
-	@XmlElement(defaultValue = "true")
-	private boolean hasBeenReproduced;
-	
+
+	@XmlElement(defaultValue = "false")
+	private boolean hasBeenReproduced = false;
+
 	@ManyToOne (cascade=CascadeType.PERSIST, fetch=FetchType.LAZY)
 	@JoinColumn(name="artiste_id")
+	//@XmlIDREF
 	private Artiste artiste;
-	
+
 	@Column(nullable=true) 
 	private Integer annee;
+
 	@Column(nullable=true) 
 	private String caracteristique;
+
 	@Column(nullable=true) 
 	private String titre;
+
 	@Column(nullable=true) 
 	private String resume;
+
+	@ElementCollection
 	@Column(nullable=true)
-	private String commentaire;
+	private List<String> commentaire = new ArrayList<String>();
+
 	@Column(nullable=true)
 	private String tag;
-	
-	
-	
+
+
+
 	public Oeuvre(){
-		
+
 	}
 
-	
-	
-	
+
 	public Oeuvre(Dimension dimension, boolean hasBeenReproduced,
 			Artiste artiste, Integer annee, String caracteristique,
-			String titre, String resume, String commentaire, String tag) {
+			String titre, String resume, List<String> commentaire, String tag) {
 		super();
 		this.dimension = dimension;
 		this.hasBeenReproduced = hasBeenReproduced;
@@ -91,8 +102,8 @@ public abstract class Oeuvre {
 	public void setDimension(Dimension dimension1) {
 		this.dimension = dimension1;
 	}
-	
-	
+
+
 	public boolean hasBeenReproduced() {
 		return hasBeenReproduced;
 	}
@@ -101,7 +112,8 @@ public abstract class Oeuvre {
 		this.hasBeenReproduced = hasBeenReproduced;
 	}
 
-	@XmlElement
+	@XmlTransient
+	//@XmlInverseReference(mappedBy="oeuvres")
 	public Artiste getArtiste() {
 		return artiste;
 	}
@@ -148,12 +160,17 @@ public abstract class Oeuvre {
 	}
 
 	@XmlElement
-	public String getCommentaire() {
+	public List<String> getCommentaire() {
 		return commentaire;
 	}
 
-	public void setCommentaire(String commentaire) {
+	public void setCommentaire(List<String> commentaire) {
 		this.commentaire = commentaire;
+	}
+
+
+	public void addCommentaire(String commentaire){
+		this.commentaire.add(commentaire);
 	}
 
 	@XmlElement
@@ -167,10 +184,10 @@ public abstract class Oeuvre {
 
 	public String toString(){
 		String s = "L'oeuvre "+ this.id+ " est de type "+this.getClass().getName()+" , elle a ete faite en "+ this.getAnnee()+" par l'artiste "+
-		this.getArtiste().getNom();	
+				this.getArtiste().getNom();	
 		return s;
-		
+
 	}
-	
-	
+
+
 }

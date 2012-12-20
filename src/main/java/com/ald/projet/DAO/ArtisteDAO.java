@@ -1,6 +1,7 @@
 package com.ald.projet.DAO;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,13 +10,12 @@ import javax.persistence.EntityTransaction;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.entities.Artiste;
-import com.ald.projet.entities.Peinture;
-import com.ald.projet.filters.JPAUtil;
+import com.ald.projet.entities.Oeuvre;
 
 public class ArtisteDAO extends GenericDAO {
-	
+
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ArtisteDAO.class);
-	
+
 	public void testT(Artiste artiste) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -23,7 +23,11 @@ public class ArtisteDAO extends GenericDAO {
 			tx = em.getTransaction();
 			tx.begin();
 			Artiste a =  em.find(Artiste.class,artiste.getId());
-			LOG.info("info : "+ a.getOeuvres().get(0).getTitre());
+
+
+			for (Oeuvre o : a.getOeuvres()) {
+				LOG.info("info : "+ o.getTitre());
+			}
 			tx.commit();
 
 
@@ -31,13 +35,13 @@ public class ArtisteDAO extends GenericDAO {
 			if (tx != null)
 				LOG.error("test artiste failed", re);
 			tx.rollback();
-			
+
 		}
 
 	}
 
-	
-	
+
+
 	public void createArtiste(Artiste artiste) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -53,7 +57,7 @@ public class ArtisteDAO extends GenericDAO {
 				LOG.error("create artiste failed", re);
 			LOG.error("create artiste failed", re);
 			tx.rollback();
-			
+
 		}
 
 	}
@@ -97,7 +101,7 @@ public class ArtisteDAO extends GenericDAO {
 		try {
 			tx = em.getTransaction();
 			tx.begin();
-			 em.remove(em.merge(persistentInstance));
+			em.remove(em.merge(persistentInstance));
 			tx.commit();
 
 
@@ -106,6 +110,6 @@ public class ArtisteDAO extends GenericDAO {
 				LOG.error("delete artiste failed", re);
 			tx.rollback();
 		}
-		
+
 	}
 }

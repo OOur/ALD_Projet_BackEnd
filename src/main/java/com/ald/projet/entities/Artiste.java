@@ -1,20 +1,24 @@
 package com.ald.projet.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement(name = "artiste")
 public class Artiste extends Personne {
 	
 	private String bibliographie;
 	
 	@OneToMany(mappedBy="artiste", orphanRemoval=true, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
+	private Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
 	
 	public Artiste(){
 		
@@ -25,6 +29,7 @@ public class Artiste extends Personne {
 		this.bibliographie = bibliographie;
 	}
 
+	@XmlElement
 	public String getBibliographie() {
 		return bibliographie;
 	}
@@ -33,12 +38,13 @@ public class Artiste extends Personne {
 		this.bibliographie = bibliographie;
 	}
 
-	public List<Oeuvre> getOeuvres() {
+	@XmlElement
+	public Set<Oeuvre> getOeuvres() {
 		return oeuvres;
 	}
 
 
-	public void setOeuvres(List<Oeuvre> oeuvres) {
+	public void setOeuvres(Set<Oeuvre> oeuvres) {
 		this.oeuvres = oeuvres;
 	}
 	

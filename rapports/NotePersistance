@@ -2,13 +2,13 @@ Choix de la stategie de Mapping Objet relationnel:
 
 Oeuvre -> Peinture / Sculpture / Photographie
 
-Nous avons choisi de prendre la stratégie SINGLE TABLE du fait que les insertions et requêtes de selection ne sont pas couteuses. Quelques attributs 
-des classes filles (Photographie, peinture, ..) sont rajoutés dans la classe mère (ils sont peu nombreux), quelques attributs sont specifiques à une classe fille ce qui
+Nous avons choisi de prendre la strategie SINGLE TABLE du fait que les insertions et requetes de selection ne sont pas couteuses. Quelques attributs 
+des classes filles (Photographie, peinture, ..) sont rajoutes dans la classe mere (ils sont peu nombreux), quelques attributs sont specifiques à une classe fille ce qui
 implique qu'ils ne seront pas renseignes pour certaines classes concrètes.
 
 Nous n'avons pas choisi la methode TABLE_PER_CLASS car cela impliquerait de devoir dupliquer les informations de la classe mere dans chacune de ses classes concrètes.
-Au niveau des requètes de selection sur la classe mère cela les alourdit en creant des jointures pour acceder aux classes concrètes (ex : le conservateur veut connaitre
-toutes les oeuvres d'une collection ==> Comme on a persiste que les classes concretes, on est obligé de faire une jointure entre toutes les classes concrètes).
+Au niveau des requetes de selection sur la classe mere cela les alourdit en creant des jointures pour acceder aux classes concretes (ex : le conservateur veut connaitre
+toutes les oeuvres d'une collection ==> Comme on a persiste que les classes concretes, on est oblige de faire une jointure entre toutes les classes concrètes).
 
 Nous n'avons pas egalement choisi la methode JOINED bien qu'elle proche du modele objet car cela alourdit les insertions en base (2 requetes par insertion, insérer 
 d'abord les information dans la classe mere puis dans la classe fille ) et les requètes.
@@ -44,6 +44,13 @@ Une oeuvre est faite par un artiste, un artiste peut faire plusieurs oeuvres.
 
 
 L'ajout d'une oeuvre ajoute en cascade l'artiste qui l'a cree.
+
+
+Commentaires/tags et Oeuvre/Collection
+On ne veut pas creer de classe Commentaire juste parcequ'on en a plusieurs (List) or on ne peut pas le repr�senter en base.
+Depuis JPA 2.0 c'est possible avec @ElementCollection, �a cr�e une table supplementaire (ex : collection_commentaire) contenant l'id de la
+collection et le commentaire => on a pas eu besoin de creer une classe commentaire et faire une relation OneToMany (ManyToOne)
+
 
 
 
@@ -125,6 +132,14 @@ tourner dans n'importe quel conteneur de servlet.
 
 Resteasy permet de (de)serialiser les classes annot�es avec JAXB
 
+
+ ! : Quand on a une relation bidirectionnelle, le fait de vouloir afficher l'objet en xml peut creer un cycle infini.
+ ex: une oeuvre � une reference sur l'artiste qui l'a creee, l'artiste possede une liste de ses oeuvre => on boucle
+ ==> Mettre l'attribut Artiste (dans oeuvre) en XmlTranscient afin de ne pas le transmettre
+ pb : on ne peut donc pas savoir par quel artiste une oeuvre a ete faite via le webservice 
+Pendant le unmarshalling on doit recreer la relation nous m�me
+
+tentative avec MOXy avec les annotations XmlInverseReference et XmlID => pas concluant, on reste avec XmlTranscient
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------

@@ -20,6 +20,7 @@ import com.ald.projet.DAO.OeuvreDAO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Conservateur;
+import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
 import com.ald.projet.property.Dimension;
 import com.ald.projet.property.Realisation;
@@ -38,26 +39,38 @@ public class MainClass {
 
 		Dimension dimension = new Dimension(10, 20, 40);
 
-		Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-		Peinture p = new Peinture(dimension, false, artiste, 2010, "", "LOL", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+		Artiste artiste = new Artiste("puma", "guerin", "really good artist");
+		Peinture p = new Peinture();
+		p.setArtiste(artiste);
+		p.setDimension(dimension);
+		p.setAnnee(2010);
+		p.setTitre("titre");
+		p.setSupport(SupportOeuvre.BOIS);
+		p.setRealisation(Realisation.ACRYLIQUE);
+		
 //		artiste.addOeuvre(p);
 //		artisteDAO.createArtiste(artiste);
 		
 		oeuvreDAO.createOeuvre(p);
 		oeuvreDAO.testT(p);
 
-		//artisteDAO.testT(artiste);
+		artisteDAO.testT(artiste);
 		
 //		Artiste artiste2 = new Artiste("mame birame", "sene", "bon peintre");
 //		Peinture p2 = new Peinture(dimension, false, artiste2, 2010, "", "La joconde", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 //		oeuvreDAO.createOeuvre(p2);
 //		oeuvreDAO.testT(p2);
 
-//		Conservateur conser = new Conservateur();
-//		Collection c = conser.createCollection();
-//		conser.addOeuvre(p, c);
-//		Collection c2 = conser.createCollection();
+		Conservateur conser = new Conservateur();
+		Collection c = conser.createCollection();
+		conser.addCommentOeuvre(p, "blablabla");
+		conser.addOeuvre(p, c);
 		
+		Collection c2 = conser.createCollection();
+		
+		
+		Oeuvre o = oeuvreDAO.findById(2);
+		LOG.info("id de l'artiste = "+ o.getArtiste().getId());
 			
 		
 

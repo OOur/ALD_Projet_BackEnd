@@ -25,9 +25,8 @@ public class Reproduction {
 	
 
 
-	public Reproduction(int id, Oeuvre oeuvre, int prix, SupportReproduction support) {
+	public Reproduction(Oeuvre oeuvre, int prix, SupportReproduction support) {
 		super();
-		this.id = id;
 		this.oeuvre = oeuvre;
 		this.prix = prix;
 		this.support = support;

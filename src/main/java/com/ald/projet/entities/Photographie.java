@@ -1,6 +1,7 @@
 package com.ald.projet.entities;
 
-import javax.persistence.Embedded;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,7 +24,7 @@ public class Photographie extends Oeuvre {
 	
 	public Photographie(Dimension dimension, boolean hasBeenReproduced,
 			Artiste artiste, Integer annee, String caracteristique,
-			String titre, String resume, String commentaire, String tag, SupportOeuvre support) {
+			String titre, String resume, List<String> commentaire, String tag, SupportOeuvre support) {
 		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
 				resume, commentaire, tag);
 		this.support = support;

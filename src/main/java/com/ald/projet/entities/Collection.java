@@ -4,6 +4,8 @@ package com.ald.projet.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,6 +27,7 @@ public class Collection {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
 	@Enumerated(EnumType.STRING)
 	private EtatCollection etat;
 	
@@ -32,8 +35,14 @@ public class Collection {
 	private List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 	
 	private String libele;
-	private String commentaire;
-	private String tag;
+	
+	@ElementCollection
+	@Column(nullable=true)
+	private List<String> commentaire = new ArrayList<String>();
+	
+	@ElementCollection
+	@Column(nullable=true)
+	private List<String> tag = new ArrayList<String>();
 	
 	
 	
@@ -46,21 +55,6 @@ public class Collection {
 		this.oeuvres = oeuvres;
 	}
 
-	public void addOeuvre(Oeuvre oeuvre){
-		oeuvres.add(oeuvre);
-	}
-	
-	public void removeOeuvre(Oeuvre oeuvre){
-		oeuvres.remove(oeuvre);
-	}
-	
-	public void addComment(String comment){
-		this.commentaire = comment;
-	}
-	
-	public void addTag(String tag){
-		this.tag = tag;
-	}
 	
 	public String toString(){
 		return null;
@@ -92,6 +86,16 @@ public class Collection {
 	public void setOeuvres(List<Oeuvre> oeuvres) {
 		this.oeuvres = oeuvres;
 	}
+	
+	
+	public void addOeuvre(Oeuvre oeuvre){
+		oeuvres.add(oeuvre);
+	}
+	
+	public void removeOeuvre(Oeuvre oeuvre){
+		oeuvres.remove(oeuvre);
+	}
+	
 
 	@XmlElement
 	public String getLibele() {
@@ -103,25 +107,39 @@ public class Collection {
 	}
 
 	@XmlElement
-	public String getCommentaire() {
+	public List<String> getCommentaire() {
 		return commentaire;
 	}
 
-	public void setCommentaire(String commentaire) {
+	public void setCommentaire(List<String> commentaire) {
 		this.commentaire = commentaire;
+	}
+	
+	public void addComment(String comment){
+		this.commentaire.add(comment);
+	}
+	
+	public void removeComment(String comment){
+		this.commentaire.remove(comment);
 	}
 
 	@XmlElement
-	public String getTag() {
+	public List<String> getTags() {
 		return tag;
 	}
 
-	public void setTag(String tag) {
+	public void setTag(List<String> tag) {
 		this.tag = tag;
 	}
 	
 	
+	public void addTag(String tag){
+		this.tag.add(tag);
+	}
 	
+	public void removeTag(String tag){
+		this.tag.remove(tag);
+	}
 	
 	
 }

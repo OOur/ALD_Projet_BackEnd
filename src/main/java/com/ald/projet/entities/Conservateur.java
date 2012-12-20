@@ -62,7 +62,7 @@ public class Conservateur extends AgentMusee{
 	}
 
 	public void addCommentOeuvre(Oeuvre oeuvre, String comment){
-		oeuvre.setCaracteristique(comment);
+		oeuvre.addCommentaire(comment);
 		oeuvreDAO.updateOeuvre(oeuvre);
 	}
 
@@ -129,6 +129,17 @@ public class Conservateur extends AgentMusee{
 	public Oeuvre getCollection(@PathParam("id")int id){
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
 		return oeuvre;
+
+
+	}
+	
+	
+	@GET
+	@Path("/getArtiste/{id}")
+	@Produces("application/xml")
+	public Artiste getArtiste(@PathParam("id")int id){
+		Artiste a = artisteDAO.findById(id);
+		return a;
 
 
 	}

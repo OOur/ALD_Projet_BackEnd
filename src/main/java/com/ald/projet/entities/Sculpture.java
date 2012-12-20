@@ -1,6 +1,7 @@
 package com.ald.projet.entities;
 
-import javax.persistence.Embedded;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,7 +25,7 @@ public class Sculpture extends Oeuvre{
 	
 	public Sculpture(Dimension dimension, boolean hasBeenReproduced,
 			Artiste artiste, Integer annee, String caracteristique,
-			String titre, String resume, String commentaire, String tag, Materiaux materiaux) {
+			String titre, String resume, List<String> commentaire, String tag, Materiaux materiaux) {
 		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
 				resume, commentaire, tag);
 		this.materiaux = materiaux;

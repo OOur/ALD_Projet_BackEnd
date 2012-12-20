@@ -1,5 +1,7 @@
 package com.ald.projet.entities;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,7 +30,7 @@ public class Peinture extends Oeuvre{
 	
 	public Peinture(Dimension dimension, boolean hasBeenReproduced,
 			Artiste artiste, Integer annee, String caracteristique,
-			String titre, String resume, String commentaire, String tag, SupportOeuvre support, Realisation realisation) {
+			String titre, String resume, List<String> commentaire, String tag, SupportOeuvre support, Realisation realisation) {
 		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
 				resume, commentaire, tag);
 		this.support = support;

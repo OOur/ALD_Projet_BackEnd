@@ -46,7 +46,7 @@ public class DAOTest {
 		try{
 
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Peinture p = new Peinture(d, false, artiste, 2010, "", "La joconde", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Peinture p = new Peinture(d, false, artiste, 2010, "", "La joconde", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 			oeuvreDAO.createOeuvre(p);
 			Assert.assertNotSame(oeuvreDAO.findById(p.getId()),null);
 		}catch(RuntimeException re){
@@ -61,7 +61,7 @@ public class DAOTest {
 		try{
 			Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
 			
-			Peinture p = new Peinture(d, false, artiste, 2010, "", "sourire", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Peinture p = new Peinture(d, false, artiste, 2010, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 			oeuvreDAO.createOeuvre(p);
 			p.setAnnee(2010);
 			oeuvreDAO.updateOeuvre(p);
