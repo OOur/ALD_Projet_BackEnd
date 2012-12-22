@@ -69,9 +69,7 @@ public class MainClass {
 		Collection c2 = conser.createCollection();
 		
 		
-		Oeuvre o = oeuvreDAO.findById(2);
-		LOG.info("id de l'artiste = "+ o.getArtiste().getId());
-			
+
 		
 
 	}

@@ -10,16 +10,21 @@ import org.slf4j.LoggerFactory;
 import com.ald.projet.DAO.ArtisteDAO;
 import com.ald.projet.DAO.CollectionDAO;
 import com.ald.projet.DAO.OeuvreDAO;
+import com.ald.projet.DAO.PhotoDAO;
+import com.ald.projet.DAO.ReproductionDAO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Conservateur;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
+import com.ald.projet.entities.Photo;
+import com.ald.projet.entities.Reproduction;
 import com.ald.projet.entities.Sculpture;
 import com.ald.projet.property.Dimension;
 import com.ald.projet.property.Materiaux;
 import com.ald.projet.property.Realisation;
 import com.ald.projet.property.SupportOeuvre;
+import com.ald.projet.property.SupportReproduction;
 
 public class DAOTest {
 
@@ -27,6 +32,8 @@ public class DAOTest {
 	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
 	private static CollectionDAO collectionDAO = new CollectionDAO();
+	private static PhotoDAO photoDAO = new PhotoDAO();
+	private static ReproductionDAO reproductionDAO = new ReproductionDAO();
 
 	private static Dimension d;
 	private static Conservateur conservateur;
@@ -46,7 +53,7 @@ public class DAOTest {
 		try{
 
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Peinture p = new Peinture(d, false, artiste, 2010, "", "La joconde", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Peinture p = new Peinture(d, false, artiste, null, 2010, "", "La joconde", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 			oeuvreDAO.createOeuvre(p);
 			Assert.assertNotSame(oeuvreDAO.findById(p.getId()),null);
 		}catch(RuntimeException re){
@@ -61,7 +68,7 @@ public class DAOTest {
 		try{
 			Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
 			
-			Peinture p = new Peinture(d, false, artiste, 2010, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Peinture p = new Peinture(d, false, artiste, null,2010, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 			oeuvreDAO.createOeuvre(p);
 			p.setAnnee(2010);
 			oeuvreDAO.updateOeuvre(p);
@@ -76,7 +83,7 @@ public class DAOTest {
 	@Test
 	public final void createCollection(){
 		try{
-			Artiste artiste = new Artiste("vincent", "guerin", "bon sculpteur");
+			Artiste artiste = new Artiste("vincent", "ruffet", "bon sculpteur");
 			
 			Sculpture sculpture = new Sculpture();
 			sculpture.setAnnee(2015);
@@ -88,11 +95,7 @@ public class DAOTest {
 			oeuvreDAO.createOeuvre(sculpture);
 
 
-
-			/** Le conservateur cree une nouvelle collection et y ajoute une oeuvre
-			 * Cree une collection vide en base et remplit la table intermediaire collection_oeuvre pour faire la liaison entre 
-			 * les oeuvres et leur collection
-			 */
+	
 			Collection collection = conservateur.createCollection();
 			conservateur.addOeuvre(sculpture, collection);
 
@@ -105,6 +108,30 @@ public class DAOTest {
 
 		}catch(RuntimeException re){
 			LOG.error("create collection failed", re);
+			throw re;
+		}
+	}
+	
+	
+	@Test
+	public final void insertPhotoAndReproduction(){
+		try{
+			Artiste artiste = new Artiste("charle", "henry", "pas terrible");
+			
+			Peinture peinture = new Peinture(d, false, artiste, null,2005, "", "caillou", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			oeuvreDAO.createOeuvre(peinture);
+
+			Photo photo = new Photo(peinture,null);
+			photoDAO.createPhoto(photo);
+			
+			Reproduction repro = new Reproduction(peinture, 10, SupportReproduction.CARTE);
+			reproductionDAO.createReproduction(repro);
+						
+			Assert.assertTrue(photoDAO.findById(photo.getId()).getOeuvre().getId() == peinture.getId());
+			Assert.assertTrue(reproductionDAO.findById(repro.getId()).getOeuvre().getId() == peinture.getId());
+
+		}catch(RuntimeException re){
+			LOG.error("update failed", re);
 			throw re;
 		}
 	}

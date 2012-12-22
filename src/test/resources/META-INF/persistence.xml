@@ -19,8 +19,9 @@
 		<class>com.ald.projet.entities.Collection</class>
 		<class>com.ald.projet.entities.Artiste </class>
 		<class>com.ald.projet.entities.Conservateur </class>
-		<class>com.ald.projet.entities.Reproduction </class>
 		<class>com.ald.projet.entities.Libraire </class>
+		<class>com.ald.projet.entities.Reproduction </class>
+		<class>com.ald.projet.entities.Photo </class>
 
 		<properties>
 
@@ -36,7 +37,7 @@
 			<property name="hibernate.connection.password" value="" />
 <!-- 			<property name="hibernate.connection.username" value="rlyazidi" /> -->
 <!-- 			<property name="hibernate.connection.password" value="aldgwt" /> -->
-			<!-- Connexion a la BD "musee" avec un utilisateur pre enregistre "roor", 
+			<!-- Connexion a la BD "musee" avec un utilisateur pre enregistre "root", 
 				MySQL lance grace a WAMP (PhpMyAdmin) -->
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/museeTest" />
 <!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://dbserver:3306/test" /> -->

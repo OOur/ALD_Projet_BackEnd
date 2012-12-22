@@ -21,16 +21,13 @@ public class Photographie extends Oeuvre {
 	}
 	
 	
-	
 	public Photographie(Dimension dimension, boolean hasBeenReproduced,
-			Artiste artiste, Integer annee, String caracteristique,
+			Artiste artiste,  List<Photo> photo, Integer annee, String caracteristique,
 			String titre, String resume, List<String> commentaire, String tag, SupportOeuvre support) {
-		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
+		super(dimension, hasBeenReproduced, artiste, photo, annee, caracteristique, titre,
 				resume, commentaire, tag);
 		this.support = support;
 	}
-
-
 
 
 	public SupportOeuvre getSupport() {

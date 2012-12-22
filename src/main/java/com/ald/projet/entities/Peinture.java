@@ -29,9 +29,9 @@ public class Peinture extends Oeuvre{
 
 	
 	public Peinture(Dimension dimension, boolean hasBeenReproduced,
-			Artiste artiste, Integer annee, String caracteristique,
+			Artiste artiste, List<Photo> photo, Integer annee, String caracteristique,
 			String titre, String resume, List<String> commentaire, String tag, SupportOeuvre support, Realisation realisation) {
-		super(dimension, hasBeenReproduced, artiste, annee, caracteristique, titre,
+		super(dimension, hasBeenReproduced, artiste, photo, annee, caracteristique, titre,
 				resume, commentaire, tag);
 		this.support = support;
 		this.realisation = realisation;

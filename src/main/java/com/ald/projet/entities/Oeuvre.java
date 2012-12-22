@@ -16,9 +16,12 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.jboss.resteasy.spi.touri.MappedBy;
 
 import com.ald.projet.property.Dimension;
 
@@ -41,6 +44,9 @@ public abstract class Oeuvre {
 	@JoinColumn(name="artiste_id")
 	//@XmlIDREF
 	private Artiste artiste;
+	
+	@OneToMany (mappedBy="oeuvre",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	private List<Photo> photo;
 
 	@Column(nullable=true) 
 	private Integer annee;
@@ -61,21 +67,19 @@ public abstract class Oeuvre {
 	@Column(nullable=true)
 	private String tag;
 
-
-
 	public Oeuvre(){
 
 	}
 
-
 	public Oeuvre(Dimension dimension, boolean hasBeenReproduced,
-			Artiste artiste, Integer annee, String caracteristique,
+			Artiste artiste, List<Photo> photo,Integer annee, String caracteristique,
 			String titre, String resume, List<String> commentaire, String tag) {
 		super();
 		this.dimension = dimension;
 		this.hasBeenReproduced = hasBeenReproduced;
 		this.artiste = artiste;
 		this.artiste.addOeuvre(this);
+		this.photo=photo;
 		this.annee = annee;
 		this.caracteristique = caracteristique;
 		this.titre = titre;
@@ -122,6 +126,18 @@ public abstract class Oeuvre {
 		this.artiste = artiste;
 		artiste.addOeuvre(this);
 	}
+
+	
+	@XmlElement
+	public List<Photo> getPhoto() {
+		return photo;
+	}
+
+
+	public void setPhoto(List<Photo> photo) {
+		this.photo = photo;
+	}
+
 
 	@XmlElement
 	public Integer getAnnee() {
