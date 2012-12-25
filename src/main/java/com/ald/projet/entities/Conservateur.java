@@ -84,7 +84,6 @@ public class Conservateur extends AgentMusee{
 	public Response createCollection(Collection collection){
 		collectionDAO.createCollection(collection);
 		return Response.ok(collection).build();
-		//return collection;
 	}
 	
 	@POST
@@ -94,6 +93,9 @@ public class Conservateur extends AgentMusee{
 		oeuvreDAO.createOeuvre(o);
 		return Response.ok(o).build();
 	}
+	
+	
+	
 
 	public void addOeuvre(Oeuvre oeuvre, Collection collection){
 		collection.addOeuvre(oeuvre);

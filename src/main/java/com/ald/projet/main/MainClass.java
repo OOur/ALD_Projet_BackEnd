@@ -21,6 +21,7 @@ import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Conservateur;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
+import com.ald.projet.entities.Photo;
 import com.ald.projet.property.Dimension;
 import com.ald.projet.property.Realisation;
 import com.ald.projet.property.SupportOeuvre;
@@ -43,10 +44,18 @@ public class MainClass {
 		p.setArtiste(artiste);
 		p.setDimension(dimension);
 		p.setAnnee(2010);
-		p.setTitre("titre");
-		p.addCommentaire("pas mal");
-		p.setSupport(SupportOeuvre.BOIS);
-		p.setRealisation(Realisation.ACRYLIQUE);
+		p.setTitre("et la ?");
+		p.addCommentaire("MARRRRRRRRRRRRRRRRRRRRRRRCHE");
+		
+		
+		Photo ph1 = new Photo(p, "path1");
+		Photo ph2 = new Photo(p, "path2");
+		
+		
+		
+		
+//		p.setSupport(SupportOeuvre.BOIS);
+//		p.setRealisation(Realisation.ACRYLIQUE);
 
 		//		artiste.addOeuvre(p);
 		//		artisteDAO.createArtiste(artiste);
@@ -58,20 +67,14 @@ public class MainClass {
 
 		Conservateur conser = new Conservateur();
 		Collection c = new Collection();
-		conser.createCollection(c);
+	//	conser.createCollection(c);
 
 		//pose probleme : Cannot instantiate abstract class or interface
 		//conser.addOeuvre(p, c);
 		//conser.addCommentOeuvre(p, "blablabla");
 
 		Collection c2 = new Collection();
-		conser.createCollection(c2);
-
-
-		oeuvreDAO.createOeuvre(p);
-		LOG.info("p = "+ p.toString());
-
-
+	//	conser.createCollection(c2);
 	
 
 		try {
@@ -82,7 +85,7 @@ public class MainClass {
 			 * objects and build up requests using its constructors and methods 
 			 */
 			
-			JAXBContext jc = JAXBContext.newInstance(p.getClass()/*,Oeuvre.class*/);
+			JAXBContext jc = JAXBContext.newInstance(p.getClass());
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			java.io.StringWriter sw = new StringWriter();
@@ -95,12 +98,12 @@ public class MainClass {
 
 			LOG.info(sw.toString());
 			
-			ClientResponse<Response> response = request.post(Response.class);
+			ClientResponse<String> response = request.post(String.class);
 
 			if (response.getStatus() == 200) 
 			{
-				Response str = response.getEntity();
-				LOG.info("ca a marché  ! = "+ str);
+				String str = response.getEntity();
+				LOG.info(str);
 			}
 
 

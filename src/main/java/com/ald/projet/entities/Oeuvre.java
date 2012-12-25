@@ -19,16 +19,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.jboss.resteasy.spi.touri.MappedBy;
 
 import com.ald.projet.property.Dimension;
 
 
 
 @Entity @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@XmlRootElement(name = "oeuvre")
+@XmlSeeAlso({Peinture.class, Sculpture.class, Photographie.class})
 public abstract class Oeuvre {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -46,7 +45,7 @@ public abstract class Oeuvre {
 	private Artiste artiste;
 	
 	@OneToMany (mappedBy="oeuvre",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private List<Photo> photo;
+	private List<Photo> photo = new ArrayList<Photo>();
 
 	@Column(nullable=true) 
 	private Integer annee;
@@ -89,7 +88,7 @@ public abstract class Oeuvre {
 	}
 
 
-	//@XmlElement
+	@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -98,7 +97,7 @@ public abstract class Oeuvre {
 		this.id = id;
 	}
 
-	//@XmlElement
+	@XmlElement
 	public Dimension getDimension() {
 		return dimension;
 	}
@@ -128,7 +127,7 @@ public abstract class Oeuvre {
 	}
 
 	
-	//@XmlElement
+	@XmlElement
 	public List<Photo> getPhoto() {
 		return photo;
 	}
@@ -137,9 +136,13 @@ public abstract class Oeuvre {
 	public void setPhoto(List<Photo> photo) {
 		this.photo = photo;
 	}
+	
+	public void addPhoto(Photo photo){
+		this.photo.add(photo);
+	}
 
 
-	//@XmlElement
+	@XmlElement
 	public Integer getAnnee() {
 		return annee;
 	}
@@ -148,7 +151,7 @@ public abstract class Oeuvre {
 		this.annee = annee;
 	}
 
-	//@XmlElement
+	@XmlElement
 	public String getCaracteristique() {
 		return caracteristique;
 	}
@@ -157,7 +160,7 @@ public abstract class Oeuvre {
 		this.caracteristique = caracteristique;
 	}
 
-	//@XmlElement
+	@XmlElement
 	public String getTitre() {
 		return titre;
 	}
@@ -166,7 +169,7 @@ public abstract class Oeuvre {
 		this.titre = titre;
 	}
 
-	//@XmlElement
+	@XmlElement
 	public String getResume() {
 		return resume;
 	}
@@ -175,7 +178,7 @@ public abstract class Oeuvre {
 		this.resume = resume;
 	}
 
-	//@XmlElement
+	@XmlElement
 	public List<String> getCommentaire() {
 		return commentaire;
 	}
@@ -189,7 +192,7 @@ public abstract class Oeuvre {
 		this.commentaire.add(commentaire);
 	}
 
-	//@XmlElement
+	@XmlElement
 	public String getTag() {
 		return tag;
 	}
