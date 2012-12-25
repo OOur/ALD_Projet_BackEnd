@@ -89,7 +89,7 @@ public abstract class Oeuvre {
 	}
 
 
-	@XmlElement
+	//@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -98,7 +98,7 @@ public abstract class Oeuvre {
 		this.id = id;
 	}
 
-	@XmlElement
+	//@XmlElement
 	public Dimension getDimension() {
 		return dimension;
 	}
@@ -128,7 +128,7 @@ public abstract class Oeuvre {
 	}
 
 	
-	@XmlElement
+	//@XmlElement
 	public List<Photo> getPhoto() {
 		return photo;
 	}
@@ -139,7 +139,7 @@ public abstract class Oeuvre {
 	}
 
 
-	@XmlElement
+	//@XmlElement
 	public Integer getAnnee() {
 		return annee;
 	}
@@ -148,7 +148,7 @@ public abstract class Oeuvre {
 		this.annee = annee;
 	}
 
-	@XmlElement
+	//@XmlElement
 	public String getCaracteristique() {
 		return caracteristique;
 	}
@@ -157,7 +157,7 @@ public abstract class Oeuvre {
 		this.caracteristique = caracteristique;
 	}
 
-	@XmlElement
+	//@XmlElement
 	public String getTitre() {
 		return titre;
 	}
@@ -166,7 +166,7 @@ public abstract class Oeuvre {
 		this.titre = titre;
 	}
 
-	@XmlElement
+	//@XmlElement
 	public String getResume() {
 		return resume;
 	}
@@ -175,7 +175,7 @@ public abstract class Oeuvre {
 		this.resume = resume;
 	}
 
-	@XmlElement
+	//@XmlElement
 	public List<String> getCommentaire() {
 		return commentaire;
 	}
@@ -189,7 +189,7 @@ public abstract class Oeuvre {
 		this.commentaire.add(commentaire);
 	}
 
-	@XmlElement
+	//@XmlElement
 	public String getTag() {
 		return tag;
 	}
@@ -198,12 +198,13 @@ public abstract class Oeuvre {
 		this.tag = tag;
 	}
 
-	public String toString(){
-		String s = "L'oeuvre "+ this.id+ " est de type "+this.getClass().getName()+" , elle a ete faite en "+ this.getAnnee()+" par l'artiste "+
-				this.getArtiste().getNom();	
-		return s;
-
-	}
+	
+//	public String toString(){
+//		String s = "L'oeuvre "+ this.id+ " est de type "+this.getClass().getName()+" , elle a ete faite en "+ this.getAnnee()+" par l'artiste "+
+//				this.getArtiste().getNom();	
+//		return s;
+//
+//	}
 
 
 }

@@ -1,17 +1,16 @@
 package com.ald.projet.main;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.Result;
 
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientResponse;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.DAO.ArtisteDAO;
@@ -45,32 +44,74 @@ public class MainClass {
 		p.setDimension(dimension);
 		p.setAnnee(2010);
 		p.setTitre("titre");
+		p.addCommentaire("pas mal");
 		p.setSupport(SupportOeuvre.BOIS);
 		p.setRealisation(Realisation.ACRYLIQUE);
-		
-//		artiste.addOeuvre(p);
-//		artisteDAO.createArtiste(artiste);
-		
-		oeuvreDAO.createOeuvre(p);
-		oeuvreDAO.testT(p);
 
-		artisteDAO.testT(artiste);
-		
-//		Artiste artiste2 = new Artiste("mame birame", "sene", "bon peintre");
-//		Peinture p2 = new Peinture(dimension, false, artiste2, 2010, "", "La joconde", "bla", "", "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
-//		oeuvreDAO.createOeuvre(p2);
-//		oeuvreDAO.testT(p2);
+		//		artiste.addOeuvre(p);
+		//		artisteDAO.createArtiste(artiste);
+
+		//oeuvreDAO.createOeuvre(p);
+		//oeuvreDAO.testT(p);
+
+		//artisteDAO.testT(artiste);
 
 		Conservateur conser = new Conservateur();
-		Collection c = conser.createCollection();
-		conser.addCommentOeuvre(p, "blablabla");
-		conser.addOeuvre(p, c);
-		
-		Collection c2 = conser.createCollection();
-		
-		
+		Collection c = new Collection();
+		conser.createCollection(c);
 
-		
+		//pose probleme : Cannot instantiate abstract class or interface
+		//conser.addOeuvre(p, c);
+		//conser.addCommentOeuvre(p, "blablabla");
+
+		Collection c2 = new Collection();
+		conser.createCollection(c2);
+
+
+		oeuvreDAO.createOeuvre(p);
+		LOG.info("p = "+ p.toString());
+
+
+	
+
+		try {
+			
+			/**
+			 * RESTeasy client instead of DefaultHttpClient because RESTeasy client is JAX-RS aware.
+			 * To use the RESTeasy client, you construct org.jboss.resteasy.client.ClientRequest 
+			 * objects and build up requests using its constructors and methods 
+			 */
+			
+			JAXBContext jc = JAXBContext.newInstance(p.getClass()/*,Oeuvre.class*/);
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(p, sw);
+
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/createOeuvre");
+
+			// We're posting XML and a JAXB object
+			request.body("application/xml", sw.toString());
+
+			LOG.info(sw.toString());
+			
+			ClientResponse<Response> response = request.post(Response.class);
+
+			if (response.getStatus() == 200) 
+			{
+				Response str = response.getEntity();
+				LOG.info("ca a marché  ! = "+ str);
+			}
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
+
+
 
 	}
 

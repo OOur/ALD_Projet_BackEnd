@@ -33,13 +33,13 @@ public class CollectionDAO extends GenericDAO {
 
 	}
 
-	public void updateCollection(Collection artiste){
+	public void updateCollection(Collection collection){
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
 		try {
 			tx = em.getTransaction();
 			tx.begin();
-			em.merge(artiste);
+			em.merge(collection);
 			tx.commit();
 
 

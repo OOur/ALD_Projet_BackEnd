@@ -9,15 +9,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.DAO.ArtisteDAO;
 import com.ald.projet.DAO.CollectionDAO;
 import com.ald.projet.DAO.OeuvreDAO;
-import com.ald.projet.property.Dimension;
-import com.ald.projet.property.Realisation;
-import com.ald.projet.property.SupportOeuvre;
 
 /**
  * 
@@ -80,12 +78,21 @@ public class Conservateur extends AgentMusee{
 
 	}
 
-
-	public Collection createCollection(){
-		Collection collection = new Collection();
+	@POST
+	@Path("/collection")
+	@Consumes("application/xml")
+	public Response createCollection(Collection collection){
 		collectionDAO.createCollection(collection);
-		return collection;
-
+		return Response.ok(collection).build();
+		//return collection;
+	}
+	
+	@POST
+	@Path("/createOeuvre")
+	@Consumes("application/xml")
+	public Response createOeuvre(Oeuvre o){
+		oeuvreDAO.createOeuvre(o);
+		return Response.ok(o).build();
 	}
 
 	public void addOeuvre(Oeuvre oeuvre, Collection collection){

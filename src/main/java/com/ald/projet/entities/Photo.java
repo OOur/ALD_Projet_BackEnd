@@ -30,7 +30,7 @@ public class Photo {
 	
 	public Photo(Oeuvre oeuvre, String path) {
 		super();
-		this.oeuvre = oeuvre;
+		//this.oeuvre = oeuvre;
 		this.path = path;
 	}
 	
@@ -45,14 +45,14 @@ public class Photo {
 		this.id = id;
 	}
 
-	@XmlTransient
-	public Oeuvre getOeuvre() {
-		return oeuvre;
-	}
-
-	public void setOeuvre(Oeuvre oeuvre) {
-		this.oeuvre = oeuvre;
-	}
+//	@XmlTransient
+//	public Oeuvre getOeuvre() {
+//		return oeuvre;
+//	}
+//
+//	public void setOeuvre(Oeuvre oeuvre) {
+//		this.oeuvre = oeuvre;
+//	}
 
 	@XmlElement
 	public String getPath() {
