@@ -17,13 +17,6 @@ import com.ald.projet.DAO.ArtisteDAO;
 import com.ald.projet.DAO.CollectionDAO;
 import com.ald.projet.DAO.OeuvreDAO;
 
-/**
- * 
- * La persitence des donnees se fait directement dans cette classe grace au DAO.
- * 
- */
-
-
 @Entity
 @Path("/conservateur")
 public class Conservateur extends AgentMusee{
@@ -48,26 +41,6 @@ public class Conservateur extends AgentMusee{
 		return null;
 	}
 
-	public void addCaracteristiqueOeuvre(Oeuvre oeuvre, String carac){
-		oeuvre.setCaracteristique(carac);
-		oeuvreDAO.updateOeuvre(oeuvre);
-
-	}
-
-	public void addAbstractOeuvre(Oeuvre oeuvre, String abstrac){
-		oeuvre.setCaracteristique(abstrac);
-		oeuvreDAO.updateOeuvre(oeuvre);
-	}
-
-	public void addCommentOeuvre(Oeuvre oeuvre, String comment){
-		oeuvre.addCommentaire(comment);
-		oeuvreDAO.updateOeuvre(oeuvre);
-	}
-
-	public void addTagOeuvre(Oeuvre oeuvre, String tag){
-		oeuvre.setCaracteristique(tag);
-		oeuvreDAO.updateOeuvre(oeuvre);
-	}
 
 	@GET
 	@Path("/oeuvres")
@@ -79,13 +52,15 @@ public class Conservateur extends AgentMusee{
 	}
 
 	@POST
-	@Path("/collection")
+	@Path("/createCollection")
 	@Consumes("application/xml")
 	public Response createCollection(Collection collection){
 		collectionDAO.createCollection(collection);
 		return Response.ok(collection).build();
 	}
-	
+
+
+	/*** Testé OK***/
 	@POST
 	@Path("/createOeuvre")
 	@Consumes("application/xml")
@@ -93,26 +68,22 @@ public class Conservateur extends AgentMusee{
 		oeuvreDAO.createOeuvre(o);
 		return Response.ok(o).build();
 	}
-	
-	
-	
 
-	public void addOeuvre(Oeuvre oeuvre, Collection collection){
-		collection.addOeuvre(oeuvre);
-		collectionDAO.updateCollection(collection);
-	}
-
-	public void removeOeuvre(Oeuvre oeuvre, Collection collection){
-		collection.removeOeuvre(oeuvre);
-		collectionDAO.updateCollection(collection);
+	/*** Ne marche pas, cree une autre oeuvre plutôt que de mettre a jour **/
+	@POST
+	@Path("/updateOeuvre")
+	@Consumes("application/xml")
+	public Response updateOeuvre(Oeuvre o){
+		oeuvreDAO.updateOeuvre(o);
+		return Response.ok(o).build();
 	}
 
 	@POST
-	@Path("/comment")
+	@Path("/updateCollection")
 	@Consumes("application/xml")
-	public void addCommentCollection(Collection collection, String comment){
-		collection.addComment(comment);
+	public Response updateCollection(Collection collection){
 		collectionDAO.updateCollection(collection);
+		return Response.ok(collection).build();
 	}
 
 	@GET
@@ -138,23 +109,14 @@ public class Conservateur extends AgentMusee{
 	public Oeuvre getCollection(@PathParam("id")int id){
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
 		return oeuvre;
-
-
 	}
-	
-	
+
 	@GET
 	@Path("/getArtiste/{id}")
 	@Produces("application/xml")
 	public Artiste getArtiste(@PathParam("id")int id){
 		Artiste a = artisteDAO.findById(id);
 		return a;
-
-
-	}
-
-	public void addTagCollection(Collection collection, String tag){
-		collection.addTag(tag);
-		collectionDAO.updateCollection(collection);
 	}
 }
+

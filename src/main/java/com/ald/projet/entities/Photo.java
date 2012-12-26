@@ -28,10 +28,8 @@ public class Photo {
 		
 	}
 	
-	public Photo(Oeuvre oeuvre, String path) {
+	public Photo(String path) {
 		super();
-		this.oeuvre = oeuvre;
-		oeuvre.addPhoto(this); //ajoute la photo à l'oeuvre à sa création
 		this.path = path;
 	}
 	

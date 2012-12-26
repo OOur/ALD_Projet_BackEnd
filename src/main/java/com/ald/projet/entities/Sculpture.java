@@ -5,12 +5,14 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.ald.projet.property.Dimension;
 import com.ald.projet.property.Materiaux;
 
 
 @Entity
+@XmlRootElement(name = "sculpture")
 public class Sculpture extends Oeuvre{
 
 	@Enumerated(EnumType.STRING)

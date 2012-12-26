@@ -139,6 +139,7 @@ public abstract class Oeuvre {
 	
 	public void addPhoto(Photo photo){
 		this.photo.add(photo);
+		photo.setOeuvre(this);
 	}
 
 

@@ -2,11 +2,13 @@ package com.ald.projet.main;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.InputStream;
 
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Result;
 
 import org.jboss.resteasy.client.ClientRequest;
@@ -48,9 +50,11 @@ public class MainClass {
 		p.addCommentaire("MARRRRRRRRRRRRRRRRRRRRRRRCHE");
 		
 		
-		Photo ph1 = new Photo(p, "path1");
-		Photo ph2 = new Photo(p, "path2");
+		Photo ph1 = new Photo("path1");
+		Photo ph2 = new Photo("path2");
 		
+		p.addPhoto(ph1);
+		p.addPhoto(ph2);
 		
 		
 		
@@ -102,22 +106,50 @@ public class MainClass {
 
 			if (response.getStatus() == 200) 
 			{
-				String str = response.getEntity();
-				LOG.info(str);
+				
+				
+				Unmarshaller un = jc.createUnmarshaller();
+				Oeuvre o = (Oeuvre) un.unmarshal(new StringReader(response.getEntity()));
+				LOG.info("ID = "+ o.getId());
 			}
 
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		try {
+
+			/**
+			 * RESTeasy client instead of DefaultHttpClient because RESTeasy client is JAX-RS aware.
+			 * To use the RESTeasy client, you construct org.jboss.resteasy.client.ClientRequest 
+			 * objects and build up requests using its constructors and methods 
+			 */
 
 
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/getOeuvre/2");
 
+			// We're posting XML and a JAXB object
+			request.accept("application/xml");
 
+			ClientResponse<String> response = request.get(String.class);
 
+			if (response.getStatus() == 200) 
+			{
+				JAXBContext jc = JAXBContext.newInstance(Peinture.class);
+				Unmarshaller un = jc.createUnmarshaller();
+				Oeuvre i = (Oeuvre) un.unmarshal(new StringReader(response.getEntity()));
+				LOG.info("ID = "+ i.getAnnee());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 
 	}
-
 }
 
 
