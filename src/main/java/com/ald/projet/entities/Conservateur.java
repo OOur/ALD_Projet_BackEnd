@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import com.ald.projet.DAO.ArtisteDAO;
 import com.ald.projet.DAO.CollectionDAO;
 import com.ald.projet.DAO.OeuvreDAO;
+import com.ald.projet.DAO.PhotoDAO;
+import com.ald.projet.DAO.ReproductionDAO;
 
 @Entity
 @Path("/conservateur")
@@ -25,6 +27,8 @@ public class Conservateur extends AgentMusee{
 	private static CollectionDAO collectionDAO = new CollectionDAO();
 	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
+	private static ReproductionDAO reproductionDAO = new ReproductionDAO();
+	private static PhotoDAO photoDAO = new PhotoDAO();
 
 
 	public Conservateur(){
@@ -37,20 +41,7 @@ public class Conservateur extends AgentMusee{
 	}
 
 
-	public Oeuvre takePhoto(Oeuvre oeuvre){
-		return null;
-	}
-
-
-	@GET
-	@Path("/oeuvres")
-	@Produces("application/xml")
-	public List<Oeuvre> getAllOeuvres(){
-		List<Oeuvre> oeuvres = oeuvreDAO.findAll();
-		return oeuvres;
-
-	}
-
+	/*** Testé OK***/
 	@POST
 	@Path("/createCollection")
 	@Consumes("application/xml")
@@ -68,8 +59,27 @@ public class Conservateur extends AgentMusee{
 		oeuvreDAO.createOeuvre(o);
 		return Response.ok(o).build();
 	}
+	
+	/*** Testé OK***/
+	@POST
+	@Path("/createReproduction")
+	@Consumes("application/xml")
+	public Response createReproduction(Reproduction r){
+		reproductionDAO.createReproduction(r);
+		return Response.ok(r).build();
+	}
+	
+	/*** Testé OK***/
+	@POST
+	@Path("/createPhoto")
+	@Consumes("application/xml")
+	public Response createPhoto(Photo p){
+		photoDAO.createPhoto(p);
+		return Response.ok(p).build();
+	}
+	
 
-	/*** Ne marche pas, cree une autre oeuvre plutôt que de mettre a jour **/
+	/*** Testé OK***/
 	@POST
 	@Path("/updateOeuvre")
 	@Consumes("application/xml")
@@ -78,6 +88,7 @@ public class Conservateur extends AgentMusee{
 		return Response.ok(o).build();
 	}
 
+	/*** Testé OK***/
 	@POST
 	@Path("/updateCollection")
 	@Consumes("application/xml")
@@ -86,14 +97,16 @@ public class Conservateur extends AgentMusee{
 		return Response.ok(collection).build();
 	}
 
+	/*** Testé OK***/
 	@GET
 	@Path("/contentOfCollection/{id}")
 	@Produces("application/xml")
-	public List<Oeuvre> displayCollection(@PathParam("id") int CollectionId){
-		List<Oeuvre> oeuvres = collectionDAO.getOeuvresOfCollection(CollectionId);
-		return oeuvres;
+	public Collection displayCollection(@PathParam("id") int CollectionId){
+		Collection collection = collectionDAO.findById(CollectionId);
+		return collection;
 	}
 
+	/*** Testé OK***/
 	@GET
 	@Path("/getCollections")
 	@Produces("application/xml")
@@ -102,15 +115,26 @@ public class Conservateur extends AgentMusee{
 		return collection;
 	}
 
+	/*** Testé OK***/
+	@GET
+	@Path("/oeuvres")
+	@Produces("application/xml")
+	public List<Oeuvre> getAllOeuvres(){
+		List<Oeuvre> oeuvres = oeuvreDAO.findAll();
+		return oeuvres;
 
+	}
+
+	/*** Testé OK***/
 	@GET
 	@Path("/getOeuvre/{id}")
 	@Produces("application/xml")
-	public Oeuvre getCollection(@PathParam("id")int id){
+	public Oeuvre getOeuvre(@PathParam("id")int id){
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
 		return oeuvre;
 	}
 
+	/*** Testé OK***/
 	@GET
 	@Path("/getArtiste/{id}")
 	@Produces("application/xml")

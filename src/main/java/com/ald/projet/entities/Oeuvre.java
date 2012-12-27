@@ -43,7 +43,7 @@ public abstract class Oeuvre {
 	@JoinColumn(name="artiste_id")
 	//@XmlIDREF
 	private Artiste artiste;
-	
+
 	@OneToMany (mappedBy="oeuvre",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private List<Photo> photo = new ArrayList<Photo>();
 
@@ -71,14 +71,16 @@ public abstract class Oeuvre {
 	}
 
 	public Oeuvre(Dimension dimension, boolean hasBeenReproduced,
-			Artiste artiste, List<Photo> photo,Integer annee, String caracteristique,
+			Artiste artiste, List<Photo> photo, Integer annee, String caracteristique,
 			String titre, String resume, List<String> commentaire, String tag) {
 		super();
 		this.dimension = dimension;
 		this.hasBeenReproduced = hasBeenReproduced;
 		this.artiste = artiste;
 		this.artiste.addOeuvre(this);
-		this.photo=photo;
+		if(photo != null){
+			this.photo=photo;
+		}
 		this.annee = annee;
 		this.caracteristique = caracteristique;
 		this.titre = titre;
@@ -126,7 +128,7 @@ public abstract class Oeuvre {
 		artiste.addOeuvre(this);
 	}
 
-	
+
 	@XmlElement
 	public List<Photo> getPhoto() {
 		return photo;
@@ -136,7 +138,7 @@ public abstract class Oeuvre {
 	public void setPhoto(List<Photo> photo) {
 		this.photo = photo;
 	}
-	
+
 	public void addPhoto(Photo photo){
 		this.photo.add(photo);
 		photo.setOeuvre(this);
@@ -202,13 +204,13 @@ public abstract class Oeuvre {
 		this.tag = tag;
 	}
 
-	
-//	public String toString(){
-//		String s = "L'oeuvre "+ this.id+ " est de type "+this.getClass().getName()+" , elle a ete faite en "+ this.getAnnee()+" par l'artiste "+
-//				this.getArtiste().getNom();	
-//		return s;
-//
-//	}
+
+	//	public String toString(){
+	//		String s = "L'oeuvre "+ this.id+ " est de type "+this.getClass().getName()+" , elle a ete faite en "+ this.getAnnee()+" par l'artiste "+
+	//				this.getArtiste().getNom();	
+	//		return s;
+	//
+	//	}
 
 
 }

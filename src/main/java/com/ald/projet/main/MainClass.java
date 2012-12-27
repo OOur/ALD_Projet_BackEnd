@@ -50,11 +50,11 @@ public class MainClass {
 		p.addCommentaire("MARRRRRRRRRRRRRRRRRRRRRRRCHE");
 		
 		
-		Photo ph1 = new Photo("path1");
-		Photo ph2 = new Photo("path2");
-		
-		p.addPhoto(ph1);
-		p.addPhoto(ph2);
+//		Photo ph1 = new Photo("path1");
+//		Photo ph2 = new Photo("path2");
+//		
+//		p.addPhoto(ph1);
+//		p.addPhoto(ph2);
 		
 		
 		

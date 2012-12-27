@@ -1,5 +1,6 @@
 package com.ald.projet.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,7 +20,7 @@ public class Reproduction {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	@OneToOne
+	@OneToOne (cascade=CascadeType.PERSIST)
 	@JoinColumn(name="oeuvre_id", nullable=false)
 	private Oeuvre oeuvre;
 	private int prix;

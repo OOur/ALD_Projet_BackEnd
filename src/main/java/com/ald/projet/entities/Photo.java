@@ -28,12 +28,10 @@ public class Photo {
 		
 	}
 	
-	public Photo(String path) {
-		super();
+	public Photo(String path, Oeuvre o) {
 		this.path = path;
+		this.oeuvre = o;
 	}
-	
-	
 
 	@XmlElement
 	public int getId() {

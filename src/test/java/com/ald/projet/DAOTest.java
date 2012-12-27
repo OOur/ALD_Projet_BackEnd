@@ -35,17 +35,17 @@ import com.ald.projet.property.Realisation;
 import com.ald.projet.property.SupportOeuvre;
 import com.ald.projet.property.SupportReproduction;
 
+/**
+ * Les tests de DAO se font à travers les web services REST pour récupérer un entityManager valide de JPAFilter
+ */
+
 public class DAOTest {
 
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DAOTest.class);	
-	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
-	private static ArtisteDAO artisteDAO = new ArtisteDAO();
-	private static CollectionDAO collectionDAO = new CollectionDAO();
-	private static PhotoDAO photoDAO = new PhotoDAO();
-	private static ReproductionDAO reproductionDAO = new ReproductionDAO();
 
 	private static Dimension d;
 	private static Conservateur conservateur;
+	
 	private static JAXBContext jc;
 
 
@@ -53,11 +53,8 @@ public class DAOTest {
 	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
 		conservateur = new Conservateur();
-		
-		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class);
+		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class);
 	}
-
-
 
 	/**
 	 * RESTeasy client instead of DefaultHttpClient because RESTeasy client is JAX-RS aware.
@@ -68,6 +65,7 @@ public class DAOTest {
 	public Object httpPostRequest(Object o, String resourceURI){
 		try {
 
+			// sérialise l'objet pour l'envoyer via une requete POST
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			java.io.StringWriter sw = new StringWriter();
@@ -77,9 +75,6 @@ public class DAOTest {
 
 			// We're posting XML and a JAXB object
 			request.body("application/xml", sw.toString());
-
-			LOG.info(sw.toString());
-
 			ClientResponse<String> response = request.post(String.class);
 
 			if (response.getStatus() == 200) 
@@ -91,34 +86,30 @@ public class DAOTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 
 
-	public List<Object> httpGetRequest(int id, String resourceURI){
+	public Object httpGetRequest(int id, String resourceURI){
 		try {
 
-			ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/"+resourceURI+id);
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/"+resourceURI+"/"+id);
 
 			// We're posting XML and a JAXB object
 			request.accept("application/xml");
-
 			ClientResponse<String> response = request.get(String.class);
 
 			if (response.getStatus() == 200) 
 			{
 				Unmarshaller un = jc.createUnmarshaller();
-				List<Object> o = (List<Object>) un.unmarshal(new StringReader(response.getEntity()));
+				Object o = un.unmarshal(new StringReader(response.getEntity()));
 				return o;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
-
 
 
 	@Test
@@ -129,104 +120,90 @@ public class DAOTest {
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
 			Peinture p = new Peinture(d, false, artiste, null, 2010, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
 			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
-			Assert.assertNotSame(peintureVerif,0);
-			//oeuvreDAO.createOeuvre(p);
-			//Assert.assertNotSame(oeuvreDAO.findById(p.getId()),null);
+			Assert.assertNotSame(peintureVerif,null);
 		}catch(RuntimeException re){
 			LOG.error("insert oeuvre failed", re);
 			throw re;
 		}
 	}
 
-	
-		@Test
-		public final void updateOeuvre(){
-			try{
-				Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
-	
-				Peinture p = new Peinture(d, false, artiste, null,2080, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
-				httpPostRequest(p,"createOeuvre");
-				p.setAnnee(2012);
-				Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"updateOeuvre");
-				Assert.assertTrue(peintureVerif.getAnnee()== 2012);
+	@Test
+	public final void updateOeuvre(){
+		try{
+			Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
 
-//				oeuvreDAO.createOeuvre(p);
-//				p.setAnnee(2010);
-//				oeuvreDAO.updateOeuvre(p);
-//				Assert.assertTrue(oeuvreDAO.findById(p.getId()).getAnnee()== 2010);
-	
-			}catch(RuntimeException re){
-				LOG.error("update failed", re);
-				throw re;
-			}
-		}
-	
-		@Test
-		public final void createCollection(){
-			try{
-				Artiste artiste = new Artiste("vincent", "ruffet", "bon sculpteur");
-	
-				Sculpture sculpture = new Sculpture();
-				sculpture.setAnnee(2015);
-				sculpture.setDimension(d);
-				sculpture.setTitre("le penseur");
-				sculpture.setArtiste(artiste);
-				sculpture.setHasBeenReproduced(false);
-				sculpture.setMateriaux(Materiaux.ARGILE);
-				
-				httpPostRequest(sculpture,"createOeuvre");
-				//oeuvreDAO.createOeuvre(sculpture);
-	
-	
-	
-				Collection collection = new Collection();
-				collection.setEtat(EtatCollection.EXPOSED);
-				httpPostRequest(collection,"createCollection");
-				//conservateur.createCollection(collection);
-				
-				collection.addOeuvre(sculpture);
-				
-				LOG.info(collection.getOeuvres().toString());
-				
-				//httpPostRequest(collection,"updateCollection");
-				//conservateur.addOeuvre(sculpture, collection);
-	
-//				Assert.assertTrue(collectionDAO.getOeuvresOfCollection(collection.getId()).size() == 1);
-//	
-//				List<Oeuvre> listeOeuvre = collectionDAO.getOeuvresOfCollection(collection.getId());
-//				for(Oeuvre o : listeOeuvre){
-//					LOG.debug(o.toString());
-//				}
-	
-			}catch(RuntimeException re){
-				LOG.error("create collection failed", re);
-				throw re;
-			}
-		}
-	
-//	
-//		@Test
-//		public final void insertPhotoAndReproduction(){
-//			try{
-//				Artiste artiste = new Artiste("charle", "henry", "pas terrible");
-//	
-//				Peinture peinture = new Peinture(d, false, artiste, null,2005, "", "caillou", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
-//				oeuvreDAO.createOeuvre(peinture);
-//	
-//				Photo photo = new Photo(peinture,null);
-//				photoDAO.createPhoto(photo);
-//	
-//				Reproduction repro = new Reproduction(peinture, 10, SupportReproduction.CARTE);
-//				reproductionDAO.createReproduction(repro);
-//	
-//				//Assert.assertTrue(photoDAO.findById(photo.getId()).getOeuvre().getId() == peinture.getId());
-//				Assert.assertTrue(reproductionDAO.findById(repro.getId()).getOeuvre().getId() == peinture.getId());
-//	
-//			}catch(RuntimeException re){
-//				LOG.error("update failed", re);
-//				throw re;
-//			}
-//		}
+			Peinture p = new Peinture(d, false, artiste, null,2080, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Oeuvre peintureReturn =(Oeuvre) httpPostRequest(p,"createOeuvre");
 
+			//attention il faut modifier peintureReturn now et laisser p de coté, si on modifie p (qui n'est pas managé) cela aura pour effet
+			// de créer une nouvelle entité (merge) au lieu de mettre à jour
+			peintureReturn.setAnnee(2012);
+			Oeuvre peintureReturn2 = (Oeuvre) httpPostRequest(peintureReturn,"updateOeuvre");
+			Assert.assertTrue(peintureReturn2.getAnnee()== 2012);
+
+
+		}catch(RuntimeException re){
+			LOG.error("update failed", re);
+			throw re;
+		}
+	}
+
+	@Test
+	public final void createCollection(){
+		try{
+			Artiste artiste = new Artiste("vincent", "ruffet", "bon sculpteur");
+
+			Peinture p = new Peinture(d, false, artiste, null,2014, "", "test", "test", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+
+			Sculpture sculpture = new Sculpture();
+			sculpture.setAnnee(2566469);
+			sculpture.setDimension(d);
+			sculpture.setTitre("le penseur");
+			sculpture.setArtiste(artiste);
+			sculpture.setHasBeenReproduced(false);
+			sculpture.setMateriaux(Materiaux.ARGILE);
+
+			Sculpture sculptureReturn = (Sculpture) httpPostRequest(sculpture,"createOeuvre");
+
+			Collection collection = new Collection();
+			collection.setEtat(EtatCollection.EXPOSED);
+			//ajout d'une peinture en cascade
+			collection.addOeuvre(p);
+			Collection collectionReturn = (Collection) httpPostRequest(collection,"createCollection");			
+
+			//idem que pour le updateOeuvre plus haut
+			//ajout d'une sculpture déjà existante
+			collectionReturn.addOeuvre(sculptureReturn);
+			collectionReturn.addComment("blavljh");
+
+			Collection collectionReturn2 =(Collection) httpPostRequest(collectionReturn,"updateCollection");
+			Assert.assertTrue(collectionReturn2.getOeuvres().size() == 2);
+
+		}catch(RuntimeException re){
+			LOG.error("create collection failed", re);
+			throw re;
+		}
+	}
+
+	@Test
+	public final void insertPhotoAndReproduction(){
+		try{
+			Artiste artiste = new Artiste("charle", "henry", "pas terrible");
+
+			Peinture peinture = new Peinture(d, false, artiste, null,2005, "", "caillou", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);	
+			Peinture peintureReturn = (Peinture) httpPostRequest(peinture,"createOeuvre");
+
+			Photo photo = new Photo("/le/chemin/absolue", peintureReturn);
+			Photo photoReturn = (Photo) httpPostRequest(photo,"createPhoto");
+
+			Reproduction repro = new Reproduction(peintureReturn, 10, SupportReproduction.CARTE);
+			Reproduction reproReturn = (Reproduction) httpPostRequest(repro,"createReproduction");		
+
+			Assert.assertTrue(reproReturn.getOeuvre().getId() == peintureReturn.getId());
+
+		}catch(RuntimeException re){
+			LOG.error("update failed", re);
+			throw re;
+		}
+	}
 }
-
