@@ -36,8 +36,8 @@
 
 			<!-- Connexion a la BD "musee" avec un utilisateur pre enregistre "roor", 
 				MySQL lance grace a WAMP (PhpMyAdmin) -->
-			<!-- <property name="hibernate.connection.url" value="${jdbc.url}" /> -->
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/musee" />
+			<property name="hibernate.connection.url" value="${jdbc.url}" />
+<!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/musee" /> -->
 <!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://dbserver:3306/rlyazidi" /> -->
 			
 
