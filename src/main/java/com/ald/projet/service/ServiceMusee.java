@@ -1,4 +1,4 @@
-package com.ald.projet.entities;
+package com.ald.projet.service;
 
 import java.util.List;
 
@@ -23,13 +23,17 @@ import com.ald.projet.DAO.OeuvreDAO;
 import com.ald.projet.DAO.PhotoDAO;
 import com.ald.projet.DAO.ReproductionDAO;
 import com.ald.projet.dto.OeuvreDTO;
+import com.ald.projet.entities.Artiste;
+import com.ald.projet.entities.Collection;
+import com.ald.projet.entities.Oeuvre;
+import com.ald.projet.entities.Photo;
+import com.ald.projet.entities.Reproduction;
 import com.ald.projet.property.Connexion;
 
-@Entity
-@Path("/conservateur")
-public class Conservateur extends AgentMusee{
+@Path("/service")
+public class ServiceMusee {
 
-	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Conservateur.class);	
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ServiceMusee.class);	
 	private static CollectionDAO collectionDAO = new CollectionDAO();
 	private static OeuvreDAO oeuvreDAO = new OeuvreDAO();
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
@@ -38,12 +42,8 @@ public class Conservateur extends AgentMusee{
 	private static ConnexionDAO connexionDAO = new ConnexionDAO();
 
 
-	public Conservateur(){
+	public ServiceMusee(){
 
-	}
-
-	public Conservateur(String nom, String prenom, Connexion connexion) {
-		super(nom, prenom, connexion);
 	}
 
 	
@@ -52,10 +52,9 @@ public class Conservateur extends AgentMusee{
 	@POST
 	@Path("/connexion")
 	@Consumes("application/xml")
-	public Response connection(Connexion connexion){
-		
-		boolean b = connexionDAO.isValidConnection(connexion);
-		return Response.ok(b).build();
+	public Response connection(Connexion connexion){	
+		String status = connexionDAO.isValidConnection(connexion);
+		return Response.ok(status).build();
 	}
 	
 
@@ -149,7 +148,6 @@ public class Conservateur extends AgentMusee{
 	@Produces("application/xml")
 	public Oeuvre getOeuvre(@PathParam("id")int id){
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
-//		//return Response.ok(oeuvre).build();
 		return oeuvre;
 	}
 

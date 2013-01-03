@@ -17,8 +17,12 @@ d'abord les information dans la classe mere puis dans la classe fille ) et les r
 
 Personne -> Libraire / Conservateur / artiste
 
+DEPRECATED
 Nous avons choisi la stategie TABLE PER CLASS afin de rentrer en base les classes concretes. En effet nous n'aurons pas besoin d'effectuer de requètes (jointures)
  pour recolter des informations sur un ensemble de personnes.
+ 
+==> Plus d'heritage : Une classe EMPLOYE (avec un status (enum) qui peut etre conservateur/libraire) et une classe Libraire
+C'est plus pratique pour le web service de connexion.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
-import com.ald.projet.entities.Conservateur;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
 import com.ald.projet.entities.Photo;
@@ -31,6 +30,7 @@ import com.ald.projet.property.Materiaux;
 import com.ald.projet.property.Realisation;
 import com.ald.projet.property.SupportOeuvre;
 import com.ald.projet.property.SupportReproduction;
+import com.ald.projet.service.ServiceMusee;
 
 /**
  * Les tests de DAO se font à travers les web services REST pour récupérer un entityManager valide de JPAFilter
@@ -41,7 +41,6 @@ public class DAOTest {
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DAOTest.class);	
 
 	private static Dimension d;
-	private static Conservateur conservateur;
 	
 	private static JAXBContext jc;
 
@@ -49,7 +48,6 @@ public class DAOTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
-		conservateur = new Conservateur();
 		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class);
 	}
 
@@ -68,7 +66,7 @@ public class DAOTest {
 			java.io.StringWriter sw = new StringWriter();
 			marshaller.marshal(o, sw);
 
-			ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/"+resourceURI);
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/"+resourceURI);
 
 			// We're posting XML and a JAXB object
 			request.body("application/xml", sw.toString());
@@ -78,7 +76,6 @@ public class DAOTest {
 			{
 				Unmarshaller un = jc.createUnmarshaller();
 				Object object = (Object) un.unmarshal(new StringReader(response.getEntity()));
-				LOG.info("laaaaaaa "+object.toString());
 				return object;
 			}
 		} catch (Exception e) {
@@ -91,7 +88,7 @@ public class DAOTest {
 	public Object httpGetRequest(int id, String resourceURI){
 		try {
 
-			ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/"+resourceURI+"/"+id);
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/"+resourceURI+"/"+id);
 
 			// We're posting XML and a JAXB object
 			request.accept("application/xml");
@@ -122,7 +119,7 @@ public class DAOTest {
 				java.io.StringWriter sw = new StringWriter();
 				marshaller.marshal(connexion, sw);
 
-				ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/connexion");
+				ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/connexion");
 
 				// We're posting XML and a JAXB object
 				request.body("application/xml", sw.toString());
@@ -132,7 +129,7 @@ public class DAOTest {
 				{
 					Unmarshaller un = jc.createUnmarshaller();
 					LOG.info(response.getEntity());
-				//	Assert.assertNotSame(response.getEntity(),true);
+					Assert.assertNotSame(response.getEntity(),null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
