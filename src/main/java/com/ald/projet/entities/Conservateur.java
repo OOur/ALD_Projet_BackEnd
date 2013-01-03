@@ -3,6 +3,8 @@ package com.ald.projet.entities;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,9 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import com.ald.projet.DAO.ArtisteDAO;
 import com.ald.projet.DAO.CollectionDAO;
+import com.ald.projet.DAO.ConnexionDAO;
+import com.ald.projet.DAO.GenericDAO;
 import com.ald.projet.DAO.OeuvreDAO;
 import com.ald.projet.DAO.PhotoDAO;
 import com.ald.projet.DAO.ReproductionDAO;
+import com.ald.projet.dto.OeuvreDTO;
+import com.ald.projet.property.Connexion;
 
 @Entity
 @Path("/conservateur")
@@ -29,17 +35,29 @@ public class Conservateur extends AgentMusee{
 	private static ArtisteDAO artisteDAO = new ArtisteDAO();
 	private static ReproductionDAO reproductionDAO = new ReproductionDAO();
 	private static PhotoDAO photoDAO = new PhotoDAO();
+	private static ConnexionDAO connexionDAO = new ConnexionDAO();
 
 
 	public Conservateur(){
 
 	}
 
-	public Conservateur(String nom, String prenom, String login,
-			String password) {
-		super(nom, prenom, login, password);
+	public Conservateur(String nom, String prenom, Connexion connexion) {
+		super(nom, prenom, connexion);
 	}
 
+	
+	
+	/*** Testé OK***/
+	@POST
+	@Path("/connexion")
+	@Consumes("application/xml")
+	public Response connection(Connexion connexion){
+		
+		boolean b = connexionDAO.isValidConnection(connexion);
+		return Response.ok(b).build();
+	}
+	
 
 	/*** Testé OK***/
 	@POST
@@ -131,6 +149,7 @@ public class Conservateur extends AgentMusee{
 	@Produces("application/xml")
 	public Oeuvre getOeuvre(@PathParam("id")int id){
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
+//		//return Response.ok(oeuvre).build();
 		return oeuvre;
 	}
 

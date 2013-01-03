@@ -15,11 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
-import com.ald.projet.DAO.ArtisteDAO;
-import com.ald.projet.DAO.CollectionDAO;
-import com.ald.projet.DAO.OeuvreDAO;
-import com.ald.projet.DAO.PhotoDAO;
-import com.ald.projet.DAO.ReproductionDAO;
+
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Conservateur;
@@ -28,6 +24,7 @@ import com.ald.projet.entities.Peinture;
 import com.ald.projet.entities.Photo;
 import com.ald.projet.entities.Reproduction;
 import com.ald.projet.entities.Sculpture;
+import com.ald.projet.property.Connexion;
 import com.ald.projet.property.Dimension;
 import com.ald.projet.property.EtatCollection;
 import com.ald.projet.property.Materiaux;
@@ -53,7 +50,7 @@ public class DAOTest {
 	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
 		conservateur = new Conservateur();
-		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class);
+		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class);
 	}
 
 	/**
@@ -81,6 +78,7 @@ public class DAOTest {
 			{
 				Unmarshaller un = jc.createUnmarshaller();
 				Object object = (Object) un.unmarshal(new StringReader(response.getEntity()));
+				LOG.info("laaaaaaa "+object.toString());
 				return object;
 			}
 		} catch (Exception e) {
@@ -111,6 +109,42 @@ public class DAOTest {
 		return null;
 	}
 
+	@Test
+	public final void connexionTest(){
+
+		try{	
+			Connexion connexion = new Connexion("azerty","azerty");
+			try {
+
+				// sérialise l'objet pour l'envoyer via une requete POST
+				Marshaller marshaller = jc.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+				java.io.StringWriter sw = new StringWriter();
+				marshaller.marshal(connexion, sw);
+
+				ClientRequest request = new ClientRequest("http://localhost:8080/rest/conservateur/connexion");
+
+				// We're posting XML and a JAXB object
+				request.body("application/xml", sw.toString());
+				ClientResponse<String> response = request.post(String.class);
+
+				if (response.getStatus() == 200) 
+				{
+					Unmarshaller un = jc.createUnmarshaller();
+					LOG.info(response.getEntity());
+				//	Assert.assertNotSame(response.getEntity(),true);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
+		
+		}catch(RuntimeException re){
+			LOG.error("connexion test failed", re);
+			throw re;
+		}
+	}
+	
 
 	@Test
 	public final void insertOeuvre(){

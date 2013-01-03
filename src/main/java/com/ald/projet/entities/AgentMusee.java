@@ -1,13 +1,16 @@
 package com.ald.projet.entities;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+
+import com.ald.projet.property.Connexion;
 
 
 @Entity
 public abstract class AgentMusee extends Personne {
 
-	private String login;
-	private String password;
+	@Embedded 
+	private Connexion connexion;
 	
 	
 	public AgentMusee(){
@@ -15,32 +18,20 @@ public abstract class AgentMusee extends Personne {
 	}
 	
 	
-	public AgentMusee(String nom, String prenom, String login, String password) {
+	public AgentMusee(String nom, String prenom, Connexion connexion) {
 		super(nom, prenom);
-		this.login = login;
-		this.password = password;
+		this.connexion = connexion;
 	}
 
 
-	public String getLogin() {
-		return login;
+	public Connexion getConnexion() {
+		return connexion;
 	}
 
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setConnexion(Connexion connexion) {
+		this.connexion = connexion;
 	}
 
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	
 
 }
