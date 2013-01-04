@@ -23,6 +23,7 @@ import com.ald.projet.DAO.OeuvreDAO;
 import com.ald.projet.DAO.PhotoDAO;
 import com.ald.projet.DAO.ReproductionDAO;
 import com.ald.projet.dto.OeuvreDTO;
+import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Oeuvre;
@@ -150,6 +151,18 @@ public class ServiceMusee {
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
 		return oeuvre;
 	}
+	
+	
+
+	/*** Testé OK***/
+	@POST
+	@Path("/criteriaOeuvres")
+	@Produces("application/xml")
+	public OeuvresDTO getCriteriaOeuvre(Oeuvre oeuvre){
+		 OeuvresDTO  dto = oeuvreDAO.findByCriteria(oeuvre);
+		return dto;
+	}
+	
 
 	/*** Testé OK***/
 	@GET

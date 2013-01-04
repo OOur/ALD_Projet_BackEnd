@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 
+import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Oeuvre;
@@ -48,7 +49,7 @@ public class DAOTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
-		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class);
+		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class, OeuvresDTO.class);
 	}
 
 	/**
@@ -113,7 +114,6 @@ public class DAOTest {
 			Connexion connexion = new Connexion("azerty","azerty");
 			try {
 
-				// sérialise l'objet pour l'envoyer via une requete POST
 				Marshaller marshaller = jc.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 				java.io.StringWriter sw = new StringWriter();
@@ -121,7 +121,6 @@ public class DAOTest {
 
 				ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/connexion");
 
-				// We're posting XML and a JAXB object
 				request.body("application/xml", sw.toString());
 				ClientResponse<String> response = request.post(String.class);
 
@@ -129,7 +128,7 @@ public class DAOTest {
 				{
 					Unmarshaller un = jc.createUnmarshaller();
 					LOG.info(response.getEntity());
-					Assert.assertNotSame(response.getEntity(),null);
+					Assert.assertTrue(!response.getEntity().isEmpty());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -142,14 +141,14 @@ public class DAOTest {
 		}
 	}
 	
-
+	
 	@Test
 	public final void insertOeuvre(){
 
 		try{
 
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Peinture p = new Peinture(d, false, artiste, null, 2010, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
+			Peinture p = new Peinture(d, false, artiste, null, 11111, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
 			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
 			Assert.assertNotSame(peintureVerif,null);
 		}catch(RuntimeException re){
@@ -237,4 +236,38 @@ public class DAOTest {
 			throw re;
 		}
 	}
+	
+	
+	/**
+	 * Cette méthode retourne toutes les oeuvres selon les critères sélectionnés par l'utilisateur de l'appli.
+	 * Ici il demande à obtenir toutes les oeuvres qui ont été faites à une année donnée et un artiste particulier.
+	 * ==> Seul l'attribut "année" et "artiste" de l'Oeuvre o a été renseignés, tous les autres champs sont à null.
+	 * On va donc faire une recherche sur les années et les artistes
+	 */
+	@Test
+	public final void criteriaTest(){
+
+		try{
+			
+			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
+			Peinture p = new Peinture(d, false, artiste, null, 123456, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
+			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
+			Assert.assertNotSame(peintureVerif,null);
+			
+			Oeuvre o = new Peinture();
+			o.setAnnee(123456);
+			o.setArtiste(artiste);
+			
+			OeuvresDTO oeuvresDTO = (OeuvresDTO) httpPostRequest(o,"criteriaOeuvres");
+			Assert.assertTrue(oeuvresDTO.getOeuvre().size() >= 1);
+			LOG.info("SIZE = "+ oeuvresDTO.getOeuvre().size());
+			
+		
+		}catch(RuntimeException re){
+			LOG.error("criteria failed", re);
+			throw re;
+		}
+	}
+	
+	
 }

@@ -5,10 +5,18 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
+import org.hibernate.Criteria;
 import org.slf4j.LoggerFactory;
 
+import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
+import com.ald.projet.entities.Employe;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Oeuvre;
 
@@ -17,9 +25,9 @@ public class OeuvreDAO extends GenericDAO {
 
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(OeuvreDAO.class);
 
-	
-	
-	
+
+
+
 	public void testT(Oeuvre o) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -36,12 +44,12 @@ public class OeuvreDAO extends GenericDAO {
 			if (tx != null)
 				LOG.error("test artiste failed", re);
 			tx.rollback();
-			
+
 		}
 
 	}
-	
-	
+
+
 	public void createOeuvre(Oeuvre oeuvre) {
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -111,6 +119,59 @@ public class OeuvreDAO extends GenericDAO {
 		Oeuvre oeuvre = em.find(Oeuvre.class,id);
 		return oeuvre;
 	}
+
+	/**
+	 * 
+	 * @param Oeuvre o. Coté client, l'utilisateur remplira un formulaire pour rechercher toutes les oeuvres selon certains critères
+	 * Les champs correspondent en fait aux attributs d'une oeuvre : une oeuvre intermédiaire sera donc créée de manière transparente 
+	 * (mais pas persistée, elle servira juste pour l'appel au web service). Les champs qui auront été reseignés seront les critères de 
+	 * la requête, ceux qui n'auront pas été renseigné seront null et donc ils ne seront pas intégrés à la requête.
+	 * ==> Construction de requête dynamique.
+	 * @return un DTO contenant simplement une liste d'oeuvres.
+	 */
+	public OeuvresDTO findByCriteria(Oeuvre o){
+
+		OeuvresDTO dto = new OeuvresDTO();
+
+		EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Oeuvre> cq = cb.createQuery(Oeuvre.class);
+		Root<Oeuvre> root = cq.from(Oeuvre.class); // FROM
+		cq.select(root); //SELECT
+
+		List<Predicate> predicateList = new ArrayList<Predicate>();
+
+		if(o.getAnnee() != null){
+			Predicate annee = cb.equal(root.get("annee"), o.getAnnee());
+			predicateList.add(annee);
+		}
+
+		if(o.hasBeenReproduced() == true){
+			Predicate reproduced = cb.equal(root.get("hasBeenReproduced"), o.hasBeenReproduced());
+			predicateList.add(reproduced);
+		}
+
+		if(o.getArtiste() != null){
+			Predicate artiste = cb.equal(root.get("artiste"), o.getArtiste());
+			predicateList.add(artiste);
+		}
+
+		if(o.getTag() != null){
+			Predicate tag = cb.equal(root.get("tag"), o.getTag());
+			predicateList.add(tag);
+		}
+
+		Predicate[] predicates = new Predicate[predicateList.size()];
+		predicateList.toArray(predicates);
+		cq.where(predicates); //WHERE
+
+		dto.setOeuvre(em.createQuery(cq).getResultList());
+		return dto;
+	}
+
+
 
 	public void deleteOeuvre(Oeuvre persistentInstance){
 		EntityManager em = createEntityManager();
