@@ -29,12 +29,31 @@ public class ConnexionDAO extends GenericDAO {
 			if(employe != null)
 				return employe.getStatus().toString();
 		} catch (Exception re) {
-			LOG.error("create artiste failed", re);
+			LOG.error("connexion DAO failed", re);
 			tx.rollback();
 
 		}
 		
 		return null;
+	}
+	
+	
+	
+	public void createEmploye(Employe employe) {
+		EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.persist(employe);
+			tx.commit();
+
+
+		} catch (Exception re) {
+			LOG.error("create employe failed", re);
+			tx.rollback();
+
+		}
 	}
 
 

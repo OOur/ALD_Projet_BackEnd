@@ -2,7 +2,9 @@ package com.ald.projet.DAO;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -111,5 +113,14 @@ public class ArtisteDAO extends GenericDAO {
 			tx.rollback();
 		}
 
+	}
+
+	public Set<Oeuvre> findOeuvresOfArtiste(int ArtisteId) {
+		Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
+		EntityManager em = createEntityManager();
+		Artiste a = em.getReference(Artiste.class,ArtisteId);
+		oeuvres = a.getOeuvres();
+
+		return oeuvres;
 	}
 }

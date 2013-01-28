@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @XmlRootElement(name = "artiste")
@@ -27,7 +28,7 @@ public class Artiste {
 	
 	private String bibliographie;
 	
-	@OneToMany(mappedBy="artiste", orphanRemoval=true, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(mappedBy="artiste", orphanRemoval=true)
 	private Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
 	
 	public Artiste(){
@@ -85,7 +86,7 @@ public class Artiste {
 		this.bibliographie = bibliographie;
 	}
 
-	@XmlElement
+	@XmlTransient
 	public Set<Oeuvre> getOeuvres() {
 		return oeuvres;
 	}

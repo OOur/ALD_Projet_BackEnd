@@ -1,11 +1,14 @@
 package com.ald.projet.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,6 +29,7 @@ import com.ald.projet.dto.OeuvreDTO;
 import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
+import com.ald.projet.entities.Employe;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Photo;
 import com.ald.projet.entities.Reproduction;
@@ -47,22 +51,34 @@ public class ServiceMusee {
 
 	}
 
-	
-	
+
+
 	/*** Testé OK***/
 	@POST
 	@Path("/connexion")
 	@Consumes("application/xml")
-	public Response connection(Connexion connexion){	
+	//	@Consumes("application/x-www-form-urlencoded")
+	@Produces("application/xml")
+	public Response connection(Connexion connexion){
+		LOG.info("login "+connexion.getLogin()+ " mdp "+connexion.getPassword());
 		String status = connexionDAO.isValidConnection(connexion);
+		/**
+		 * erreur 400 : Could not find message body reader for type: class com.ald.projet.property.Connexion of content type: application/x-www-form-urlencoded. 
+		 * Dès que je décommente "Connexion connexion" pour l'interpréter depuis la requête HTTP reçue ça plante. 
+		 * Le contenu renvoyé par le client n'est pas au format XML mais une sorte de contenu de formulaire
+		 * En attendant, je retourne toujours le status "Conservateur" pour pouvoir avancer. 
+		 */
+		String test = "Conservateur";
 		return Response.ok(status).build();
+
 	}
-	
+
 
 	/*** Testé OK***/
 	@POST
 	@Path("/createCollection")
 	@Consumes("application/xml")
+	@Produces("application/xml")
 	public Response createCollection(Collection collection){
 		collectionDAO.createCollection(collection);
 		return Response.ok(collection).build();
@@ -77,7 +93,7 @@ public class ServiceMusee {
 		oeuvreDAO.createOeuvre(o);
 		return Response.ok(o).build();
 	}
-	
+
 	/*** Testé OK***/
 	@POST
 	@Path("/createReproduction")
@@ -86,7 +102,7 @@ public class ServiceMusee {
 		reproductionDAO.createReproduction(r);
 		return Response.ok(r).build();
 	}
-	
+
 	/*** Testé OK***/
 	@POST
 	@Path("/createPhoto")
@@ -95,7 +111,25 @@ public class ServiceMusee {
 		photoDAO.createPhoto(p);
 		return Response.ok(p).build();
 	}
-	
+
+	/*** Testé OK***/
+	@POST
+	@Path("/createArtiste")
+	@Consumes("application/xml")
+	public Response createArtiste(Artiste a){
+		artisteDAO.createArtiste(a);
+		return Response.ok(a).build();
+	}
+
+	/*** Testé OK***/
+	@POST
+	@Path("/createEmploye")
+	@Consumes("application/xml")
+	public Response createEmploye(Employe e){
+		connexionDAO.createEmploye(e);
+		return Response.ok(e).build();
+	}
+
 
 	/*** Testé OK***/
 	@POST
@@ -151,18 +185,18 @@ public class ServiceMusee {
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
 		return oeuvre;
 	}
-	
-	
+
+
 
 	/*** Testé OK***/
 	@POST
 	@Path("/criteriaOeuvres")
 	@Produces("application/xml")
 	public OeuvresDTO getCriteriaOeuvre(Oeuvre oeuvre){
-		 OeuvresDTO  dto = oeuvreDAO.findByCriteria(oeuvre);
+		OeuvresDTO  dto = oeuvreDAO.findByCriteria(oeuvre);
 		return dto;
 	}
-	
+
 
 	/*** Testé OK***/
 	@GET
@@ -170,6 +204,25 @@ public class ServiceMusee {
 	@Produces("application/xml")
 	public Artiste getArtiste(@PathParam("id")int id){
 		Artiste a = artisteDAO.findById(id);
+		return a;
+	}
+
+
+	@GET
+	@Path("/getOeuvresOfArtiste/{id}")
+	@Produces({"application/xml","application/json"})
+	public Set<Oeuvre> findOeuvresOfArtiste(@PathParam("id")int ArtisteId)
+	{
+		Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
+		oeuvres = artisteDAO.findOeuvresOfArtiste(ArtisteId);
+		return oeuvres;	
+	}
+
+	@GET
+	@Path("/getArtistes")
+	@Produces({"application/xml","application/json"})
+	public List<Artiste> getArtistes(){
+		List<Artiste> a = artisteDAO.findAll();
 		return a;
 	}
 }
