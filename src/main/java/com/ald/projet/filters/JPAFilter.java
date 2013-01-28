@@ -33,6 +33,7 @@ public class JPAFilter implements Filter {
 			JPAUtil.ENTITY_MANAGERS.set(em);
 			chain.doFilter(request,response);
 			JPAUtil.ENTITY_MANAGERS.remove();
+			
 		}finally{
 			try{
 				if (em != null)

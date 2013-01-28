@@ -39,7 +39,7 @@ public abstract class Oeuvre {
 	@XmlElement(defaultValue = "false")
 	private boolean hasBeenReproduced = false;
 
-	@ManyToOne (cascade=CascadeType.PERSIST, fetch=FetchType.LAZY)
+	@ManyToOne (fetch=FetchType.LAZY)
 	@JoinColumn(name="artiste_id")
 	//@XmlIDREF
 	private Artiste artiste;
@@ -117,8 +117,10 @@ public abstract class Oeuvre {
 		this.hasBeenReproduced = hasBeenReproduced;
 	}
 
-	@XmlTransient
+	
+//	@XmlTransient
 	//@XmlInverseReference(mappedBy="oeuvres")
+	@XmlElement
 	public Artiste getArtiste() {
 		return artiste;
 	}

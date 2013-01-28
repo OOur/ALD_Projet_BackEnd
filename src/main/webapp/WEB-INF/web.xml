@@ -38,6 +38,12 @@
 	</context-param>
 	
 	
+	<context-param>
+      <param-name>resteasy.providers</param-name>
+      <param-value>com.ald.projet.service.RestInterceptor</param-value>
+	</context-param>
+	
+	
 		<filter>
 			<filter-name>JPA</filter-name>
 			<filter-class> com.ald.projet.filters.JPAFilter</filter-class>

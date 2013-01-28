@@ -1,13 +1,19 @@
 package com.ald.projet;
 
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLStreamWriter;
 
+import org.codehaus.jettison.mapped.Configuration;
+import org.codehaus.jettison.mapped.MappedNamespaceConvention;
+import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Assert;
@@ -19,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
+import com.ald.projet.entities.Employe;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Peinture;
 import com.ald.projet.entities.Photo;
@@ -29,9 +36,10 @@ import com.ald.projet.property.Dimension;
 import com.ald.projet.property.EtatCollection;
 import com.ald.projet.property.Materiaux;
 import com.ald.projet.property.Realisation;
+import com.ald.projet.property.Status;
 import com.ald.projet.property.SupportOeuvre;
 import com.ald.projet.property.SupportReproduction;
-import com.ald.projet.service.ServiceMusee;
+import com.ald.projet.service.MuseeServiceImpl;
 
 /**
  * Les tests de DAO se font à travers les web services REST pour récupérer un entityManager valide de JPAFilter
@@ -42,14 +50,14 @@ public class DAOTest {
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DAOTest.class);	
 
 	private static Dimension d;
-	
+
 	private static JAXBContext jc;
 
 
 	@BeforeClass
 	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
-		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class, OeuvresDTO.class);
+		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class, OeuvresDTO.class, Employe.class);
 	}
 
 	/**
@@ -61,6 +69,21 @@ public class DAOTest {
 	public Object httpPostRequest(Object o, String resourceURI){
 		try {
 
+
+			//
+			//			Configuration config = new Configuration();
+			//			MappedNamespaceConvention con = new MappedNamespaceConvention(config);
+			//			Writer writer = new StringWriter();
+			//			XMLStreamWriter xmlStreamWriter = new MappedXMLStreamWriter(con, writer);
+			//
+			//			// sérialise l'objet pour l'envoyer via une requete POST
+			//			Marshaller marshaller = jc.createMarshaller();
+			//			marshaller.marshal(o, xmlStreamWriter);
+			//			LOG.info("json = "+ xmlStreamWriter.toString());
+			//
+			//			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/"+resourceURI);
+			//			request.body("application/json", xmlStreamWriter.toString());
+
 			// sérialise l'objet pour l'envoyer via une requete POST
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
@@ -71,6 +94,7 @@ public class DAOTest {
 
 			// We're posting XML and a JAXB object
 			request.body("application/xml", sw.toString());
+
 			ClientResponse<String> response = request.post(String.class);
 
 			if (response.getStatus() == 200) 
@@ -111,44 +135,45 @@ public class DAOTest {
 	public final void connexionTest(){
 
 		try{	
+
 			Connexion connexion = new Connexion("azerty","azerty");
-			try {
+			Employe employe = new Employe(Status.CONSERVATEUR, "Ben", "Stiler", connexion);
+			httpPostRequest(employe,"createEmploye");
 
-				Marshaller marshaller = jc.createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-				java.io.StringWriter sw = new StringWriter();
-				marshaller.marshal(connexion, sw);
 
-				ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/connexion");
 
-				request.body("application/xml", sw.toString());
-				ClientResponse<String> response = request.post(String.class);
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(connexion, sw);
 
-				if (response.getStatus() == 200) 
-				{
-					Unmarshaller un = jc.createUnmarshaller();
-					LOG.info(response.getEntity());
-					Assert.assertTrue(!response.getEntity().isEmpty());
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/connexion");
+			request.body("application/xml", sw);
+
+			ClientResponse<String> response = request.post(String.class);
+
+			if (response.getStatus() == 200) 
+			{
+				LOG.info(response.getEntity());
+				Assert.assertTrue(!response.getEntity().isEmpty());
 			}
-	
-		
-		}catch(RuntimeException re){
-			LOG.error("connexion test failed", re);
-			throw re;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("connexion test failed", e);
 		}
+
 	}
-	
-	
+
+
 	@Test
 	public final void insertOeuvre(){
 
 		try{
 
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Peinture p = new Peinture(d, false, artiste, null, 11111, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+
+			Peinture p = new Peinture(d, false, artisteVerif, null, 11111, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
 			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
 			Assert.assertNotSame(peintureVerif,null);
 		}catch(RuntimeException re){
@@ -161,8 +186,9 @@ public class DAOTest {
 	public final void updateOeuvre(){
 		try{
 			Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
 
-			Peinture p = new Peinture(d, false, artiste, null,2080, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Peinture p = new Peinture(d, false, artisteVerif, null,2080, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 			Oeuvre peintureReturn =(Oeuvre) httpPostRequest(p,"createOeuvre");
 
 			//attention il faut modifier peintureReturn now et laisser p de coté, si on modifie p (qui n'est pas managé) cela aura pour effet
@@ -182,14 +208,15 @@ public class DAOTest {
 	public final void createCollection(){
 		try{
 			Artiste artiste = new Artiste("vincent", "ruffet", "bon sculpteur");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
 
-			Peinture p = new Peinture(d, false, artiste, null,2014, "", "test", "test", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
+			Peinture p = new Peinture(d, false, artisteVerif, null,2014, "", "test", "test", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 
 			Sculpture sculpture = new Sculpture();
 			sculpture.setAnnee(2566469);
 			sculpture.setDimension(d);
 			sculpture.setTitre("le penseur");
-			sculpture.setArtiste(artiste);
+			sculpture.setArtiste(artisteVerif);
 			sculpture.setHasBeenReproduced(false);
 			sculpture.setMateriaux(Materiaux.ARGILE);
 
@@ -219,8 +246,9 @@ public class DAOTest {
 	public final void insertPhotoAndReproduction(){
 		try{
 			Artiste artiste = new Artiste("charle", "henry", "pas terrible");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
 
-			Peinture peinture = new Peinture(d, false, artiste, null,2005, "", "caillou", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);	
+			Peinture peinture = new Peinture(d, false, artisteVerif, null,2005, "", "caillou", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);	
 			Peinture peintureReturn = (Peinture) httpPostRequest(peinture,"createOeuvre");
 
 			Photo photo = new Photo("/le/chemin/absolue", peintureReturn);
@@ -236,8 +264,8 @@ public class DAOTest {
 			throw re;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Cette méthode retourne toutes les oeuvres selon les critères sélectionnés par l'utilisateur de l'appli.
 	 * Ici il demande à obtenir toutes les oeuvres qui ont été faites à une année donnée et un artiste particulier.
@@ -248,26 +276,27 @@ public class DAOTest {
 	public final void criteriaTest(){
 
 		try{
-			
+
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Peinture p = new Peinture(d, false, artiste, null, 123456, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+
+			Peinture p = new Peinture(d, false, artisteVerif, null, 123456, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
 			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
 			Assert.assertNotSame(peintureVerif,null);
-			
+
 			Oeuvre o = new Peinture();
 			o.setAnnee(123456);
-			o.setArtiste(artiste);
-			
+			o.setArtiste(artisteVerif);
+
 			OeuvresDTO oeuvresDTO = (OeuvresDTO) httpPostRequest(o,"criteriaOeuvres");
-			Assert.assertTrue(oeuvresDTO.getOeuvre().size() >= 1);
-			LOG.info("SIZE = "+ oeuvresDTO.getOeuvre().size());
-			
-		
+			Assert.assertTrue(oeuvresDTO.getOeuvre().size() == 1);
+
+
 		}catch(RuntimeException re){
 			LOG.error("criteria failed", re);
 			throw re;
 		}
 	}
-	
-	
+
+
 }

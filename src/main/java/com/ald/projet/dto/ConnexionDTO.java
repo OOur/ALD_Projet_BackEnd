@@ -1,21 +1,20 @@
-package com.ald.projet.property;
+package com.ald.projet.dto;
 
 import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Embeddable
 @XmlRootElement(name = "connexion")
-public class Connexion {
+public class ConnexionDTO {
 
 	private String login;
 	private String password;
 	
-	public Connexion(){
+	public ConnexionDTO(){
 		
 	}
 	
-	public Connexion(String login, String password) {
+	public ConnexionDTO(String login, String password) {
 		super();
 		this.login = login;
 		this.password = password;
@@ -36,7 +35,5 @@ public class Connexion {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
 }
+
