@@ -105,9 +105,5 @@ public class Artiste {
 	public void removeOeuvre(Oeuvre o){
 		this.oeuvres.remove(o);
 	}
-	
-	
-	
-	
-	
+		
 }

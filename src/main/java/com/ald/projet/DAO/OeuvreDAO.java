@@ -14,11 +14,16 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Criteria;
 import org.slf4j.LoggerFactory;
 
-import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Employe;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Oeuvre;
+import com.ald.projet.simplified.ArtisteSimplifie;
+import com.ald.projet.simplified.OeuvreSimplifiee;
+import com.ald.projet.simplified.OeuvresDTO;
+import com.ald.projet.simplified.PeintureSimplifiee;
+import com.ald.projet.simplified.PhotographieSimplifiee;
+import com.ald.projet.simplified.SculptureSimplifiee;
 
 public class OeuvreDAO extends GenericDAO {
 
@@ -106,11 +111,22 @@ public class OeuvreDAO extends GenericDAO {
 
 
 
-	public List<Oeuvre> findAll() {
-		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
+	public List<OeuvreSimplifiee> findAll() {
+		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+		List<Oeuvre> res = new ArrayList<Oeuvre>();
 		EntityManager em = createEntityManager();
 
-		oeuvres = em.createQuery("SELECT p FROM Oeuvre p").getResultList();
+		res = em.createQuery("SELECT p FROM Oeuvre p").getResultList();
+
+		for(Oeuvre o : res){
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre()));
+			}
+		}
 		return oeuvres;
 	}
 

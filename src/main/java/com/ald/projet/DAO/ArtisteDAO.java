@@ -13,6 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Oeuvre;
+import com.ald.projet.simplified.ArtisteSimplifie;
+import com.ald.projet.simplified.OeuvreSimplifiee;
+import com.ald.projet.simplified.PeintureSimplifiee;
+import com.ald.projet.simplified.PhotographieSimplifiee;
+import com.ald.projet.simplified.SculptureSimplifiee;
 
 public class ArtisteDAO extends GenericDAO {
 
@@ -82,11 +87,16 @@ public class ArtisteDAO extends GenericDAO {
 	}
 
 
-	public List<Artiste> findAll() {
-		List<Artiste> artistes = new ArrayList<Artiste>();
+	public List<ArtisteSimplifie> findAll() {
+		List<ArtisteSimplifie> artistes = new ArrayList<ArtisteSimplifie>();
+		List<Artiste> res = new ArrayList<Artiste>();
 		EntityManager em = createEntityManager();
 
-		artistes = em.createQuery("SELECT p FROM Artiste p").getResultList();
+		res = em.createQuery("SELECT p FROM Artiste p").getResultList();
+		for(Artiste a : res){
+			artistes.add(new ArtisteSimplifie(a.getId(), a.getPrenom(), a.getNom()));
+		}
+
 		return artistes;
 	}
 
@@ -115,12 +125,23 @@ public class ArtisteDAO extends GenericDAO {
 
 	}
 
-	public Set<Oeuvre> findOeuvresOfArtiste(int ArtisteId) {
-		Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
+	public Set<OeuvreSimplifiee> findOeuvresOfArtiste(int ArtisteId) {
+		Set<OeuvreSimplifiee> oeuvres = new HashSet<OeuvreSimplifiee>();
+		Set<Oeuvre> res = new HashSet<Oeuvre>();
 		EntityManager em = createEntityManager();
 		Artiste a = em.getReference(Artiste.class,ArtisteId);
-		oeuvres = a.getOeuvres();
+		res = a.getOeuvres();
 
+		for(Oeuvre o : res){
+
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre()));
+			}
+		}
 		return oeuvres;
 	}
 }

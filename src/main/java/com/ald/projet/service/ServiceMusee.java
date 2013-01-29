@@ -25,8 +25,6 @@ import com.ald.projet.DAO.GenericDAO;
 import com.ald.projet.DAO.OeuvreDAO;
 import com.ald.projet.DAO.PhotoDAO;
 import com.ald.projet.DAO.ReproductionDAO;
-import com.ald.projet.dto.OeuvreDTO;
-import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Employe;
@@ -34,6 +32,11 @@ import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Photo;
 import com.ald.projet.entities.Reproduction;
 import com.ald.projet.property.Connexion;
+import com.ald.projet.simplified.ArtisteSimplifie;
+import com.ald.projet.simplified.CollectionSimplifiee;
+import com.ald.projet.simplified.OeuvreDTO;
+import com.ald.projet.simplified.OeuvreSimplifiee;
+import com.ald.projet.simplified.OeuvresDTO;
 
 @Path("/service")
 public class ServiceMusee {
@@ -76,7 +79,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/createCollection")
+	@Path("/collection/create")
 	@Consumes("application/xml")
 	@Produces("application/xml")
 	public Response createCollection(Collection collection){
@@ -87,7 +90,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/createOeuvre")
+	@Path("/oeuvre/create")
 	@Consumes("application/xml")
 	public Response createOeuvre(Oeuvre o){
 		oeuvreDAO.createOeuvre(o);
@@ -96,7 +99,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/createReproduction")
+	@Path("/reproduction/create")
 	@Consumes("application/xml")
 	public Response createReproduction(Reproduction r){
 		reproductionDAO.createReproduction(r);
@@ -105,7 +108,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/createPhoto")
+	@Path("/photo/create")
 	@Consumes("application/xml")
 	public Response createPhoto(Photo p){
 		photoDAO.createPhoto(p);
@@ -114,7 +117,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/createArtiste")
+	@Path("/artiste/create")
 	@Consumes("application/xml")
 	public Response createArtiste(Artiste a){
 		artisteDAO.createArtiste(a);
@@ -123,7 +126,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/createEmploye")
+	@Path("/employe/create")
 	@Consumes("application/xml")
 	public Response createEmploye(Employe e){
 		connexionDAO.createEmploye(e);
@@ -133,7 +136,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/updateOeuvre")
+	@Path("/oeuvre/update")
 	@Consumes("application/xml")
 	public Response updateOeuvre(Oeuvre o){
 		oeuvreDAO.updateOeuvre(o);
@@ -142,7 +145,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/updateCollection")
+	@Path("/collection/update")
 	@Consumes("application/xml")
 	public Response updateCollection(Collection collection){
 		collectionDAO.updateCollection(collection);
@@ -151,7 +154,7 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@GET
-	@Path("/contentOfCollection/{id}")
+	@Path("/collection/{id}")
 	@Produces("application/xml")
 	public Collection displayCollection(@PathParam("id") int CollectionId){
 		Collection collection = collectionDAO.findById(CollectionId);
@@ -160,26 +163,33 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@GET
-	@Path("/getCollections")
-	@Produces("application/xml")
-	public List<Collection> getCollections(){
-		List<Collection> collection = collectionDAO.findAll();
+	@Path("/collections")
+	@Produces({"application/xml","application/json"})
+	public List<CollectionSimplifiee> getCollections(){
+		List<CollectionSimplifiee> collection = collectionDAO.findAll();
 		return collection;
+	}
+	
+	@GET
+	@Path("/collection/delete/{id}")
+	public void deleteCollection(@PathParam("id")int id) {
+		Collection collection = collectionDAO.findById(id);
+		collectionDAO.deleteCollection(collection);			
 	}
 
 	/*** Testé OK***/
 	@GET
 	@Path("/oeuvres")
 	@Produces("application/xml")
-	public List<Oeuvre> getAllOeuvres(){
-		List<Oeuvre> oeuvres = oeuvreDAO.findAll();
+	public List<OeuvreSimplifiee> getAllOeuvres(){
+		List<OeuvreSimplifiee> oeuvres = oeuvreDAO.findAll();
 		return oeuvres;
 
 	}
 
 	/*** Testé OK***/
 	@GET
-	@Path("/getOeuvre/{id}")
+	@Path("/oeuvre/{id}")
 	@Produces("application/xml")
 	public Oeuvre getOeuvre(@PathParam("id")int id){
 		Oeuvre oeuvre = oeuvreDAO.findById(id);
@@ -190,17 +200,32 @@ public class ServiceMusee {
 
 	/*** Testé OK***/
 	@POST
-	@Path("/criteriaOeuvres")
+	@Path("/oeuvres/criteria")
 	@Produces("application/xml")
 	public OeuvresDTO getCriteriaOeuvre(Oeuvre oeuvre){
 		OeuvresDTO  dto = oeuvreDAO.findByCriteria(oeuvre);
 		return dto;
 	}
+	
+	
+	@GET
+	@Path("/oeuvre/delete/{id}")
+	public void deleteOeuvre(@PathParam("id")int id) {
+		Oeuvre oeuvre = oeuvreDAO.findById(id);
+		oeuvreDAO.removeOeuvre(oeuvre);			
+	}
+	
+	@GET
+	@Path("/artiste/delete/{id}")
+	public void deleteArtiste(@PathParam("id")int id) {
+		Artiste artiste = artisteDAO.findById(id);
+		artisteDAO.deleteArtiste(artiste);			
+	}
 
 
 	/*** Testé OK***/
 	@GET
-	@Path("/getArtiste/{id}")
+	@Path("/artiste/{id}")
 	@Produces("application/xml")
 	public Artiste getArtiste(@PathParam("id")int id){
 		Artiste a = artisteDAO.findById(id);
@@ -209,20 +234,20 @@ public class ServiceMusee {
 
 
 	@GET
-	@Path("/getOeuvresOfArtiste/{id}")
+	@Path("/oeuvre/artiste/{id}")
 	@Produces({"application/xml","application/json"})
-	public Set<Oeuvre> findOeuvresOfArtiste(@PathParam("id")int ArtisteId)
+	public Set<OeuvreSimplifiee> findOeuvresOfArtiste(@PathParam("id")int ArtisteId)
 	{
-		Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
+		Set<OeuvreSimplifiee> oeuvres = new HashSet<OeuvreSimplifiee>();
 		oeuvres = artisteDAO.findOeuvresOfArtiste(ArtisteId);
 		return oeuvres;	
 	}
 
 	@GET
-	@Path("/getArtistes")
+	@Path("/artistes")
 	@Produces({"application/xml","application/json"})
-	public List<Artiste> getArtistes(){
-		List<Artiste> a = artisteDAO.findAll();
+	public List<ArtisteSimplifie> getArtistes(){
+		List<ArtisteSimplifie> a = artisteDAO.findAll();
 		return a;
 	}
 }

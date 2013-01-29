@@ -8,8 +8,11 @@ import javax.persistence.EntityTransaction;
 
 import org.slf4j.LoggerFactory;
 
+import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Oeuvre;
+import com.ald.projet.simplified.ArtisteSimplifie;
+import com.ald.projet.simplified.CollectionSimplifiee;
 
 public class CollectionDAO extends GenericDAO {
 
@@ -51,11 +54,16 @@ public class CollectionDAO extends GenericDAO {
 	}
 
 
-	public List<Collection> findAll() {
-		List<Collection> collections = new ArrayList<Collection>();
+	public List<CollectionSimplifiee> findAll() {
+		List<CollectionSimplifiee> collections = new ArrayList<CollectionSimplifiee>();
+		List<Collection> res = new ArrayList<Collection>();
 		EntityManager em = createEntityManager();
 
-		collections = em.createQuery("SELECT p FROM Collection p").getResultList();
+		res = em.createQuery("SELECT p FROM Collection p").getResultList();
+		for(Collection c : res){
+			collections.add(new CollectionSimplifiee(c.getId(), c.getLibele(), c.getEtat()));
+		}
+		
 		return collections;
 	}
 

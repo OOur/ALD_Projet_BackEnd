@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 
-import com.ald.projet.dto.OeuvresDTO;
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Employe;
@@ -34,6 +33,7 @@ import com.ald.projet.property.Status;
 import com.ald.projet.property.SupportOeuvre;
 import com.ald.projet.property.SupportReproduction;
 import com.ald.projet.service.ServiceMusee;
+import com.ald.projet.simplified.OeuvresDTO;
 
 /**
  * Les tests de DAO se font à travers les web services REST pour récupérer un entityManager valide de JPAFilter

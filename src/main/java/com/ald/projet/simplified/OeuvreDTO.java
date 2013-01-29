@@ -1,4 +1,4 @@
-package com.ald.projet.dto;
+package com.ald.projet.simplified;
 
 import java.io.Serializable;
 import java.util.ArrayList;
