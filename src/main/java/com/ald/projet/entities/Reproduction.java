@@ -20,8 +20,8 @@ public class Reproduction {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	@OneToOne (cascade=CascadeType.PERSIST)
-	@JoinColumn(name="oeuvre_id", nullable=false)
+	@OneToOne
+	@JoinColumn(name="oeuvre_id")
 	private Oeuvre oeuvre;
 	private int prix;
 	@Enumerated(EnumType.STRING)

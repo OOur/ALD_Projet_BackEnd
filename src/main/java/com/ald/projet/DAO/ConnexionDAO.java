@@ -23,7 +23,7 @@ public class ConnexionDAO extends GenericDAO {
 			Query q = em.createQuery("SELECT c FROM Employe c where c.connexion.login =:lo and c.connexion.password =:pa");
 			q.setParameter("lo", connexion.getLogin());
 			q.setParameter("pa", connexion.getPassword());
-			Employe employe = (Employe) q.getSingleResult();
+			Employe employe = (Employe) q.getResultList().get(0);
 			tx.commit();
 			
 			if(employe != null)

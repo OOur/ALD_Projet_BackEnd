@@ -88,27 +88,6 @@ public class DAOTest {
 	}
 
 
-	public Object httpGetRequest(int id, String resourceURI){
-		try {
-
-			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/"+resourceURI+"/"+id);
-
-			// We're posting XML and a JAXB object
-			request.accept("application/xml");
-			ClientResponse<String> response = request.get(String.class);
-
-			if (response.getStatus() == 200) 
-			{
-				Unmarshaller un = jc.createUnmarshaller();
-				Object o = un.unmarshal(new StringReader(response.getEntity()));
-				return o;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@Test
 	public final void connexionTest(){
 
@@ -116,9 +95,7 @@ public class DAOTest {
 			
 			Connexion connexion = new Connexion("azerty","azerty");
 			Employe employe = new Employe(Status.CONSERVATEUR, "Ben", "Stiler", connexion);
-			String status =	(String) httpPostRequest(employe,"createEmploye");
-			
-			Assert.assertTrue(status == "Conservateur");
+			httpPostRequest(employe,"employe/create");
 
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
@@ -126,13 +103,12 @@ public class DAOTest {
 			marshaller.marshal(connexion, sw);
 
 			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/connexion");
-			LOG.info(sw.toString());
 			request.body("application/xml", sw.toString());
+			LOG.info(sw.toString());
 			ClientResponse<String> response = request.post(String.class);
 
 			if (response.getStatus() == 200) 
 			{
-				Unmarshaller un = jc.createUnmarshaller();
 				LOG.info(response.getEntity());
 				Assert.assertTrue(!response.getEntity().isEmpty());
 			}
@@ -150,10 +126,10 @@ public class DAOTest {
 		try{
 
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"artiste/create");
 
 			Peinture p = new Peinture(d, false, artisteVerif, null, 11111, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
-			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
+			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"oeuvre/create");
 			Assert.assertNotSame(peintureVerif,null);
 		}catch(RuntimeException re){
 			LOG.error("insert oeuvre failed", re);
@@ -165,15 +141,15 @@ public class DAOTest {
 	public final void updateOeuvre(){
 		try{
 			Artiste artiste = new Artiste(" mame birame", "sene", "bon peintre");
-			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"artiste/create");
 
 			Peinture p = new Peinture(d, false, artisteVerif, null,2080, "", "sourire", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
-			Oeuvre peintureReturn =(Oeuvre) httpPostRequest(p,"createOeuvre");
+			Oeuvre peintureReturn =(Oeuvre) httpPostRequest(p,"oeuvre/create");
 
 			//attention il faut modifier peintureReturn now et laisser p de coté, si on modifie p (qui n'est pas managé) cela aura pour effet
 			// de créer une nouvelle entité (merge) au lieu de mettre à jour
 			peintureReturn.setAnnee(2012);
-			Oeuvre peintureReturn2 = (Oeuvre) httpPostRequest(peintureReturn,"updateOeuvre");
+			Oeuvre peintureReturn2 = (Oeuvre) httpPostRequest(peintureReturn,"oeuvre/update");
 			Assert.assertTrue(peintureReturn2.getAnnee()== 2012);
 
 
@@ -187,7 +163,7 @@ public class DAOTest {
 	public final void createCollection(){
 		try{
 			Artiste artiste = new Artiste("vincent", "ruffet", "bon sculpteur");
-			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"artiste/create");
 
 			Peinture p = new Peinture(d, false, artisteVerif, null,2014, "", "test", "test", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
 
@@ -199,20 +175,20 @@ public class DAOTest {
 			sculpture.setHasBeenReproduced(false);
 			sculpture.setMateriaux(Materiaux.ARGILE);
 
-			Sculpture sculptureReturn = (Sculpture) httpPostRequest(sculpture,"createOeuvre");
+			Sculpture sculptureReturn = (Sculpture) httpPostRequest(sculpture,"oeuvre/create");
 
 			Collection collection = new Collection();
 			collection.setEtat(EtatCollection.EXPOSED);
 			//ajout d'une peinture en cascade
 			collection.addOeuvre(p);
-			Collection collectionReturn = (Collection) httpPostRequest(collection,"createCollection");			
+			Collection collectionReturn = (Collection) httpPostRequest(collection,"collection/create");			
 
 			//idem que pour le updateOeuvre plus haut
 			//ajout d'une sculpture déjà existante
 			collectionReturn.addOeuvre(sculptureReturn);
 			collectionReturn.addComment("blavljh");
 
-			Collection collectionReturn2 =(Collection) httpPostRequest(collectionReturn,"updateCollection");
+			Collection collectionReturn2 =(Collection) httpPostRequest(collectionReturn,"collection/update");
 			Assert.assertTrue(collectionReturn2.getOeuvres().size() == 2);
 
 		}catch(RuntimeException re){
@@ -225,16 +201,16 @@ public class DAOTest {
 	public final void insertPhotoAndReproduction(){
 		try{
 			Artiste artiste = new Artiste("charle", "henry", "pas terrible");
-			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"artiste/create");
 
 			Peinture peinture = new Peinture(d, false, artisteVerif, null,2005, "", "caillou", "bla", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);	
-			Peinture peintureReturn = (Peinture) httpPostRequest(peinture,"createOeuvre");
+			Peinture peintureReturn = (Peinture) httpPostRequest(peinture,"oeuvre/create");
 
 			Photo photo = new Photo("/le/chemin/absolue", peintureReturn);
-			Photo photoReturn = (Photo) httpPostRequest(photo,"createPhoto");
+			Photo photoReturn = (Photo) httpPostRequest(photo,"photo/create");
 
 			Reproduction repro = new Reproduction(peintureReturn, 10, SupportReproduction.CARTE);
-			Reproduction reproReturn = (Reproduction) httpPostRequest(repro,"createReproduction");		
+			Reproduction reproReturn = (Reproduction) httpPostRequest(repro,"reproduction/create");		
 
 			Assert.assertTrue(reproReturn.getOeuvre().getId() == peintureReturn.getId());
 
@@ -257,17 +233,17 @@ public class DAOTest {
 		try{
 
 			Artiste artiste = new Artiste("puma", "guerin", "really good artiste");
-			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"createArtiste");
+			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"artiste/create");
 
 			Peinture p = new Peinture(d, false, artisteVerif, null, 123456, "", "La joconde", "lolilol", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);		
-			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"createOeuvre");
+			Oeuvre peintureVerif = (Oeuvre) httpPostRequest(p,"oeuvre/create");
 			Assert.assertNotSame(peintureVerif,null);
 
 			Oeuvre o = new Peinture();
 			o.setAnnee(123456);
 			o.setArtiste(artisteVerif);
 
-			OeuvresDTO oeuvresDTO = (OeuvresDTO) httpPostRequest(o,"criteriaOeuvres");
+			OeuvresDTO oeuvresDTO = (OeuvresDTO) httpPostRequest(o,"oeuvres/criteria");
 			Assert.assertTrue(oeuvresDTO.getOeuvre().size() >= 1);
 			LOG.info("SIZE = "+ oeuvresDTO.getOeuvre().size());
 
