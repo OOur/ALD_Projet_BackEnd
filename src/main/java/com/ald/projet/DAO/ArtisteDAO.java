@@ -2,7 +2,9 @@ package com.ald.projet.DAO;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -10,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.entities.Artiste;
+import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Oeuvre;
 
 public class ArtisteDAO extends GenericDAO {
@@ -110,6 +113,15 @@ public class ArtisteDAO extends GenericDAO {
 				LOG.error("delete artiste failed", re);
 			tx.rollback();
 		}
+	}
 
+
+	public Set<Oeuvre> findOeuvresOfArtiste(int ArtisteId) {
+		Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
+		EntityManager em = createEntityManager();
+		Artiste a = em.getReference(Artiste.class,ArtisteId);
+		oeuvres = a.getOeuvres();
+
+		return oeuvres;
 	}
 }

@@ -1,6 +1,8 @@
 package com.ald.projet.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
@@ -39,12 +41,12 @@ public class MuseeServiceImpl implements MuseeService {
 	}
 
 	/*** Testé OK***/
-	public String connection(Connexion connexion){
+	public Response connection(Connexion connexion){
 
 		LOG.info(Response.serverError().toString());
 
-		//		LOG.info("login "+connexion.getLogin()+ " mdp "+connexion.getPassword());
-		//		String status = connexionDAO.isValidConnection(connexion);
+				LOG.info("login "+connexion.getLogin()+ " mdp "+connexion.getPassword());
+				String status = connexionDAO.isValidConnection(connexion);
 		/**
 		 * erreur 400 : Could not find message body reader for type: class com.ald.projet.property.Connexion of content type: application/x-www-form-urlencoded. 
 		 * Dès que je décommente "Connexion connexion" pour l'interpréter depuis la requête HTTP reçue ça plante. 
@@ -52,8 +54,7 @@ public class MuseeServiceImpl implements MuseeService {
 		 * En attendant, je retourne toujours le status "Conservateur" pour pouvoir avancer. 
 		 */
 		String test = "Conservateur";
-		return /*Response.ok(connexion*/test/*).build()*/;
-
+		return Response.ok(status).build();
 	}
 
 
@@ -139,12 +140,31 @@ public class MuseeServiceImpl implements MuseeService {
 			return dto;
 		}
 		
+		public void deleteOeuvre(int id) {
+			Oeuvre oeuvre = oeuvreDAO.findById(id);
+			oeuvreDAO.removeOeuvre(oeuvre);			
+		}
+		
 	
+		/*** Testé OK***/
+		public List<Artiste> getArtistes(){
+			List<Artiste> a = artisteDAO.findAll();
+			return a;
+		}
+		
 		/*** Testé OK***/
 		public Artiste getArtiste(@PathParam("id")int id){
 			Artiste a = artisteDAO.findById(id);
 			return a;
 		}
+
+		public Set<Oeuvre> findOeuvresOfArtiste(int ArtisteId) {
+			Set<Oeuvre> oeuvres = new HashSet<Oeuvre>();
+			oeuvres = artisteDAO.findOeuvresOfArtiste(ArtisteId);
+			return oeuvres;
+		}
+
+		
 
 }
 

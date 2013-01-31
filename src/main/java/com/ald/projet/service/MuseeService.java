@@ -1,6 +1,7 @@
 package com.ald.projet.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -24,10 +25,9 @@ public interface MuseeService {
 
 	@POST
 	@Path("/connexion")
-	@Consumes("application/x-www-form-urlencoded")
-	//@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces("application/xml")
-	public String connection(Connexion connexion);
+//	@Consumes({"application/xml","application/json"})
+//	@Produces({"application/xml","application/json"})
+	public Response connection(Connexion connexion);
 
 	@POST
 	@Path("/createCollection")
@@ -94,6 +94,20 @@ public interface MuseeService {
 	@Path("/criteriaOeuvres")
 	@Produces({"application/xml","application/json"})
 	public OeuvresDTO getCriteriaOeuvre(Oeuvre oeuvre);
+	
+	@GET
+	@Path("/deleteOeuvre/{id}")
+	public void deleteOeuvre(@PathParam("id")int id);
+	
+	@GET
+	@Path("/getOeuvresOfArtiste/{id}")
+	@Produces({"application/xml","application/json"})
+	public Set<Oeuvre> findOeuvresOfArtiste(@PathParam("id")int ArtisteId);
+	
+	@GET
+	@Path("/getArtistes")
+	@Produces({"application/xml","application/json"})
+	public List<Artiste> getArtistes();
 	
 	@GET
 	@Path("/getArtiste/{id}")

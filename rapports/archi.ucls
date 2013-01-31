@@ -1,29 +1,278 @@
 <class-diagram version="1.0.11" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Oeuvre" project="ALD_Projet" 
-    file="/ALD_Projet/src/main/java/com/ald/projet/entities/Oeuvre.java" binary="false">    
-    <position height="604" width="238" x="132" y="-108"/>    
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Employe" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Employe.java" binary="false">    
+    <position height="-1" width="-1" x="83" y="693"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
+      <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Peinture" project="ALD_Projet" 
-    file="/ALD_Projet/src/main/java/com/ald/projet/entities/Peinture.java" binary="false">    
-    <position height="196" width="226" x="559" y="157"/>    
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Oeuvre" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Oeuvre.java" binary="false">    
+    <position height="-1" width="-1" x="447" y="108"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
+      <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <generalization id="3">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Peinture" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Peinture.java" binary="false">    
+    <position height="95" width="141" x="201" y="296"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Photo" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Photo.java" binary="false">    
+    <position height="-1" width="-1" x="707" y="69"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Photographie" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Photographie.java" binary="false">    
+    <position height="-1" width="-1" x="425" y="335"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Reproduction" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Reproduction.java" binary="false">    
+    <position height="-1" width="-1" x="758" y="223"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Sculpture" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Sculpture.java" binary="false">    
+    <position height="-1" width="-1" x="567" y="334"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Collection" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Collection.java" binary="false">    
+    <position height="-1" width="-1" x="101" y="-12"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.entities.Artiste" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/entities/Artiste.java" binary="false">    
+    <position height="-1" width="-1" x="69" y="355"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.Connexion" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/property/Connexion.java" binary="false">    
+    <position height="-1" width="-1" x="257" y="690"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="11" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.Dimension" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/property/Dimension.java" binary="false">    
+    <position height="-1" width="-1" x="798" y="405"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="12" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.EtatCollection" 
+    project="Projet" file="/Projet/src/main/java/com/ald/projet/property/EtatCollection.java" binary="false">    
+    <position height="-1" width="-1" x="108" y="170"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="13" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.Materiaux" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/property/Materiaux.java" binary="false">    
+    <position height="-1" width="-1" x="601" y="552"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="14" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.Realisation" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/property/Realisation.java" binary="false">    
+    <position height="-1" width="-1" x="265" y="511"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="15" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.Status" project="Projet" 
+    file="/Projet/src/main/java/com/ald/projet/property/Status.java" binary="false">    
+    <position height="-1" width="-1" x="85" y="853"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="16" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.SupportOeuvre" 
+    project="Projet" file="/Projet/src/main/java/com/ald/projet/property/SupportOeuvre.java" binary="false">    
+    <position height="-1" width="-1" x="430" y="529"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="17" corner="BOTTOM_RIGHT" language="java" name="com.ald.projet.property.SupportReproduction" 
+    project="Projet" file="/Projet/src/main/java/com/ald/projet/property/SupportReproduction.java" binary="false">    
+    <position height="-1" width="-1" x="960" y="221"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <association id="18">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="19" name="support"/>      
+      <multiplicity id="20" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="21">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="22" name="materiaux"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="24">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="25" name="artiste"/>      
+      <multiplicity id="26" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="27">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="28" name="realisation"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
+  <association id="31">    
+    <bendpoint x="352" y="394"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="32" name="support"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="35" name="connexion"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="38" name="oeuvre"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="41" name="oeuvre"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="44" name="photo"/>      
+      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="46">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="47">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="48" name="status"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="50">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="51">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="52" name="dimension"/>      
+      <multiplicity id="53" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="55" name="etat"/>      
+      <multiplicity id="56" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="58" name="support"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="61" name="oeuvres"/>      
+      <multiplicity id="62" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="64" name="oeuvres"/>      
+      <multiplicity id="65" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    
-    <operations public="true" package="true" protected="true" private="true"/>  
+    <operations public="false" package="true" protected="true" private="true"/>  
   </classifier-display>  
   <association-display labels="true" multiplicity="true"/>
 </class-diagram>

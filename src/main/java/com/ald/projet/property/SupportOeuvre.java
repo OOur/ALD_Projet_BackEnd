@@ -1,6 +1,5 @@
 package com.ald.projet.property;
 
-import javax.persistence.Embeddable;
 
 
 public enum SupportOeuvre {
