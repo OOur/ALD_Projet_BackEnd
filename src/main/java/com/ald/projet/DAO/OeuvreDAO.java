@@ -15,6 +15,7 @@ import org.hibernate.Criteria;
 import org.slf4j.LoggerFactory;
 
 import com.ald.projet.entities.Artiste;
+import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Employe;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Oeuvre;
@@ -94,10 +95,16 @@ public class OeuvreDAO extends GenericDAO {
 	public void removeOeuvre(Oeuvre oeuvre){
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
+		CollectionDAO co = new CollectionDAO();
 		try {
 			tx = em.getTransaction();
 			tx.begin();
-			// rattache l'ojbet a l'entity manager et le supprime
+
+			//supprime les oeuvres dans les collections
+			for (Collection c : getAllCollectionsOfOeuvre(oeuvre)) {
+				Collection collection = co.findById(c.getId());
+				collection.removeOeuvre(oeuvre);
+			}
 			em.remove(em.merge(oeuvre));
 			tx.commit();
 
@@ -189,20 +196,19 @@ public class OeuvreDAO extends GenericDAO {
 
 
 
-	public void deleteOeuvre(Oeuvre persistentInstance){
+
+	public List<Collection> getAllCollectionsOfOeuvre(Oeuvre o){
+		List<Collection> res = new ArrayList<Collection>();
+
 		EntityManager em = createEntityManager();
-		EntityTransaction tx = null;
-		try {
-			tx = em.getTransaction();
-			tx.begin();
-			em.remove(persistentInstance);
-			tx.commit();
-
-
-		} catch (Exception re) {
-			if (tx != null)
-				LOG.error("delete oeuvre failed", re);
-			tx.rollback();
-		}
+		Query q = em.createQuery("select c from Collection c where :o MEMBER OF c.oeuvres");
+		q.setParameter("o", o);
+		res = q.getResultList();
+		
+		LOG.info("nb element = "+res.size());
+		return res;
 	}
+
+
+	
 }

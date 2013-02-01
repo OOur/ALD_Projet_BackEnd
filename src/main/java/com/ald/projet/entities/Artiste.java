@@ -36,7 +36,7 @@ public class Artiste {
 	}
 	
 
-	public Artiste(String nom, String prenom, String bibliographie) {
+	public Artiste(String prenom, String nom, String bibliographie) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;

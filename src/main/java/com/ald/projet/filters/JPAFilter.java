@@ -28,6 +28,7 @@ public class JPAFilter implements Filter {
 					throws IOException, ServletException {
 		LOG.info("INTERCEPT REQUEST");
 		EntityManager em = null;
+			
 		try{ 
 			em = emf.createEntityManager();
 			JPAUtil.ENTITY_MANAGERS.set(em);

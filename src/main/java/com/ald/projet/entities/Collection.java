@@ -32,7 +32,7 @@ public class Collection {
 	@Enumerated(EnumType.STRING)
 	private EtatCollection etat;
 	
-	@ManyToMany (cascade=CascadeType.PERSIST)
+	@ManyToMany 
 	private List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 	
 	private String libele;

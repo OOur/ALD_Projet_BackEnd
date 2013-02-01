@@ -166,7 +166,8 @@ public class DAOTest {
 			Artiste artisteVerif = (Artiste) httpPostRequest(artiste,"artiste/create");
 
 			Peinture p = new Peinture(d, false, artisteVerif, null,2014, "", "test", "test", null, "", SupportOeuvre.BOIS, Realisation.ACRYLIQUE);
-
+			Oeuvre peintureReturn =(Oeuvre) httpPostRequest(p,"oeuvre/create");
+			
 			Sculpture sculpture = new Sculpture();
 			sculpture.setAnnee(2566469);
 			sculpture.setDimension(d);
@@ -178,9 +179,10 @@ public class DAOTest {
 			Sculpture sculptureReturn = (Sculpture) httpPostRequest(sculpture,"oeuvre/create");
 
 			Collection collection = new Collection();
+			collection.setLibele("art moderne");
 			collection.setEtat(EtatCollection.EXPOSED);
 			//ajout d'une peinture en cascade
-			collection.addOeuvre(p);
+			collection.addOeuvre(peintureReturn);
 			Collection collectionReturn = (Collection) httpPostRequest(collection,"collection/create");			
 
 			//idem que pour le updateOeuvre plus haut
