@@ -6,8 +6,11 @@ public class PhotographieSimplifiee extends OeuvreSimplifiee {
 		super();
 	}
 
-	public PhotographieSimplifiee(int id, String titre) {
-		super(id, titre, "Photographie");
+	
+	
+	public PhotographieSimplifiee(int id, String titre,	boolean hasBeenReproduced) {
+		super(id, titre, "Photographie", hasBeenReproduced);
+
 	}
 	
 }

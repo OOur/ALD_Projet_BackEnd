@@ -9,6 +9,7 @@ public class OeuvreSimplifiee {
 	private int id;
 	private String titre;
 	private String type;
+	private boolean hasBeenReproduced;
 
 
 	public OeuvreSimplifiee(){
@@ -17,11 +18,12 @@ public class OeuvreSimplifiee {
 	
 	
 
-	public OeuvreSimplifiee(int id, String titre, String type) {
+	public OeuvreSimplifiee(int id, String titre, String type, boolean hasBeenReproduced) {
 		super();
 		this.id = id;
 		this.titre = titre;
 		this.type = type;
+		this.hasBeenReproduced = hasBeenReproduced;
 	}
 
 
@@ -52,6 +54,17 @@ public class OeuvreSimplifiee {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+
+	@XmlElement
+	public boolean isHasBeenReproduced() {
+		return hasBeenReproduced;
+	}
+
+
+	public void setHasBeenReproduced(boolean hasBeenReproduced) {
+		this.hasBeenReproduced = hasBeenReproduced;
 	}
 	
 	

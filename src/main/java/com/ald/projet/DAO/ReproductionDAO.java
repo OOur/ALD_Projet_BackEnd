@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.slf4j.LoggerFactory;
 
+import com.ald.projet.entities.Collection;
+import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Reproduction;
 
 public class ReproductionDAO extends GenericDAO {
@@ -22,6 +25,12 @@ public class ReproductionDAO extends GenericDAO {
 			tx = em.getTransaction();
 			tx.begin();
 			em.persist(reproduction);
+
+			Oeuvre o = em.find(Oeuvre.class, reproduction.getOeuvre().getId());
+			if(!o.hasBeenReproduced()){
+				o.setHasBeenReproduced(true);
+			}
+
 			tx.commit();
 
 
@@ -79,6 +88,7 @@ public class ReproductionDAO extends GenericDAO {
 		return reproductions;
 	}
 
+	
 	public Reproduction findById(int id){
 		EntityManager em = createEntityManager();
 		Reproduction reproduction = em.find(Reproduction.class,id);
@@ -101,4 +111,43 @@ public class ReproductionDAO extends GenericDAO {
 			tx.rollback();
 		}
 	}
+
+
+	public List<Reproduction> getAllReproductionOfOeuvre(int id){
+		List<Reproduction> reproductions = new ArrayList<Reproduction>();
+		EntityManager em = createEntityManager();
+		Oeuvre oeuvre = em.find(Oeuvre.class, id);
+		if(!oeuvre.hasBeenReproduced()){
+			return null;
+		}
+
+		Query q = em.createQuery("SELECT p FROM Reproduction p where p.oeuvre = :o");
+		q.setParameter("o", oeuvre);
+		reproductions = q.getResultList();
+
+		return reproductions;
+	}
+
+	public long getNbReproductionOfOeuvre(int id) {
+		EntityManager em = createEntityManager();
+		Oeuvre oeuvre = em.find(Oeuvre.class, id);
+
+		Query q = em.createQuery("SELECT count(p) FROM Reproduction p where p.oeuvre = :o");
+		q.setParameter("o", oeuvre);
+		long count = (Long) (q.getSingleResult());
+		
+		return count;
+	}
+
+	public List<Reproduction> getAllReproductionOfCollection(int id) {
+		List<Reproduction> reproductions = new ArrayList<Reproduction>();
+		EntityManager em = createEntityManager();
+		Collection c = em.find(Collection.class, id);
+
+		Query q = em.createQuery("SELECT r FROM Reproduction r WHERE r.oeuvre MEMBER OF (SELECT c.oeuvres from Collection c where c.id =:c)");
+		q.setParameter("c", c.getId());
+		reproductions = q.getResultList();
+		return reproductions;
+	}
+
 }

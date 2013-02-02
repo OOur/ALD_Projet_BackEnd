@@ -135,11 +135,11 @@ public class ArtisteDAO extends GenericDAO {
 		for(Oeuvre o : res){
 
 			if(o.getClass().getName().contains("Sculpture")){
-				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre()));
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
 			}else if(o.getClass().getName().contains("Peinture")){
-				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre()));
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
 			}else if(o.getClass().getName().contains("Photographie")){
-				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre()));
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
 			}
 		}
 		return oeuvres;

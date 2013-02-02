@@ -9,9 +9,11 @@ public class PeintureSimplifiee extends OeuvreSimplifiee{
 		
 	}
 	
-	public PeintureSimplifiee(int id, String titre) {	
-		super(id, titre, "Peinture");
+	public PeintureSimplifiee(int id, String titre,	boolean hasBeenReproduced) {
+		super(id, titre, "Peinture", hasBeenReproduced);
 	}
+
+
 
 		
 	

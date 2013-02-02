@@ -2,7 +2,6 @@ package com.ald.projet;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -14,7 +13,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
 
 import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
@@ -32,8 +30,7 @@ import com.ald.projet.property.Realisation;
 import com.ald.projet.property.Status;
 import com.ald.projet.property.SupportOeuvre;
 import com.ald.projet.property.SupportReproduction;
-import com.ald.projet.service.ServiceMusee;
-import com.ald.projet.simplified.OeuvresDTO;
+
 
 /**
  * Les tests de DAO se font à travers les web services REST pour récupérer un entityManager valide de JPAFilter
@@ -51,7 +48,7 @@ public class DAOTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		d = new Dimension(10, 20, 40);
-		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class, OeuvresDTO.class, Employe.class);
+		jc = JAXBContext.newInstance(Oeuvre.class, Collection.class, Reproduction.class, Photo.class, Connexion.class, Employe.class);
 	}
 
 	/**
@@ -228,9 +225,10 @@ public class DAOTest {
 	 * Ici il demande à obtenir toutes les oeuvres qui ont été faites à une année donnée et un artiste particulier.
 	 * ==> Seul l'attribut "année" et "artiste" de l'Oeuvre o a été renseignés, tous les autres champs sont à null.
 	 * On va donc faire une recherche sur les années et les artistes
+	 * @throws Exception 
 	 */
 	@Test
-	public final void criteriaTest(){
+	public final void criteriaTest() throws Exception{
 
 		try{
 
@@ -245,9 +243,26 @@ public class DAOTest {
 			o.setAnnee(123456);
 			o.setArtiste(artisteVerif);
 
-			OeuvresDTO oeuvresDTO = (OeuvresDTO) httpPostRequest(o,"oeuvres/criteria");
-			Assert.assertTrue(oeuvresDTO.getOeuvre().size() >= 1);
-			LOG.info("SIZE = "+ oeuvresDTO.getOeuvre().size());
+			
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(o, sw);
+			
+			ClientRequest request = new ClientRequest("http://localhost:8080/rest/service/oeuvres/criteria");
+			request.body("application/xml", sw.toString());
+			ClientResponse<String> response = request.post(String.class);
+
+			if (response.getStatus() == 200) 
+			{
+				LOG.info(response.getEntity());
+				Assert.assertTrue(!response.getEntity().isEmpty());
+			}
+			
+			
+//			List<Oeuvre> oeuvres = (List<Oeuvre>) httpPostRequest(o,"oeuvres/criteria");
+//			Assert.assertTrue(oeuvres.size() >= 1);
+//			LOG.info("SIZE = "+ oeuvres.size());
 
 
 		}catch(RuntimeException re){

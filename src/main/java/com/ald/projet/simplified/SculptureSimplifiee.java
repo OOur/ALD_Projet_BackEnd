@@ -9,7 +9,9 @@ public class SculptureSimplifiee extends OeuvreSimplifiee {
 		
 	}
 	
-	public SculptureSimplifiee(int id, String titre) {
-		super(id, titre, "Sculpture");
+	
+	public SculptureSimplifiee(int id, String titre, boolean hasBeenReproduced) {
+		super(id, titre, "Sculpture", hasBeenReproduced);
 	}
+
 }

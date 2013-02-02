@@ -11,17 +11,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
 import org.slf4j.LoggerFactory;
 
-import com.ald.projet.entities.Artiste;
 import com.ald.projet.entities.Collection;
-import com.ald.projet.entities.Employe;
 import com.ald.projet.entities.Oeuvre;
-import com.ald.projet.entities.Oeuvre;
-import com.ald.projet.simplified.ArtisteSimplifie;
 import com.ald.projet.simplified.OeuvreSimplifiee;
-import com.ald.projet.simplified.OeuvresDTO;
 import com.ald.projet.simplified.PeintureSimplifiee;
 import com.ald.projet.simplified.PhotographieSimplifiee;
 import com.ald.projet.simplified.SculptureSimplifiee;
@@ -127,11 +121,11 @@ public class OeuvreDAO extends GenericDAO {
 
 		for(Oeuvre o : res){
 			if(o.getClass().getName().contains("Sculpture")){
-				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre()));
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
 			}else if(o.getClass().getName().contains("Peinture")){
-				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre()));
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
 			}else if(o.getClass().getName().contains("Photographie")){
-				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre()));
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
 			}
 		}
 		return oeuvres;
@@ -152,9 +146,9 @@ public class OeuvreDAO extends GenericDAO {
 	 * ==> Construction de requête dynamique.
 	 * @return un DTO contenant simplement une liste d'oeuvres.
 	 */
-	public OeuvresDTO findByCriteria(Oeuvre o){
+	public List<Oeuvre> findByCriteria(Oeuvre o){
 
-		OeuvresDTO dto = new OeuvresDTO();
+		List<Oeuvre> oeuvres = new ArrayList<Oeuvre>();
 
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
@@ -190,8 +184,11 @@ public class OeuvreDAO extends GenericDAO {
 		predicateList.toArray(predicates);
 		cq.where(predicates); //WHERE
 
-		dto.setOeuvre(em.createQuery(cq).getResultList());
-		return dto;
+		for(Oeuvre oeuvre: em.createQuery(cq).getResultList()){
+			oeuvres.add(oeuvre);
+		}
+		
+		return oeuvres;
 	}
 
 
@@ -207,6 +204,29 @@ public class OeuvreDAO extends GenericDAO {
 		
 		LOG.info("nb element = "+res.size());
 		return res;
+	}
+
+
+	public List<OeuvreSimplifiee> findOeuvresNotReproduced() {
+		List<Oeuvre> res = new ArrayList<Oeuvre>();
+		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+		
+		EntityManager em = createEntityManager();
+		Query q = em.createQuery("select o from Oeuvre o where o.hasBeenReproduced = false");
+		res = q.getResultList();
+		
+		
+		for(Oeuvre o : res){
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}
+		}
+		return oeuvres;
+		
 	}
 
 

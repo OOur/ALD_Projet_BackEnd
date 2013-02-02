@@ -23,7 +23,7 @@ public class Reproduction {
 	@OneToOne
 	@JoinColumn(name="oeuvre_id")
 	private Oeuvre oeuvre;
-	private int prix;
+	private double prix;
 	@Enumerated(EnumType.STRING)
 	private SupportReproduction support;
 
@@ -38,7 +38,6 @@ public class Reproduction {
 		this.oeuvre = oeuvre;
 		this.prix = prix;
 		this.support = support;
-
 	}
 
 
@@ -63,12 +62,12 @@ public class Reproduction {
 
 
 	@XmlElement
-	public int getPrix() {
+	public double getPrix() {
 		return prix;
 	}
 
-	public void setPrix(int prix) {
-		this.prix = prix;
+	public void setPrix(double price) {
+		this.prix = price;
 	}
 
 	@XmlElement
