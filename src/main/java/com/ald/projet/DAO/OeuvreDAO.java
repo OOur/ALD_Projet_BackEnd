@@ -210,9 +210,33 @@ public class OeuvreDAO extends GenericDAO {
 	public List<OeuvreSimplifiee> findOeuvresNotReproduced() {
 		List<Oeuvre> res = new ArrayList<Oeuvre>();
 		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+	
 		
 		EntityManager em = createEntityManager();
-		Query q = em.createQuery("select o from Oeuvre o where o.hasBeenReproduced = false");
+		Query q = em.createQuery("select DISTINCT o from Oeuvre o where o NOT IN (SELECT r.oeuvre FROM Reproduction r)");
+		res = q.getResultList();
+		
+		
+		for(Oeuvre o : res){
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}
+		}
+		return oeuvres;
+	}
+	
+	
+	public List<OeuvreSimplifiee> findOeuvresReproduced() {
+		List<Oeuvre> res = new ArrayList<Oeuvre>();
+		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+	
+		
+		EntityManager em = createEntityManager();
+		Query q = em.createQuery("select DISTINCT o from Oeuvre o where o IN (SELECT r.oeuvre FROM Reproduction r)");
 		res = q.getResultList();
 		
 		

@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import com.ald.projet.entities.Collection;
 import com.ald.projet.entities.Oeuvre;
 import com.ald.projet.entities.Reproduction;
+import com.ald.projet.simplified.OeuvreSimplifiee;
+import com.ald.projet.simplified.PeintureSimplifiee;
+import com.ald.projet.simplified.PhotographieSimplifiee;
+import com.ald.projet.simplified.SculptureSimplifiee;
 
 public class ReproductionDAO extends GenericDAO {
 
@@ -144,10 +148,38 @@ public class ReproductionDAO extends GenericDAO {
 		EntityManager em = createEntityManager();
 		Collection c = em.find(Collection.class, id);
 
-		Query q = em.createQuery("SELECT r FROM Reproduction r WHERE r.oeuvre MEMBER OF (SELECT c.oeuvres from Collection c where c.id =:c)");
-		q.setParameter("c", c.getId());
+		Query query = em.createQuery("SELECT c.oeuvres from Collection c where c =:c");
+		query.setParameter("c", c);
+		List<Oeuvre> oeuvres = query.getResultList();
+		
+		Query q = em.createQuery("SELECT r FROM Reproduction r WHERE r.oeuvre IN (:oeuvres)");
+		q.setParameter("oeuvres", oeuvres);
 		reproductions = q.getResultList();
 		return reproductions;
+		
+		
+	}
+
+	public List<OeuvreSimplifiee> getOeuvresOfCollectionNeverReproduced(int id) {
+		List<Oeuvre> res = new ArrayList<Oeuvre>();
+		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+		EntityManager em = createEntityManager();
+		
+		Query q = em.createQuery("select o from Oeuvre o where o IN (SELECT c FROM Collection c WHERE c.id = :id) and o.hasBeenReproduced = false");
+		q.setParameter("id", id);
+		res = q.getResultList();
+		
+		
+		for(Oeuvre o : res){
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}
+		}
+		return oeuvres;
 	}
 
 }

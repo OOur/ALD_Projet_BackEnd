@@ -179,6 +179,11 @@ public class ServiceMuseeImpl implements ServiceMusee {
 	}
 
 
+	public List<OeuvreSimplifiee> getAllOeuvreReproduced() {
+		List<OeuvreSimplifiee> oeuvres = oeuvreDAO.findOeuvresReproduced();
+		return oeuvres;
+	}
+	
 
 	public List<OeuvreSimplifiee> getAllOeuvreNotReproduced() {
 		List<OeuvreSimplifiee> oeuvres = oeuvreDAO.findOeuvresNotReproduced();
@@ -214,6 +219,17 @@ public class ServiceMuseeImpl implements ServiceMusee {
 		List<Reproduction> reproductions = reproductionDAO.getAllReproductionOfCollection(id);
 		return reproductions;
 	}
+
+
+
+	public List<OeuvreSimplifiee> getOeuvresOfCollectionNeverReproduced(int id) {
+		List<OeuvreSimplifiee> oeuvres = reproductionDAO.getOeuvresOfCollectionNeverReproduced(id);
+		return oeuvres;
+	}
+
+
+
+	
 	
 	
 	
