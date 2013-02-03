@@ -179,4 +179,63 @@ public class ReproductionDAO extends GenericDAO {
 		return oeuvres;
 	}
 
+	public List<OeuvreSimplifiee> getOeuvresOfCollectionReproduced(int id) {
+		List<Oeuvre> res = new ArrayList<Oeuvre>();
+		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+		EntityManager em = createEntityManager();
+		
+		Query q = em.createQuery("SELECT c.oeuvres FROM Collection c WHERE c.id = :id");
+		q.setParameter("id", id);
+		res = q.getResultList();
+
+		
+		Query q3 = em.createQuery("SELECT r.oeuvre FROM Reproduction r WHERE r.oeuvre IN (:oeuvres)");
+		q3.setParameter("oeuvres", res);
+		res = q3.getResultList();
+		
+		
+		for(Oeuvre o : res){
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}
+		}
+		return oeuvres;
+	}
+	
+	
+	public List<OeuvreSimplifiee> getOeuvresOfCollectionNotReproduced(int id) {
+		List<Oeuvre> res = new ArrayList<Oeuvre>();
+		
+		List<OeuvreSimplifiee> oeuvres = new ArrayList<OeuvreSimplifiee>();
+		EntityManager em = createEntityManager();
+		
+		Query q = em.createQuery("SELECT r.oeuvre FROM Reproduction r");
+		res = q.getResultList();
+
+		Query q2 = em.createQuery(" SELECT c.oeuvres FROM Collection c WHERE c.id = :id");
+		q2.setParameter("id", id);
+		List<Oeuvre> res2 = q2.getResultList();
+		
+		Query q3 = em.createQuery("SELECT o FROM Oeuvre o WHERE o IN (:oeuvres) AND o NOT IN (:reproductions)");
+		q3.setParameter("reproductions", res);
+		q3.setParameter("oeuvres", res2);
+		res = q3.getResultList();
+		
+		
+		for(Oeuvre o : res){
+			if(o.getClass().getName().contains("Sculpture")){
+				oeuvres.add(new SculptureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Peinture")){
+				oeuvres.add(new PeintureSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}else if(o.getClass().getName().contains("Photographie")){
+				oeuvres.add(new PhotographieSimplifiee(o.getId(), o.getTitre(), o.hasBeenReproduced()));
+			}
+		}
+		return oeuvres;
+	}
+
 }

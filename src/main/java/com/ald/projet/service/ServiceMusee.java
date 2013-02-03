@@ -119,15 +119,27 @@ public interface ServiceMusee {
 
 	
 	@GET
-	@Path("/oeuvres/reproduced")
+	@Path("/oeuvres/everReproduced")
 	@Produces("application/xml")
-	public List<OeuvreSimplifiee> getAllOeuvreReproduced();
+	public List<OeuvreSimplifiee> getAllOeuvreEverReproduced();
 	
 	
 	@GET
-	@Path("/oeuvres/notReproduced")
+	@Path("/oeuvres/neverReproduced")
 	@Produces("application/xml")
-	public List<OeuvreSimplifiee> getAllOeuvreNotReproduced();
+	public List<OeuvreSimplifiee> getAllOeuvreNeverReproduced();
+	
+	
+	@GET
+	@Path("/oeuvres/reproduced/collection/{id}")
+	@Produces("application/xml")
+	public List<OeuvreSimplifiee> getAllOeuvreReproducedOfCollection(@PathParam("id")int id);
+	
+	
+	@GET
+	@Path("/oeuvres/notReproduced/collection/{id}")
+	@Produces("application/xml")
+	public List<OeuvreSimplifiee> getAllOeuvreNotReproducedOfCollection(@PathParam("id")int id);
 	
 	
 	@GET

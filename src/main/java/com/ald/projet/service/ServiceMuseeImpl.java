@@ -179,13 +179,13 @@ public class ServiceMuseeImpl implements ServiceMusee {
 	}
 
 
-	public List<OeuvreSimplifiee> getAllOeuvreReproduced() {
+	public List<OeuvreSimplifiee> getAllOeuvreEverReproduced() {
 		List<OeuvreSimplifiee> oeuvres = oeuvreDAO.findOeuvresReproduced();
 		return oeuvres;
 	}
 	
 
-	public List<OeuvreSimplifiee> getAllOeuvreNotReproduced() {
+	public List<OeuvreSimplifiee> getAllOeuvreNeverReproduced() {
 		List<OeuvreSimplifiee> oeuvres = oeuvreDAO.findOeuvresNotReproduced();
 		return oeuvres;
 	}
@@ -224,6 +224,20 @@ public class ServiceMuseeImpl implements ServiceMusee {
 
 	public List<OeuvreSimplifiee> getOeuvresOfCollectionNeverReproduced(int id) {
 		List<OeuvreSimplifiee> oeuvres = reproductionDAO.getOeuvresOfCollectionNeverReproduced(id);
+		return oeuvres;
+	}
+
+
+
+	public List<OeuvreSimplifiee> getAllOeuvreReproducedOfCollection(int id) {
+		List<OeuvreSimplifiee> oeuvres = reproductionDAO.getOeuvresOfCollectionReproduced(id);
+		return oeuvres;
+	}
+
+
+
+	public List<OeuvreSimplifiee> getAllOeuvreNotReproducedOfCollection(int id) {
+		List<OeuvreSimplifiee> oeuvres = reproductionDAO.getOeuvresOfCollectionNotReproduced(id);
 		return oeuvres;
 	}
 
