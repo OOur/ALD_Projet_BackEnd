@@ -121,9 +121,6 @@ public class ReproductionDAO extends GenericDAO {
 		List<Reproduction> reproductions = new ArrayList<Reproduction>();
 		EntityManager em = createEntityManager();
 		Oeuvre oeuvre = em.find(Oeuvre.class, id);
-		if(!oeuvre.hasBeenReproduced()){
-			return null;
-		}
 
 		Query q = em.createQuery("SELECT p FROM Reproduction p where p.oeuvre = :o");
 		q.setParameter("o", oeuvre);
